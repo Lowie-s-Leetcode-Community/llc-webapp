@@ -14,31 +14,31 @@ I followed [this guide](https://burkeholland.dev/posts/express-react-starter-ref
 
 ## Boot up
 
-0. First time installation/pulling new feature
+### 0. First time installation/pulling new feature
 ```
 cd server
 npm i
 cd ..
 npm i
 ```
-1. Start the back-end
+### 1. Start the back-end
 
 ```
 cd server
 npm start
 ```
 
-Verify initiation successfully: (localhost:3000)[http://localhost:3000]
+Verify initiation successfully: [localhost:3000](http://localhost:3000)
 
-2. Start the front-end
+### 2. Start the front-end
 ```
 npm start
 ```
-Verify initiation successfully: (localhost:3001)[http://localhost:3001]
+Verify initiation successfully: [localhost:3001](http://localhost:3001)
 
 **Notes** (on Ports): I added `PORT` environment variable in the `start` script for the front-end. If it works, you can start both modules in any order. But in case it doesn't (usually, causing the back-end can't start), you should stop any process on port 3000, and start the back-end first, before starting the front-end.
 
-3. Update new code
+### 3. Update new code
 
 Hot-reload is implemented in the React module in this project, so any changes on the UI level is updated immediately. Only if you had just installed new modules, you'll have to restart this module.
 
@@ -50,4 +50,4 @@ Linting will be implemented, so project can't run if clean-code rules isn't foll
 
 The branch `main` (on remote) will be locked so you can't commit to it directly. Please, check out to your own branch and create pull request. The best: one branch/one feature. :)
 
-### Have fun developping! :D
+### Have fun developing! :D
