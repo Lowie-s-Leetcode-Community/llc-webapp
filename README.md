@@ -1,70 +1,53 @@
-# Getting Started with Create React App
+# LLC WebApp
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This is the Webapp for the Lowie's Leetcode Community.
 
-## Available Scripts
+Quick link for team members: [Trello](https://trello.com/b/uYL1a8Bd/llc-web-agile-board).
 
-In the project directory, you can run:
+## Quick description on Architecture
 
-### `npm start`
+My (Lowie's) plan is to combine both the front-end and back-end into one same repo, since with the current scalings, the smoothness of our team workflow should be prioritize, rather than scalings in the (far) future.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Therefore, you can find every code related to the back-end (uses ExpressJS), in `server`. All other files in the directory belongs to the front-end (which uses `ReactJS`).
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+I followed [this guide](https://burkeholland.dev/posts/express-react-starter-refresh/) while set up this project.
 
-### `npm test`
+## Boot up
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+0. First time installation/pulling new feature
+```
+cd server
+npm i
+cd ..
+npm i
+```
+1. Start the back-end
 
-### `npm run build`
+```
+cd server
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Verify initiation successfully: (localhost:3000)[http://localhost:3000]
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+2. Start the front-end
+```
+npm start
+```
+Verify initiation successfully: (localhost:3001)[http://localhost:3001]
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Notes** (on Ports): I added `PORT` environment variable in the `start` script for the front-end. If it works, you can start both modules in any order. But in case it doesn't (usually, causing the back-end can't start), you should stop any process on port 3000, and start the back-end first, before starting the front-end.
 
-### `npm run eject`
+3. Update new code
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Hot-reload is implemented in the React module in this project, so any changes on the UI level is updated immediately. Only if you had just installed new modules, you'll have to restart this module.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+The Express back-end, however, haven't got it (yet). So, restart it after an update.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Linting & Clean code & Workflow
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+Linting will be implemented, so project can't run if clean-code rules isn't followed fully.
 
-## Learn More
+The branch `main` (on remote) will be locked so you can't commit to it directly. Please, check out to your own branch and create pull request. The best: one branch/one feature. :)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Have fun developping! :D
