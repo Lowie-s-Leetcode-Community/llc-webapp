@@ -46,7 +46,7 @@ The Express back-end, however, haven't got it (yet). So, restart it after an upd
 
 ## Linting & Clean code & Workflow
 
-Linting will be implemented, so project can't run if clean-code rules isn't followed fully.
+Linting is enforced on all front-end code and adhere to the [AirBNB guidelines](https://airbnb.io/javascript/). Or, their [github link](https://github.com/airbnb/javascript).
 
 The branch `main` (on remote) will be locked so you can't commit to it directly. Please, check out to your own branch and create pull request. The best: one branch/one feature. :)
 

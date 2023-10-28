@@ -1,20 +1,20 @@
-import { useEffect, useState } from "react";
+import { React, useEffect, useState } from 'react';
 import logo from './logo.svg';
 import './App.css';
 
 function App() {
-  const [message, setMessage] = useState("");
+  const [message, setMessage] = useState('');
+
+  async function getMessage() {
+    const result = await fetch('/api/message');
+    const json = await result.json();
+
+    setMessage(json);
+  }
 
   useEffect(() => {
     getMessage();
   }, []);
-
-  async function getMessage() {
-    const result = await fetch("/api/message");
-    const json = await result.json();
-
-    setMessage(json);
-  };
 
   return (
     <div className="App">
