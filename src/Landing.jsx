@@ -1,8 +1,8 @@
 import { React, useEffect, useState } from 'react';
 import logo from './logo.svg';
-import './App.css';
+import './Landing.css';
 
-function App() {
+function LandingPage() {
   const [message, setMessage] = useState('');
 
   async function getMessage() {
@@ -34,4 +34,4 @@ function App() {
   );
 }
 
-export default App;
+export default LandingPage;
