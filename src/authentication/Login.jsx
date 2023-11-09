@@ -14,9 +14,10 @@ function Login() {
   };
 
   async function getMessage() {
-    const result = await fetch('/api/message');
-    const json = await result.json();
-
+    // const result = await fetch('/api/message');
+    // const json = await result.json();
+    // temporary disable fetch
+    const json = '';
     setMessage(json);
   }
 
@@ -30,7 +31,7 @@ function Login() {
       {message}
       <Grid container justifyContent="center" alignItems="center" sx={{ height: '100vh' }}>
         <Grid item xs={12} sm={8} md={6} lg={4}>
-          <Paper elevation={6} sx={{ padding: 4 }}>
+          <Paper sx={{ padding: 4 }}>
             <Typography variant="h5" gutterBottom sx={{ textAlign: 'center' }}>
               Welcome to
             </Typography>

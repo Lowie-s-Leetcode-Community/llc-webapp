@@ -1,15 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Container from '@mui/material/Container';
 import Landing from './Landing';
 import Login from './authentication/Login';
 import NotFound from './error/NotFound';
 import Missions from './pages/Missions';
 import About from './pages/About';
-import Header from './layout/Header';
-import Footer from './layout/Footer';
 import Profile from './pages/Profile';
 import Logout from './authentication/Logout';
+import MainLayout from './layout/MainLayout';
 
 function RouterApp() {
   const routes = [
@@ -52,9 +50,7 @@ function RouterApp() {
 
   return (
     <BrowserRouter>
-      {/* TODO: If possible, find a better solution for hiding Header */}
-      {window.location.pathname !== '/login' && <Header />}
-      <Container maxWidth="xl">
+      <MainLayout>
         <Routes>
           {routes.map((route) => (
             <Route
@@ -64,8 +60,7 @@ function RouterApp() {
             />
           ))}
         </Routes>
-      </Container>
-      <Footer />
+      </MainLayout>
     </BrowserRouter>
   );
 }
