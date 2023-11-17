@@ -22,7 +22,7 @@ export function GoldCard({ children, theme }) {
 
   const cardStyle = {
     borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows.card,
+    boxShadow: theme.customShadows.light,
     padding: theme.spacing(2),
     textAlign: 'center',
   };
@@ -40,7 +40,7 @@ export function NormalCard({ children, theme }) {
 
   const cardStyle = {
     borderRadius: theme.shape.borderRadius,
-    boxShadow: theme.shadows.card,
+    boxShadow: theme.customShadows.light,
     padding: theme.spacing(2),
     textAlign: 'center',
   };

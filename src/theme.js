@@ -26,8 +26,8 @@ const theme = createTheme({
       goldOrange: 'linear-gradient(to top, #e4805d, #ffa116)',
     },
   },
-  shadows: {
-    card: 'rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
+  customShadows: {
+    light: 'rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.06) 0px 1px 2px 0px',
   },
 
 });

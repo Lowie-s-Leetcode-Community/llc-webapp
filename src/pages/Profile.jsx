@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Grid, Typography, Button, Avatar, List, ListItem, ListItemAvatar, ListItemText,
+  Grid, Typography, Button, Avatar, List, ListItemAvatar, ListItemText, ListItemButton, Box,
 } from '@mui/material';
 import { EmojiEvents } from '@mui/icons-material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
@@ -26,25 +26,28 @@ function Profile() {
 function Sidebar({ selectedTab, handleTabChange }) {
   return (
     <div style={{ backgroundColor: '#fff', padding: '16px', minWidth: 250 }}>
-      <Avatar alt="User Avatar" src="/static/images/avatar/1.jpg" style={{ width: '80px', height: '80px', marginBottom: '16px' }} />
-      <Typography variant="h5" style={{ marginBottom: '16px' }}>
-        John&rsquo;s Profile
-      </Typography>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <Avatar alt="User Avatar" style={{ width: '80px', height: '80px', marginBottom: '16px' }} />
+        <Typography variant="h5" sx={{ marginBottom: '16px' }}>
+          username
+        </Typography>
+      </Box>
+
       <List>
-        <ListItem button selected={selectedTab === 'allAwardsTab'} onClick={(event) => handleTabChange(event, 'allAwardsTab')}>
+        <ListItemButton selected={selectedTab === 'allAwardsTab'} onClick={(event) => handleTabChange(event, 'allAwardsTab')}>
           <ListItemAvatar>
             <EmojiEvents />
           </ListItemAvatar>
           <ListItemText primary="All Awards" />
-        </ListItem>
-        <ListItem button selected={selectedTab === 'recentACTab'} onClick={(event) => handleTabChange(event, 'recentACTab')}>
+        </ListItemButton>
+        <ListItemButton selected={selectedTab === 'recentACTab'} onClick={(event) => handleTabChange(event, 'recentACTab')}>
           <ListItemAvatar>
             <TaskAltIcon />
           </ListItemAvatar>
           <ListItemText primary="Recent AC" />
-        </ListItem>
+        </ListItemButton>
       </List>
-      <Button variant="contained" color="primary" fullWidth style={{ marginTop: '16px' }}>
+      <Button variant="contained" color="primary" fullWidth sx={{ marginTop: '16px' }}>
         Change Profile Info
       </Button>
     </div>
@@ -89,7 +92,9 @@ function AllAwards() {
   return (
     <Grid container spacing={3}>
       {awards.map((award) => (
-        <CustomGridItem><Typography variant="h6">{award.title}</Typography></CustomGridItem>
+        <CustomGridItem key={award.id} id={award.id}>
+          <Typography variant="h6">{award.title}</Typography>
+        </CustomGridItem>
       ))}
     </Grid>
   );

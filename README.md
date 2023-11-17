@@ -38,6 +38,8 @@ Verify initiation successfully: [localhost:3001](http://localhost:3001)
 
 **Notes** (on Ports): I added `PORT` environment variable in the `start` script for the front-end. If it works, you can start both modules in any order. But in case it doesn't (usually, causing the back-end can't start), you should stop any process on port 3000, and start the back-end first, before starting the front-end.
 
+**Notes** (dev only): If front-end is fetching mock data, open a new terminal and run mock data server with `json-server --watch --no-cors ./mock-data/data.json`.
+
 ### 3. Update new code
 
 Hot-reload is implemented in the React module in this project, so any changes on the UI level is updated immediately. Only if you had just installed new modules, you'll have to restart this module.

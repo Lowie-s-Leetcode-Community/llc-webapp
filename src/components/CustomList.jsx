@@ -17,7 +17,7 @@ function CustomList({
 
   return (
     <Card sx={{
-      borderRadius: theme.shape.borderRadius, boxShadow: theme.shadows.card, padding: theme.spacing(2), textAlign: 'center', backgroundColor: theme.palette.background.card, marginTop: theme.spacing(2),
+      borderRadius: theme.shape.borderRadius, boxShadow: theme.customShadows.light, padding: theme.spacing(2), textAlign: 'center', backgroundColor: theme.palette.background.card, marginTop: theme.spacing(2),
     }}
     >
       <Grid container justifyContent="space-between" alignItems="center">

@@ -28,7 +28,7 @@ function Missions() {
       <CustomContainer>
         <Grid container spacing={3}>
           {missions.map((mission) => (
-            <CustomGridItem itemRoute={mission.route}>
+            <CustomGridItem key={mission.id} id={mission.id} itemRoute={mission.route}>
               <Typography variant="h6" sx={{ mb: 1 }}>
                 {mission.name}
               </Typography>

@@ -42,8 +42,8 @@ function Header() {
     <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* TODO: Logo */}
 
+          {/* Large Screen Logo */}
           <Box sx={{ display: { xs: 'none', md: 'flex' }, marginRight: '8px' }}>
             <Link to="/">
               <img
@@ -58,6 +58,7 @@ function Header() {
             </Link>
           </Box>
 
+          {/* Small Screen Navigation Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
@@ -100,7 +101,7 @@ function Header() {
             </Menu>
           </Box>
 
-          {/* TODO: Logo */}
+          {/* Small Screen Logo */}
           <Box sx={{ display: { xs: 'flex', md: 'none' }, flexGrow: 1, justifyContent: 'center' }}>
             <Link to="/">
               <img
@@ -115,6 +116,7 @@ function Header() {
             </Link>
           </Box>
 
+          {/* Large Screen Navigation Menu */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page, index) => (
               <Button
@@ -129,12 +131,16 @@ function Header() {
             ))}
           </Box>
 
+          {/* Avatar */}
           <Box sx={{ flexGrow: 0 }}>
-            <Tooltip>
+            {/* Avatar Button */}
+            <Tooltip title="username">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" src="/static/images/avatar/1.jpg" />
+                <Avatar alt="User Avatar" />
               </IconButton>
             </Tooltip>
+
+            {/* Avatar Menu */}
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"

@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 import { Grid, Card, Box } from '@mui/material';
 import PropTypes from 'prop-types';
 
-function CustomGridItem({ itemKey = 'key', itemRoute = '#', children }) {
+function CustomGridItem({ id, itemRoute = '#', children }) {
   return (
 
-    <Grid item xs={6} sm={4} md={3} key={itemKey}>
+    <Grid item xs={6} sm={4} md={3} key={id}>
       <Link to={itemRoute} style={{ textDecoration: 'none' }}>
         <Card
           sx={{
@@ -16,15 +16,15 @@ function CustomGridItem({ itemKey = 'key', itemRoute = '#', children }) {
             alignItems: 'center',
             cursor: 'pointer',
             borderRadius: '10px',
-            boxShadow: '0px 4px 10px rgba(0, 0, 0, 0.1)',
+            boxShadow: 1,
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
               transform: 'scale(1.05)',
-              boxShadow: '0px 8px 20px rgba(0, 0, 0, 0.2)',
+              boxShadow: 4,
             },
             '&:active': {
               transform: 'scale(0.95)',
-              boxShadow: '0px 2px 5px rgba(0, 0, 0, 0.2)',
+              boxShadow: 4,
             },
           }}
         >
@@ -48,7 +48,7 @@ function CustomGridItem({ itemKey = 'key', itemRoute = '#', children }) {
 }
 
 CustomGridItem.propTypes = {
-  itemKey: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
   itemRoute: PropTypes.string,
 };

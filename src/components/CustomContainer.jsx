@@ -10,7 +10,7 @@ function CustomContainer({ children }) {
       style={{
         borderRadius: 16,
         backgroundColor: theme.palette.background.card,
-        boxShadow: theme.shadows.card,
+        boxShadow: theme.customShadows.light,
       }}
       p={2}
     >
