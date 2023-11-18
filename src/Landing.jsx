@@ -22,7 +22,7 @@ function Landing() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>{message.message}</p>
-        <RouterLink to="http://localhost:3000/auth/discord/login">Login by Discord</RouterLink>
+        <RouterLink to="/login">Login by Discord</RouterLink>
       </header>
     </div>
   );

@@ -3,14 +3,17 @@ import { Link as RouterLink } from 'react-router-dom';
 import {
   Button, TextField, Typography, Grid,
 } from '@mui/material';
+import axios from 'axios';
+
 
 function Login() {
   const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const serverUrl = process.env.REACT_APP_SERVER_API_URL;
 
   const handleLogin = () => {
-    // Add your login logic here
+    window.location.href = `${serverUrl}/auth/discord/login`;
   };
 
   async function getMessage() {
