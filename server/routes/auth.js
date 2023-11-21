@@ -11,6 +11,7 @@ async function generateAccessToken(username) {
     username,
   }, process.env.TOKEN_SECRET, { expiresIn: 60 * 60 * 60 });
 }
+
 router.get('/discord/login', (req, res) => {
   const url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.DISCORD_REDIRECT_URI}&response_type=code&scope=identify%20guilds`;
 
