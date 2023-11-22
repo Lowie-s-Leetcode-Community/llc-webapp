@@ -1,8 +1,9 @@
 import { React, useEffect, useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import logo from './logo.svg';
 import './Landing.css';
 
-function LandingPage() {
+function Landing() {
   const [message, setMessage] = useState('');
 
   async function getMessage() {
@@ -21,17 +22,9 @@ function LandingPage() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>{message.message}</p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <RouterLink to="/login">Login by Discord</RouterLink>
       </header>
     </div>
   );
 }
-
-export default LandingPage;
+export default Landing;

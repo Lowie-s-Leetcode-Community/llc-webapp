@@ -7,8 +7,8 @@ router.get('/', function(req, res, next) {
 });
 
 /* GET /api/message */
-router.get("/message", function (req, res, next) {
-  res.json({ message: "Hello from the API!" });
+router.get('/message', (req, res, next) => {
+  res.json({ message: 'Welcome to the LLC Website' });
 });
 
 module.exports = router;
