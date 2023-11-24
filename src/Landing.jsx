@@ -1,29 +1,15 @@
-import { React, useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
-import logo from './logo.svg';
+import { React } from 'react';
 import './Landing.css';
+import { Navigate } from 'react-router-dom';
+import Dashboard from './pages/Dashboard';
 
 function Landing() {
-  const [message, setMessage] = useState('');
-
-  async function getMessage() {
-    const result = await fetch('/api/message');
-    const json = await result.json();
-
-    setMessage(json);
-  }
-
-  useEffect(() => {
-    getMessage();
-  }, []);
+  // Mock login status
+  const isLoggedIn = true;
 
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>{message.message}</p>
-        <RouterLink to="/login">Login by Discord</RouterLink>
-      </header>
+      {isLoggedIn ? <Dashboard /> : <Navigate to="/login" replace />}
     </div>
   );
 }
