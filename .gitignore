@@ -28,3 +28,4 @@ yarn-error.log*
 **/.env
 
 package-lock.json
+server/package-lock.json
