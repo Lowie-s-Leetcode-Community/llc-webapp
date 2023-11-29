@@ -40,6 +40,8 @@ Verify initiation successfully: [localhost:3001](http://localhost:3001)
 
 **Notes** (dev only): If front-end is fetching mock data, open a new terminal and run mock data server with `json-server --watch --no-cors ./mock-data/data.json`.
 
+If `json-server` is not found, it's because this command is not installed yet. Run this: `npm install -g json-server`.
+
 ### 3. Update new code
 
 Hot-reload is implemented in the React module in this project, so any changes on the UI level is updated immediately. Only if you had just installed new modules, you'll have to restart this module.
