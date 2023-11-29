@@ -35,11 +35,11 @@ app.use('/api/users/', usersRouter);
 app.use('/api/auth/', authRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use((req, res, next) => {
   next(createError(404));
 });
 
-app.get("*", (req, res) => {
+app.get('*', (req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};

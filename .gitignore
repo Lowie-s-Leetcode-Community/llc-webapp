@@ -22,5 +22,10 @@ node_modules
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
 .idea
 .env
+**/.env
+
+package-lock.json
+server/package-lock.json
