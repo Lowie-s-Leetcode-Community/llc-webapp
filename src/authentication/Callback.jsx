@@ -6,11 +6,20 @@ function Callback() {
   const [searchParams] = useSearchParams(window.location.search);
   const code = searchParams.get('code');
   const navigate = useNavigate();
-  useEffect(() => async () => {
-    const response = await axios.post(`${process.env.REACT_APP_SERVER_API_URL}/auth/discord/callback`, { code });
-    localStorage.setItem('token', response.data.token);
-    navigate('/');
-  }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      if (code !== null) {
+        const response = await axios.post(`${process.env.REACT_APP_SERVER_API_URL}/auth/discord/callback`, { code });
+        localStorage.clear();
+        localStorage.setItem('token', response.data.token);
+        if (localStorage.getItem('token')) {
+          navigate('/');
+          console.log(response);
+        }
+      }
+    }
+    fetchData();
+  }, [code, navigate]);
   return (
     <div />
   );
