@@ -14,10 +14,9 @@ function Callback() {
         localStorage.setItem('token', response.data.token);
         if (localStorage.getItem('token')) {
           navigate('/');
-          console.log(response);
         }
       }
-    }
+    };
     fetchData();
   }, [code, navigate]);
   return (
