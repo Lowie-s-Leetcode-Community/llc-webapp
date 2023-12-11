@@ -14,4 +14,4 @@ const LeaderboardSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("LC_learderboard", LeaderboardSchema)
+module.exports = mongoose.model("lc_learderboard", LeaderboardSchema)
