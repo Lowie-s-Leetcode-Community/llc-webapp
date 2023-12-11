@@ -7,4 +7,4 @@ const AwardSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.model("LC_awards", AwardSchema)
+module.exports = mongoose.model("lc_awards", AwardSchema)
