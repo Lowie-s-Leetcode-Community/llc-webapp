@@ -3,8 +3,8 @@ import {
   CircularProgress, Grid, Typography,
 } from '@mui/material';
 // import useFetch from '../hooks/useFetch';
-import CustomContainer from '../components/CustomContainer';
-import CustomGridItem from '../components/CustomGridItem';
+import CustomContainer from '../../components/CustomContainer';
+import CustomGridItem from '../../components/CustomGridItem';
 
 function Missions() {
   // Mock mission data

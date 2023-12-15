@@ -9,17 +9,18 @@ require('dotenv').config();
 async function generateAccessToken(username) {
   return jwt.sign({
     username,
-  }, process.env.TOKEN_SECRET, { expiresIn: 60 * 60 * 60 });
+  }, process.env.TOKEN_SECRET, { expiresIn: 60 * 60 * 60 * 24 * 30 });
 }
 
 router.get('/discord/login', (req, res) => {
-  const url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.DISCORD_REDIRECT_URI}&response_type=code&scope=identify%20guilds`;
+  const url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&response_type=code&redirect_uri=${process.env.DISCORD_REDIRECT_URI}&scope=identify+guilds.members.read`;
 
   res.redirect(url);
 });
 
 router.post('/discord/callback', async (request, response) => {
   const { code } = request.body;
+  console.log(code)
   const params = new URLSearchParams({
     client_id: process.env.DISCORD_CLIENT_ID,
     client_secret: process.env.DISCORD_CLIENT_SECRET,
@@ -44,16 +45,25 @@ router.post('/discord/callback', async (request, response) => {
     // eslint-disable-next-line camelcase
     const { access_token } = res.data;
 
-    const userResponse = await axios.get('https://discord.com/api/users/@me', {
+    // const userResponse = await axios.get('https://discord.com/api/users/@me', {
+    //   headers: {
+    //     Authorization: `Bearer ${access_token}`,
+    //     ...headers,
+    //   },
+    // });
+
+    const discordRoleAPI = `/users/@me/guilds/${process.env.DISCORD_GUILD_ID}/member`;
+
+    const userInfo = await axios.get(`https://discord.com/api${discordRoleAPI}`, {
       headers: {
         Authorization: `Bearer ${access_token}`,
         ...headers,
       },
     });
 
-    const token = await generateAccessToken(userResponse.data.username);
+    const token = await generateAccessToken({username: userInfo.data.user.username});
     // console.log(token);
-    response.json({token, access_token, user: userResponse.data});
+    response.json({token, access_token, user: userInfo.data.user, roles: userInfo.data.roles});
   } catch (error) {
     console.log(error)
   }

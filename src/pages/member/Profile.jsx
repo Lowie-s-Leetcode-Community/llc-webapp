@@ -5,8 +5,8 @@ import {
 import { EmojiEvents } from '@mui/icons-material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PropTypes from 'prop-types';
-import CustomList from '../components/CustomList';
-import CustomGridItem from '../components/CustomGridItem';
+import CustomList from '../../components/CustomList';
+import CustomGridItem from '../../components/CustomGridItem';
 
 function Profile() {
   const [selectedTab, setSelectedTab] = useState('allAwardsTab');

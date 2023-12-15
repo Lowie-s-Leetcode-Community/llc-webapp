@@ -1,13 +1,13 @@
 import React from 'react';
+import { Box } from '@mui/material';
 
 function Footer() {
   return (
-    <footer style={{
-      padding: '1rem', textAlign: 'center', marginTop: '2rem',
-    }}
-    >
-      <p style={{ fontSize: '14px', color: '#666' }}>&copy; 2023 Lowie&apos;s LeetCode Community</p>
-    </footer>
+    <Box mt="5rem">
+      <Box sx={{ padding: '3rem', textAlign: 'center' }}>
+        &copy; 2023 Lowie&apos;s LeetCode Community
+      </Box>
+    </Box>
   );
 }
 

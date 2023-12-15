@@ -7,7 +7,7 @@ import Footer from './Footer';
 
 function MainLayout({ children }) {
   const location = useLocation();
-  const HIDE_HEADER_FOOTER_PATHS = ['/login'];
+  const HIDE_HEADER_FOOTER_PATHS = [];
   const hideHeaderFooter = HIDE_HEADER_FOOTER_PATHS.includes(location.pathname);
 
   return (

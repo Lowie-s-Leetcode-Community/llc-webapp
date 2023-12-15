@@ -3,8 +3,8 @@ import {
   Grid,
 } from '@mui/material';
 // import useFetch from '../hooks/useFetch';
-import CustomList from '../components/CustomList';
-import { CustomCard } from '../components/CustomCard';
+import CustomList from '../../components/CustomList';
+import { CustomCard } from '../../components/CustomCard';
 
 function Dashboard() {
   return (
