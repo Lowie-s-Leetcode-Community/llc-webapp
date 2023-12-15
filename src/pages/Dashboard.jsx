@@ -43,7 +43,7 @@ function StatsBoard() {
 function Leaderboard() {
   // Mock data for leaderboard
 
-  const leaderboardUrl = 'http://localhost:3000/leaderboard';
+  const leaderboardUrl = 'http://localhost:3000/api/home/leaderboard';
   // const { leaderboardData, isLoading, error } = useFetch(leaderboardUrl);
   const [leaderboardData, setLeaderboarData] = useState([]);
   useEffect(() => {

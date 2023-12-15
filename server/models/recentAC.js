@@ -10,4 +10,4 @@ const RecentACSchema = new mongoose.Schema({
     }
 });
 
-module.exports = mongoose.model("LC_recentAC", RecentACSchema)
+module.exports = mongoose.model("lc_recentAC", RecentACSchema)
