@@ -36,6 +36,8 @@ npm start
 ```
 Verify initiation successfully: [localhost:3001](http://localhost:3001)
 
+**Notes** (populating db, if you haven't done so): please check out: `server/scripts/README.md`.
+
 **Notes** (on Ports): I added `PORT` environment variable in the `start` script for the front-end. If it works, you can start both modules in any order. But in case it doesn't (usually, causing the back-end can't start), you should stop any process on port 3000, and start the back-end first, before starting the front-end.
 
 **Notes** (dev only): If front-end is fetching mock data, open a new terminal and run mock data server with `json-server --watch --no-cors ./mock-data/data.json`.

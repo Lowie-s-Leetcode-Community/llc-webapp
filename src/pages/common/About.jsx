@@ -1,6 +1,6 @@
 import React from 'react';
 
-import CustomContainer from '../components/CustomContainer';
+import CustomContainer from '../../components/CustomContainer';
 
 function About() {
   return (

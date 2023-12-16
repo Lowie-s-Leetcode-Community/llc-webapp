@@ -3,12 +3,12 @@ import {
   CircularProgress, Grid, Typography,
 } from '@mui/material';
 // import useFetch from '../hooks/useFetch';
-import CustomContainer from '../components/CustomContainer';
-import CustomGridItem from '../components/CustomGridItem';
+import CustomContainer from '../../components/CustomContainer';
+import CustomGridItem from '../../components/CustomGridItem';
 
 function Missions() {
   // Mock mission data
-  const MISSIONS_API = 'http://localhost:3000/missions';
+  const MISSIONS_API = 'http://localhost:3000/api/missions/';
   // eslint-disable-next-line no-unused-vars
   // const { missions, isLoading, error } = useFetch(MISSIONS_API);
   const [missions, setMissions] = useState([]);

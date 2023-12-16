@@ -5,8 +5,8 @@ import {
 import { EmojiEvents } from '@mui/icons-material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PropTypes from 'prop-types';
-import CustomList from '../components/CustomList';
-import CustomGridItem from '../components/CustomGridItem';
+import CustomList from '../../components/CustomList';
+import CustomGridItem from '../../components/CustomGridItem';
 
 function Profile() {
   const [selectedTab, setSelectedTab] = useState('allAwardsTab');
@@ -77,7 +77,7 @@ MainContent.propTypes = {
 };
 
 function AllAwards() {
-  const AWARDS_API = 'http://localhost:3000/awards';
+  const AWARDS_API = 'http://localhost:3000/api/profile/awards';
   const [awards, setAwards] = useState([]);
 
   useEffect(() => {
@@ -102,7 +102,7 @@ function AllAwards() {
 
 function RecentACList() {
   // Mock data for Recent AC list
-  const RECENT_AC_API = 'http://localhost:3000/recentAC';
+  const RECENT_AC_API = 'http://localhost:3000/api/profile/recentAC';
   const [recentACData, setRecentACData] = useState([]);
 
   useEffect(() => {
