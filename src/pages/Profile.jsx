@@ -61,14 +61,17 @@ Sidebar.propTypes = {
 
 function MainContent({ selectedTab }) {
   return (
-    <div style={{ flexGrow: 1, padding: '24px', backgroundColor: '#f5f5f5' }}>
+    <Box sx={{
+      flexGrow: 1, padding: '24px',
+    }}
+    >
       {selectedTab === 'allAwardsTab' && (
         <AllAwards />
       )}
       {selectedTab === 'recentACTab' && (
         <RecentACList />
       )}
-    </div>
+    </Box>
   );
 }
 
@@ -92,7 +95,8 @@ function AllAwards() {
   return (
     <Grid container spacing={3}>
       {awards.map((award) => (
-        <CustomGridItem key={award.id} id={award.id}>
+        // eslint-disable-next-line dot-notation
+        <CustomGridItem key={award['_id']} id={award['_id']}>
           <Typography variant="h6">{award.title}</Typography>
         </CustomGridItem>
       ))}

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import {
-  CircularProgress, Grid, Typography,
+  CircularProgress, Grid, Typography, Box,
 } from '@mui/material';
 // import useFetch from '../hooks/useFetch';
-import CustomContainer from '../components/CustomContainer';
 import CustomGridItem from '../components/CustomGridItem';
 
 function Missions() {
@@ -25,10 +24,11 @@ function Missions() {
   return (
     <>
       <h3>username&apos;s missions</h3>
-      <CustomContainer>
+      <Box>
         <Grid container spacing={3}>
           {missions.map((mission) => (
-            <CustomGridItem key={mission.id} id={mission.id} itemRoute={mission.route}>
+            // eslint-disable-next-line dot-notation
+            <CustomGridItem key={mission['_id']} id={mission['_id']} itemRoute={mission.route}>
               <Typography variant="h6" sx={{ mb: 1 }}>
                 {mission.name}
               </Typography>
@@ -36,7 +36,7 @@ function Missions() {
             </CustomGridItem>
           ))}
         </Grid>
-      </CustomContainer>
+      </Box>
     </>
 
   );

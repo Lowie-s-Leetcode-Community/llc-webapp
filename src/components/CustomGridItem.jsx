@@ -48,7 +48,7 @@ function CustomGridItem({ id, itemRoute = '#', children }) {
 }
 
 CustomGridItem.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   itemRoute: PropTypes.string,
 };

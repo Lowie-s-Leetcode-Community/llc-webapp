@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Card,
   Grid,
 } from '@mui/material';
 // import useFetch from '../hooks/useFetch';
+import { useTheme } from '@emotion/react';
 import CustomList from '../components/CustomList';
 import { CustomCard } from '../components/CustomCard';
 
@@ -55,15 +57,20 @@ function Leaderboard() {
       });
   }, []);
 
+  const theme = useTheme();
+
   return (
-    <>
+    <Card sx={{
+      borderRadius: theme.shape.borderRadius, boxShadow: theme.customShadows.light, padding: theme.spacing(2), textAlign: 'center', backgroundColor: theme.palette.background.card, marginTop: theme.spacing(2),
+    }}
+    >
       {/* {isLoading && <div>Loading....</div>}
       {error && <div>{error}</div>} */}
 
       {leaderboardData && (
         <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="aced" secondaryTitle="Aced" />
       )}
-    </>
+    </Card>
   );
 }
 

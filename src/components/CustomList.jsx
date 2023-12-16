@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  List, ListItem, ListItemText, useTheme, Pagination, Card, Grid,
+  List, ListItem, ListItemText, useTheme, Pagination, Grid,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -16,10 +16,7 @@ function CustomList({
   };
 
   return (
-    <Card sx={{
-      borderRadius: theme.shape.borderRadius, boxShadow: theme.customShadows.light, padding: theme.spacing(2), textAlign: 'center', backgroundColor: theme.palette.background.card, marginTop: theme.spacing(2),
-    }}
-    >
+    <>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <h4 style={{ margin: theme.spacing(2), textAlign: 'left' }}>{title}</h4>
@@ -52,7 +49,7 @@ function CustomList({
         page={page}
         onChange={handleChangePage}
       />
-    </Card>
+    </>
   );
 }
 
