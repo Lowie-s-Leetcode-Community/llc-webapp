@@ -9,7 +9,7 @@ require('dotenv').config();
 async function generateAccessToken(username) {
   return jwt.sign({
     username,
-  }, process.env.TOKEN_SECRET, { expiresIn: 60 * 60 * 60 * 24 * 30 });
+  }, process.env.TOKEN_SECRET);
 }
 
 router.get('/discord/login', (req, res) => {
@@ -20,7 +20,6 @@ router.get('/discord/login', (req, res) => {
 
 router.post('/discord/callback', async (request, response) => {
   const { code } = request.body;
-  console.log(code)
   const params = new URLSearchParams({
     client_id: process.env.DISCORD_CLIENT_ID,
     client_secret: process.env.DISCORD_CLIENT_SECRET,
@@ -45,25 +44,15 @@ router.post('/discord/callback', async (request, response) => {
     // eslint-disable-next-line camelcase
     const { access_token } = res.data;
 
-    // const userResponse = await axios.get('https://discord.com/api/users/@me', {
-    //   headers: {
-    //     Authorization: `Bearer ${access_token}`,
-    //     ...headers,
-    //   },
-    // });
-
-    const discordRoleAPI = `/users/@me/guilds/${process.env.DISCORD_GUILD_ID}/member`;
-
-    const userInfo = await axios.get(`https://discord.com/api${discordRoleAPI}`, {
+    const userResponse = await axios.get('https://discord.com/api/users/@me', {
       headers: {
         Authorization: `Bearer ${access_token}`,
         ...headers,
       },
     });
 
-    const token = await generateAccessToken({username: userInfo.data.user.username});
-    // console.log(token);
-    response.json({token, access_token, user: userInfo.data.user, roles: userInfo.data.roles});
+    const token = await generateAccessToken({user: userResponse.data.username});
+    response.json({token, access_token, user: userResponse.data.user});
   } catch (error) {
     console.log(error)
   }
