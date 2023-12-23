@@ -13,10 +13,6 @@ function Callback() {
         const response = await axios.post(`${process.env.REACT_APP_SERVER_API_URL}/api/auth/discord/callback`, { code });
         localStorage.clear();
         localStorage.setItem('token', response.data.token);
-
-        // TODO: Implement roles
-        // localStorage.setItem('roles', response.data.roles);
-
         if (isLoggedIn()) {
           navigate('/');
         }

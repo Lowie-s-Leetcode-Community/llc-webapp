@@ -54,7 +54,7 @@ router.post('/discord/callback', async (request, response) => {
     const token = await generateAccessToken({user: userResponse.data.username});
     response.json({token, access_token, user: userResponse.data.user});
   } catch (error) {
-    console.log(error)
+    response.status(400).json(error);
   }
 });
 
