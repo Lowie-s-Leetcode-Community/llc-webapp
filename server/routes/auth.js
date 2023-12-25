@@ -9,11 +9,11 @@ require('dotenv').config();
 async function generateAccessToken(username) {
   return jwt.sign({
     username,
-  }, process.env.TOKEN_SECRET, { expiresIn: 60 * 60 * 60 });
+  }, process.env.TOKEN_SECRET);
 }
 
 router.get('/discord/login', (req, res) => {
-  const url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.DISCORD_REDIRECT_URI}&response_type=code&scope=identify%20guilds`;
+  const url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&response_type=code&redirect_uri=${process.env.DISCORD_REDIRECT_URI}&scope=identify+guilds.members.read`;
 
   res.redirect(url);
 });
@@ -51,11 +51,10 @@ router.post('/discord/callback', async (request, response) => {
       },
     });
 
-    const token = await generateAccessToken(userResponse.data.username);
-    console.log(token);
-    response.send({ token });
+    const token = await generateAccessToken({user: userResponse.data.username});
+    response.json({token, access_token, user: userResponse.data.user});
   } catch (error) {
-    console.log(error);
+    response.status(400).json(error);
   }
 });
 

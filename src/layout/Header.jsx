@@ -11,21 +11,36 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import leetcodeLogo from '../assets/images/leetcode_logo.png';
-
-const pages = ['Dashboard', 'Missions', 'About'];
-const routes = ['/', '/missions', '/about'];
-const settings = ['Profile', 'Logout'];
-const settingRoutes = ['/profile', '/logout'];
+import { isLoggedIn } from '../utils/authUtils';
 
 function Header() {
+  const navigate = useNavigate();
+  const userLoggedIn = isLoggedIn();
+
+  // Default navigation menu items for guest users
+  let pages = ['Home', 'About'];
+  let routes = ['/', '/about'];
+  let settings = [];
+  let settingRoutes = [];
+
+  // Navigation menu items for logged in users (members)
+  if (userLoggedIn) {
+    pages = ['Dashboard', 'Missions', 'About'];
+    routes = ['/', '/missions', '/about'];
+    settings = ['Profile'];
+    settingRoutes = ['/profile'];
+  }
+
+  // UI states for navigation menu
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [anchorElUser, setAnchorElUser] = React.useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
@@ -36,6 +51,12 @@ function Header() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+  // Handle logout (remove token from local storage)
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
   };
 
   return (
@@ -133,41 +154,58 @@ function Header() {
 
           {/* Avatar */}
           <Box sx={{ flexGrow: 0 }}>
-            {/* Avatar Button */}
-            <Tooltip title="username">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="User Avatar" />
-              </IconButton>
-            </Tooltip>
+            {userLoggedIn ? (
+              <>
+                {/* Avatar Button */}
+                <Tooltip title="username">
+                  <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                    <Avatar alt="User Avatar" />
+                  </IconButton>
+                </Tooltip>
 
-            {/* Avatar Menu */}
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting, index) => (
-                <MenuItem
-                  key={setting}
-                  onClick={handleCloseUserMenu}
-                  component={Link}
-                  to={settingRoutes[index]}
+                {/* Avatar Menu */}
+                <Menu
+                  sx={{ mt: '45px' }}
+                  id="menu-appbar"
+                  anchorEl={anchorElUser}
+                  anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  keepMounted
+                  transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                  }}
+                  open={Boolean(anchorElUser)}
+                  onClose={handleCloseUserMenu}
                 >
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+                  {settings.map((setting, index) => (
+                    <MenuItem
+                      key={setting}
+                      onClick={handleCloseUserMenu}
+                      component={Link}
+                      to={settingRoutes[index]}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  ))}
+                  <MenuItem
+                    key="logout"
+                    onClick={handleLogout}
+                  >
+                    <Typography textAlign="center">Log out</Typography>
+                  </MenuItem>
+                </Menu>
+              </>
+            ) : (
+              <Button
+                onClick={() => navigate('/login')}
+                sx={{ my: 2, color: 'inherit', display: 'block' }}
+              >
+                Log in
+              </Button>
+            )}
           </Box>
         </Toolbar>
       </Container>
