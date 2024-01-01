@@ -1,22 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
-  Grid, Typography, Button, useTheme, Card, Avatar, 
-  List, ListItemAvatar, ListItemText, ListItemButton, Box,
+  Grid, Typography, Button, useTheme, Card, Box,
+  List, ListItem, ListItemAvatar, ListItemText, ListItemButton,
 } from '@mui/material';
-import { EmojiEvents } from '@mui/icons-material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-
-import PropTypes from 'prop-types';
-import CustomList from '../../components/CustomList';
-import CustomGridItem from '../../components/CustomGridItem';
-
-
+import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 
 // mock mission detail function
 function mockMission(missionRoute) {
-  function randomData(a, b) {
-    return Math.random() < 0.5 ? a : b;
+  function randomData(...items) {
+    const randomIndex = Math.floor(Math.random() * items.length);
+    return items[randomIndex];
   }
 
   function randomLink() {
@@ -26,36 +21,22 @@ function mockMission(missionRoute) {
     )
   }
 
+  function randomProblem(index) {
+    return {
+      name: 'Name ' + index,
+      link: randomLink(),
+      difficulty: randomData('Easy', 'Medium', 'Hard'),
+      aced: randomData(true, false),
+    };
+  }
+
   return {
     name: missionRoute.toUpperCase(),
     desc: 'A short description of the mission ' + Math.random(),
     type: randomData('Shown', 'Hidden'),
-    problemList: [
-      {
-        id: 1,
-        name: 'Name 1',
-        link: randomLink(),
-        difficulty: randomData('Easy', 'Not Easy'),
-        aced: randomData(true, false),
-      },
-      {
-        id: 2,
-        name: 'Name 2',
-        link: randomLink(),
-        difficulty: randomData('Easy', 'Not Easy'),
-        aced: randomData(true, false),
-      },
-      {
-        id: 3,
-        name: 'Name 3',
-        link: randomLink(),
-        difficulty: randomData('Easy', 'Not Easy'),
-        aced: randomData(true, false),
-      }
-    ],
+    problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
   };
 }
-
 
 function MissionDetail() {
   const { missionRoute } = useParams();
@@ -77,7 +58,7 @@ function MissionDetail() {
         <>
           {/* Back button */}
           <Button
-            color='text'
+            color="text"
             component={Link}
             to={missionListLink}
             variant="text"
@@ -93,14 +74,14 @@ function MissionDetail() {
           </Button>
 
           {/* Mission name */}
-          <Typography variant="h3" sx={{ marginTop: '14px', marginBottom: '14px', fontSize: '33px', fontWeight: 'bold'}}>
+          <Typography variant="h3" sx={{ marginTop: '14px', marginBottom: '14px', fontSize: '33px', fontWeight: 'bold' }}>
             {missionDetail.name}
           </Typography>
 
           {/* Mission overview */}
           <Box display="flex" alignItems="left">
-            <TotalAced problemList={missionDetail.problemList}/>
-            <ProblemType problemType={missionDetail.type}/>
+            <TotalAced problemList={missionDetail.problemList} />
+            <MissionType missionType={missionDetail.type} />
           </Box>
 
           {/* Mission description */}
@@ -111,19 +92,17 @@ function MissionDetail() {
             textAlign: 'justify',
             backgroundColor: theme.palette.background.card,
             marginTop: theme.spacing(2),
+            marginBottom: theme.spacing(2),
           }}
           >
             {missionDetail.desc}
           </Card>
 
           {/* Mission problem list */}
-          <CustomList
-            data={missionDetail.problemList}
-            primaryData="name"
-            secondaryData="difficulty"
+          <ProblemList
+            problemList={missionDetail.problemList}
+            missionType={missionDetail.type}
           />
-          {/* TODO: <ProblemList problemList={missionDetail.problemList} /> */}
-
         </>
       ) : (
         <p>Loading...</p>
@@ -136,62 +115,72 @@ function TotalAced({ problemList }) {
   return (
     <>
       <Typography variant="subtitle2" sx={{ marginRight: '12px' }}>
-      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Aced</span>  {problemList.filter(problem => problem.aced).length}/{problemList.length}
-    </Typography>
-    </>
-  );
-}
-
-function ProblemType({ problemType }) {
-  return (
-    <>
-      <Typography variant="subtitle2" sx={{ marginLeft: '12px' }}>
-        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Type</span>  {problemType}
+        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Aced</span>
+        {problemList.filter(problem => problem.aced).length}/{problemList.length}
       </Typography>
     </>
   );
 }
 
-function ProblemList({ problemList }) {
-  // TODO: Implement Problem list, currently just a copy-paste.
+function MissionType({ missionType }) {
   return (
-    <Card sx={{
-      borderRadius: theme.shape.borderRadius, boxShadow: theme.customShadows.light, padding: theme.spacing(2), textAlign: 'center', backgroundColor: theme.palette.background.card, marginTop: theme.spacing(2),
-    }}
-    >
-      <Grid container justifyContent="space-between" alignItems="center">
-        <Grid item>
-          <h4 style={{ margin: theme.spacing(2), textAlign: 'left' }}>{title}</h4>
-        </Grid>
-        <Grid item>
-          <h4 style={{ margin: theme.spacing(2), textAlign: 'right' }}>
-            {totalTitle}
-            {': '}
-            {data.length}
-          </h4>
-        </Grid>
-      </Grid>
-      <List>
-        {data.slice((page - 1) * paginationCount, page * paginationCount).map((item, index) => (
+    <>
+      <Typography variant="subtitle2" sx={{ marginLeft: '12px' }}>
+        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Type</span>
+        {missionType}
+      </Typography>
+    </>
+  );
+}
+
+function ProblemList({ problemList, missionType }) {
+  // TODO: Continue implementing Problem list
+  const acedProblemBackgroundColor = '#ECFDF5';
+  const listIndexColor = '#4B5563';
+  // '#1BBE0A' for Easy problem.
+
+  const primaryTextForHiddenProblem = 'Hidden Problem';
+  const secondaryTextForHiddenProblem = <VisibilityOffIcon fontSize="small" />;
+
+  return (
+    <List>
+      {problemList.map((problem, index) => {
+        // This bugs me.
+        // It's unoptimized but I don't know how to only check missionType only once.
+        const primaryText = missionType === 'Hidden' && !problem.aced
+          ? primaryTextForHiddenProblem : problem.name;
+        const secondaryText = missionType === 'Hidden' && !problem.aced
+          ? secondaryTextForHiddenProblem : problem.name;
+
+        return (
           <ListItem
-            key={item.id}
+            key={problem.id}
             sx={{
-              borderRadius: theme.shape.borderRadius,
-              backgroundColor: index % 2 === 0 ? theme.palette.grey[200]
+              backgroundColor: problem.aced ? acedProblemBackgroundColor
                 : 'transparent',
-              margin: theme.spacing(1),
+              border: '1px solid #ddd',
             }}
           >
-            <ListItemText primary={item[primaryData]} secondary={`${secondaryTitle} ${item[secondaryData]}`} />
+            {/* list index */}
+            <Typography
+              variant="h6"
+              sx={{
+                marginTop: '15px',
+                marginBottom: '15px',
+                marginLeft: '30px',
+                marginRight: '47px',
+                color: listIndexColor,
+              }}
+            >
+              {index + 1}
+            </Typography>
+
+            {/* Problem */}
+            <ListItemText primary={primaryText} secondary={secondaryText} />
           </ListItem>
-        ))}
-      </List>
-      <Pagination
-        count={Math.ceil(data.length / paginationCount)}
-        page={page}
-        onChange={handleChangePage}
-      />
-    </Card>
+        );
+      })}
+    </List>
   );
 }
 
