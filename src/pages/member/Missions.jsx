@@ -4,12 +4,12 @@ import {
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 // import useFetch from '../hooks/useFetch';
-import CustomContainer from '../components/CustomContainer';
-import CustomGridItem from '../components/CustomGridItem';
+import CustomContainer from '../../components/CustomContainer';
+import CustomGridItem from '../../components/CustomGridItem';
 
 function Missions() {
   // Mock mission data
-  const MISSIONS_API = 'http://localhost:3000/missions';
+  // const MISSIONS_API = 'http://localhost:3000/missions';
   // eslint-disable-next-line no-unused-vars
   // const { missions, isLoading, error } = useFetch(MISSIONS_API);
   const [missions, setMissions] = useState([]);
@@ -56,7 +56,10 @@ function Missions() {
   return (
     <>
       <h3>
-        <span style={{ color: theme.palette.primary.main }}>Username</span>'s missions
+        <span style={{ color: theme.palette.primary.main }}>
+          Username
+        </span>
+        &apos;s missions
       </h3>
 
       <CustomContainer>

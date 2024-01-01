@@ -8,8 +8,8 @@ import { EmojiEvents } from '@mui/icons-material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import PropTypes from 'prop-types';
-import CustomList from '../components/CustomList';
-import CustomGridItem from '../components/CustomGridItem';
+import CustomList from '../../components/CustomList';
+import CustomGridItem from '../../components/CustomGridItem';
 
 
 
@@ -75,6 +75,7 @@ function MissionDetail() {
     <>
       {missionDetail ? (
         <>
+          {/* Back button */}
           <Button
             color='text'
             component={Link}
@@ -91,15 +92,18 @@ function MissionDetail() {
             </Typography>
           </Button>
 
+          {/* Mission name */}
           <Typography variant="h3" sx={{ marginTop: '14px', marginBottom: '14px', fontSize: '33px', fontWeight: 'bold'}}>
             {missionDetail.name}
           </Typography>
 
+          {/* Mission overview */}
           <Box display="flex" alignItems="left">
             <TotalAced problemList={missionDetail.problemList}/>
             <ProblemType problemType={missionDetail.type}/>
           </Box>
-          
+
+          {/* Mission description */}
           <Card sx={{
             borderRadius: theme.shape.borderRadius,
             boxShadow: theme.customShadows.light,
@@ -112,6 +116,7 @@ function MissionDetail() {
             {missionDetail.desc}
           </Card>
 
+          {/* Mission problem list */}
           <CustomList
             data={missionDetail.problemList}
             primaryData="name"
