@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import {
-  Grid, Typography, Button, useTheme, Card, Box,
-  List, ListItem, ListItemAvatar, ListItemText, ListItemButton,
+  Typography, Button, useTheme, Card, Box,
+  List, ListItem, ListItemText,
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
@@ -17,13 +17,13 @@ function mockMission(missionRoute) {
   function randomLink() {
     return randomData(
       'https://leetcode.com/problems/sqrtx/',
-      'https://leetcode.com/problems/maximum-69-number/'
-    )
+      'https://leetcode.com/problems/maximum-69-number/',
+    );
   }
 
   function randomProblem(index) {
     return {
-      name: 'Name ' + index,
+      name: `Name ${index} ${Math.random()}`,
       link: randomLink(),
       difficulty: randomData('Easy', 'Medium', 'Hard'),
       aced: randomData(true, false),
@@ -32,7 +32,7 @@ function mockMission(missionRoute) {
 
   return {
     name: missionRoute.toUpperCase(),
-    desc: 'A short description of the mission ' + Math.random(),
+    desc: `A short description of the mission ${Math.random()}`,
     type: randomData('Shown', 'Hidden'),
     problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
   };
@@ -113,23 +113,19 @@ function MissionDetail() {
 
 function TotalAced({ problemList }) {
   return (
-    <>
-      <Typography variant="subtitle2" sx={{ marginRight: '12px' }}>
-        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Aced</span>
-        {problemList.filter(problem => problem.aced).length}/{problemList.length}
-      </Typography>
-    </>
+    <Typography variant="subtitle2" sx={{ marginRight: '12px' }}>
+      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Aced</span>
+      {problemList.filter(problem => problem.aced).length}/{problemList.length}
+    </Typography>
   );
 }
 
 function MissionType({ missionType }) {
   return (
-    <>
-      <Typography variant="subtitle2" sx={{ marginLeft: '12px' }}>
-        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Type</span>
-        {missionType}
-      </Typography>
-    </>
+    <Typography variant="subtitle2" sx={{ marginLeft: '12px' }}>
+      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Type</span>
+      {missionType}
+    </Typography>
   );
 }
 
@@ -137,6 +133,7 @@ function ProblemList({ problemList, missionType }) {
   // TODO: Continue implementing Problem list
   const acedProblemBackgroundColor = '#ECFDF5';
   const listIndexColor = '#4B5563';
+  const shownProblemColor = '#5D52E6';
   // '#1BBE0A' for Easy problem.
 
   const primaryTextForHiddenProblem = 'Hidden Problem';
@@ -146,14 +143,33 @@ function ProblemList({ problemList, missionType }) {
     <List>
       {problemList.map((problem, index) => {
         // This bugs me.
-        // It's unoptimized but I don't know how to only check missionType only once.
-        const primaryText = missionType === 'Hidden' && !problem.aced
+        // It's unoptimized but I don't know how to only check only once.
+        const isHiddenProblem = missionType === 'Hidden' && !problem.aced;
+
+        const primaryText = isHiddenProblem
           ? primaryTextForHiddenProblem : problem.name;
-        const secondaryText = missionType === 'Hidden' && !problem.aced
-          ? secondaryTextForHiddenProblem : problem.name;
+        const secondaryText = isHiddenProblem
+          ? secondaryTextForHiddenProblem : problem.difficulty;
+
+        const primaryColor = isHiddenProblem
+          ? 'black' : shownProblemColor;
+        const secondaryColor = isHiddenProblem
+          ? 'grey' : '#1BBE0A'; // Color for the easy problem, will add more colors later.
+
+        const primaryFontWeight = isHiddenProblem
+          ? 'normal' : 'bold';
+
+        const component = isHiddenProblem
+          ? null : Link;
+        const url = isHiddenProblem
+          ? null : problem.link;
 
         return (
           <ListItem
+            component={component}
+            to={url}
+            arget="_blank"
+            rel="noopener noreferrer"
             key={problem.id}
             sx={{
               backgroundColor: problem.aced ? acedProblemBackgroundColor
@@ -176,7 +192,19 @@ function ProblemList({ problemList, missionType }) {
             </Typography>
 
             {/* Problem */}
-            <ListItemText primary={primaryText} secondary={secondaryText} />
+            <ListItemText
+              primary={primaryText}
+              secondary={secondaryText}
+              sx={{
+                '& .MuiListItemText-primary': {
+                  color: primaryColor,
+                  fontWeight: primaryFontWeight,
+                },
+                '& .MuiListItemText-secondary': {
+                  color: secondaryColor,
+                },
+              }}
+            />
           </ListItem>
         );
       })}
