@@ -6,6 +6,7 @@ import {
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import PropTypes from 'prop-types';
 
 // mock mission detail function
 function mockMission(missionRoute) {
@@ -14,17 +15,13 @@ function mockMission(missionRoute) {
     return items[randomIndex];
   }
 
-  function randomLink() {
-    return randomData(
-      'https://leetcode.com/problems/sqrtx/',
-      'https://leetcode.com/problems/maximum-69-number/',
-    );
-  }
-
   function randomProblem(index) {
+    const link = index % 2 === 0
+      ? 'https://leetcode.com/problems/sqrtx/'
+      : 'https://leetcode.com/problems/maximum-69-number/';
     return {
       name: `Name ${index} ${Math.random()}`,
-      link: randomLink(),
+      link,
       difficulty: randomData('Easy', 'Medium', 'Hard'),
       aced: randomData(true, false),
     };
@@ -37,12 +34,10 @@ function mockMission(missionRoute) {
     problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
   };
 }
+// end of mock mission detail function
 
 function MissionDetail() {
   const { missionRoute } = useParams();
-
-  const MISSION_API = 'http://localhost:3000/mission/';
-
   const [missionDetail, setMissionDetail] = useState(null);
 
   useEffect(() => {
@@ -74,14 +69,19 @@ function MissionDetail() {
           </Button>
 
           {/* Mission name */}
-          <Typography variant="h3" sx={{ marginTop: '14px', marginBottom: '14px', fontSize: '33px', fontWeight: 'bold' }}>
+          <Typography
+            variant="h3"
+            sx={{
+              marginTop: '14px', marginBottom: '14px', fontSize: '33px', fontWeight: 'bold',
+            }}
+          >
             {missionDetail.name}
           </Typography>
 
           {/* Mission overview */}
           <Box display="flex" alignItems="left">
-            <TotalAced problemList={missionDetail.problemList} />
-            <MissionType missionType={missionDetail.type} />
+            <LabelValueTypography label="Aced" value={`${missionDetail.problemList.filter((problem) => problem.aced).length}/${missionDetail.problemList.length}`} />
+            <LabelValueTypography label="Type" value={missionDetail.type} />
           </Box>
 
           {/* Mission description */}
@@ -111,30 +111,33 @@ function MissionDetail() {
   );
 }
 
-function TotalAced({ problemList }) {
+function LabelValueTypography({ label, value }) {
   return (
-    <Typography variant="subtitle2" sx={{ marginRight: '12px' }}>
-      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Aced</span>
-      {problemList.filter(problem => problem.aced).length}/{problemList.length}
-    </Typography>
-  );
-}
-
-function MissionType({ missionType }) {
-  return (
-    <Typography variant="subtitle2" sx={{ marginLeft: '12px' }}>
-      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>Type</span>
-      {missionType}
+    <Typography variant="subtitle2" sx={{ marginRight: '24px' }}>
+      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{label}</span>
+      {value}
     </Typography>
   );
 }
 
 function ProblemList({ problemList, missionType }) {
-  // TODO: Continue implementing Problem list
+  // TODO: Continue implementing future features for Problem list
   const acedProblemBackgroundColor = '#ECFDF5';
   const listIndexColor = '#4B5563';
   const shownProblemColor = '#5D52E6';
-  // '#1BBE0A' for Easy problem.
+  // '#00AF9B', '#FFB800', '#FF2D55'
+  function getDifficultyColor(difficulty) {
+    switch (difficulty) {
+      case 'Easy':
+        return '#00AF9B';
+      case 'Medium':
+        return '#FFB800';
+      case 'Hard':
+        return '#FF2D55';
+      default:
+        return 'grey';
+    }
+  }
 
   const primaryTextForHiddenProblem = 'Hidden Problem';
   const secondaryTextForHiddenProblem = <VisibilityOffIcon fontSize="small" />;
@@ -143,7 +146,7 @@ function ProblemList({ problemList, missionType }) {
     <List>
       {problemList.map((problem, index) => {
         // This bugs me.
-        // It's unoptimized but I don't know how to only check only once.
+        // It's really unoptimized but I don't know how to only check only once.
         const isHiddenProblem = missionType === 'Hidden' && !problem.aced;
 
         const primaryText = isHiddenProblem
@@ -154,7 +157,7 @@ function ProblemList({ problemList, missionType }) {
         const primaryColor = isHiddenProblem
           ? 'black' : shownProblemColor;
         const secondaryColor = isHiddenProblem
-          ? 'grey' : '#1BBE0A'; // Color for the easy problem, will add more colors later.
+          ? 'grey' : getDifficultyColor(problem.difficulty);
 
         const primaryFontWeight = isHiddenProblem
           ? 'normal' : 'bold';
@@ -168,7 +171,7 @@ function ProblemList({ problemList, missionType }) {
           <ListItem
             component={component}
             to={url}
-            arget="_blank"
+            target="_blank"
             rel="noopener noreferrer"
             key={problem.id}
             sx={{
@@ -211,5 +214,15 @@ function ProblemList({ problemList, missionType }) {
     </List>
   );
 }
+
+ProblemList.propTypes = {
+  problemList: PropTypes.isRequired,
+  missionType: PropTypes.string.isRequired,
+};
+
+LabelValueTypography.propTypes = {
+  label: PropTypes.string.isRequired,
+  value: PropTypes.string.isRequired,
+};
 
 export default MissionDetail;
