@@ -121,11 +121,9 @@ function LabelValueTypography({ label, value }) {
 }
 
 function ProblemList({ problemList, missionType }) {
-  // TODO: Continue implementing future features for Problem list
   const acedProblemBackgroundColor = '#ECFDF5';
   const listIndexColor = '#4B5563';
   const shownProblemColor = '#5D52E6';
-  // '#00AF9B', '#FFB800', '#FF2D55'
   function getDifficultyColor(difficulty) {
     switch (difficulty) {
       case 'Easy':
