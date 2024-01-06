@@ -7,53 +7,25 @@ import { useTheme } from '@mui/material/styles';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
-// import useFetch from '../hooks/useFetch';
 import PropTypes from 'prop-types';
 import CustomContainer from '../../components/CustomContainer';
 
 function Missions() {
-  // const MISSIONS_API = 'http://localhost:3000/missions';
-  // eslint-disable-next-line no-unused-vars
-  // const { missions, isLoading, error } = useFetch(MISSIONS_API);
+  const MISSIONS_API = `http://localhost:3000/api/missions/`;
   const [missions, setMissions] = useState([]);
 
-  // Mock mission data
-  const mockMissions = [
-    {
-      id: 1,
-      name: 'mission-progress-20',
-      progress: 20,
-      route: 'mission-progress-20',
-    },
-    {
-      id: 2,
-      name: 'mission-progress-60',
-      progress: 60,
-      route: 'mission-progress-60',
-    },
-    {
-      id: 3,
-      name: 'mission-progress-80.99',
-      progress: 80.99,
-      route: 'mission-progress-80.99',
-    },
-    {
-      id: 4,
-      name: 'mission-progress-10',
-      progress: 10,
-      route: 'mission-progress-10',
-    },
-    {
-      id: 5,
-      name: 'mission-progress-100',
-      progress: 100,
-      route: 'mission-progress-100',
-    },
-  ];
-
   useEffect(() => {
-    setMissions(mockMissions.slice().sort((a, b) => a.progress <= b.progress));
+    fetch(MISSIONS_API)
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Received data:", data);
+        setMissions(data.slice().sort((a, b) => a.progress <= b.progress))
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
   }, []);
+  console.log("Missions:", missions);
 
   const theme = useTheme();
   return (
@@ -102,7 +74,7 @@ function Missions() {
             <MissionGridItem
               id={mission.id}
               missionProgress={mission.progress}
-              missionRoute={`/mission/${mission.route}`}
+              missionRoute={mission.route}
             >
               <Typography variant="h6" sx={{ mb: 1 }}>
                 {mission.name}

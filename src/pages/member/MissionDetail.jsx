@@ -9,42 +9,49 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import PropTypes from 'prop-types';
 
 // mock mission detail function
-function mockMission(missionRoute) {
-  function randomData(...items) {
-    const randomIndex = Math.floor(Math.random() * items.length);
-    return items[randomIndex];
-  }
+// function mockMission(missionRoute) {
+//   function randomData(...items) {
+//     const randomIndex = Math.floor(Math.random() * items.length);
+//     return items[randomIndex];
+//   }
 
-  function randomProblem(index) {
-    const link = index % 2 === 0
-      ? 'https://leetcode.com/problems/sqrtx/'
-      : 'https://leetcode.com/problems/maximum-69-number/';
-    return {
-      name: `Name ${index} ${Math.random()}`,
-      link,
-      difficulty: randomData('Easy', 'Medium', 'Hard'),
-      aced: randomData(true, false),
-    };
-  }
+//   function randomProblem(index) {
+//     const link = index % 2 === 0
+//       ? 'https://leetcode.com/problems/sqrtx/'
+//       : 'https://leetcode.com/problems/maximum-69-number/';
+//     return {
+//       name: `Name ${index} ${Math.random()}`,
+//       link,
+//       difficulty: randomData('Easy', 'Medium', 'Hard'),
+//       aced: randomData(true, false),
+//     };
+//   }
 
-  return {
-    name: missionRoute.toUpperCase(),
-    desc: `A short description of the mission ${Math.random()}`,
-    type: randomData('Shown', 'Hidden'),
-    problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
-  };
-}
+//   return {
+//     name: missionRoute.toUpperCase(),
+//     description: `A short description of the mission ${Math.random()}`,
+//     type: randomData('Shown', 'Hidden'),
+//     problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
+//   };
+// }
 // end of mock mission detail function
 
 function MissionDetail() {
   const { missionRoute } = useParams();
   const [missionDetail, setMissionDetail] = useState(null);
 
-  useEffect(() => {
-    setMissionDetail(mockMission(missionRoute));
-  }, [missionRoute]);
+  const MISSION_DETAIL_API = `http://localhost:3000/api/missions/${missionRoute}`;
 
-  const missionListLink = '/missions';
+  useEffect(() => {
+    fetch(MISSION_DETAIL_API)
+      .then((response) => response.json())
+      .then((data) => setMissionDetail(data))
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }, []);
+
+  const missionListLink = '/missions'; // CHECK IF THIS STILL WORKS
   const theme = useTheme();
 
   return (
@@ -95,7 +102,7 @@ function MissionDetail() {
             marginBottom: theme.spacing(2),
           }}
           >
-            {missionDetail.desc}
+            {missionDetail.description}
           </Card>
 
           {/* Mission problem list */}

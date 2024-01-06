@@ -50,7 +50,7 @@ function RouterApp() {
       allowedRoles: ['member'],
     },
     {
-      path: '/mission/:missionRoute',
+      path: '/missions/:missionRoute',
       element: <MissionDetail />,
       allowedRoles: ['member'],
     },
