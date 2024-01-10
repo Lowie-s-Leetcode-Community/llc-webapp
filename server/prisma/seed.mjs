@@ -70,13 +70,13 @@ async function main() {
       await prisma.user.upsert({
         where: { id: id },
         update: {
-          mostRecentSubId: parseInt(recent_ac | -1),
+          mostRecentSubId: parseInt(recent_ac || -1),
         },
         create: {
           id: id,
           discordId: String(discord_id),
           leetcodeUsername: lc_username,
-          mostRecentSubId: parseInt(recent_ac | -1),
+          mostRecentSubId: parseInt(recent_ac || -1),
         }
       })
     })
