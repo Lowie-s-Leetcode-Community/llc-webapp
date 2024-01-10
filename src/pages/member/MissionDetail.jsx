@@ -21,6 +21,7 @@ function mockMission(missionRoute) {
       ? 'https://leetcode.com/problems/sqrtx/'
       : 'https://leetcode.com/problems/maximum-69-number/';
     return {
+      id: index,
       name: `Name ${index} ${Math.random()}`,
       link,
       difficulty: randomData('Easy', 'Medium', 'Hard'),
@@ -195,6 +196,7 @@ function ProblemList({ problemList, missionType }) {
           >
             {/* list index */}
             <Typography
+              key={`list-index-${problem.id}`}
               variant="h6"
               sx={{
                 marginTop: '15px',
@@ -207,8 +209,9 @@ function ProblemList({ problemList, missionType }) {
               {index + 1}
             </Typography>
 
-            {/* Problem */}
+            {/* Problem name and difficulty */}
             <ListItemText
+              key={`problem-info-${problem.id}`}
               primary={primaryText}
               secondary={secondaryText}
               sx={{
@@ -224,6 +227,7 @@ function ProblemList({ problemList, missionType }) {
 
             {/* Checkmark Icon */}
             <CheckCircleOutlineIcon
+              key={`checkmark-${problem.id}`}
               sx={{
                 position: 'absolute',
                 top: '50%',
@@ -239,8 +243,16 @@ function ProblemList({ problemList, missionType }) {
   );
 }
 
+const problemListShape = PropTypes.shape({
+  id: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  link: PropTypes.string.isRequired,
+  difficulty: PropTypes.string.isRequired,
+  aced: PropTypes.bool.isRequired,
+});
+
 ProblemList.propTypes = {
-  problemList: PropTypes.isRequired,
+  problemList: PropTypes.arrayOf(problemListShape).isRequired,
   missionType: PropTypes.string.isRequired,
 };
 

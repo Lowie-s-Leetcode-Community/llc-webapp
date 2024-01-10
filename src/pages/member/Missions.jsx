@@ -71,14 +71,16 @@ function Missions() {
           {missions.map((mission) => (
             <MissionGridItem
               id={mission.id}
+              key={`mission-grid-item-${mission.id}`}
               missionProgress={mission.progress}
               missionRoute={mission.route}
             >
-              <Typography variant="h6" sx={{ mb: 1 }}>
+              <Typography variant="h6" sx={{ mb: 1 }} key={`mission-name-${mission.id}`}>
                 {mission.name}
               </Typography>
               { mission.progress === 100 ? (
                 <CheckCircleOutlineIcon
+                  key={`mission-checkmark-${mission.id}`}
                   sx={{
                     fontSize: '2.25rem',
                     color: '#f8f4f4', // because theme.palette.background.main doesn't work, it returned black.
@@ -86,6 +88,7 @@ function Missions() {
                 />
               ) : (
                 <CircularProgress
+                  key={`mission-progress-${mission.id}`}
                   sx={{ width: '1.5rem', height: '1.5rem', color: theme.palette.accent.main }}
                   variant="determinate"
                   value={mission.progress}
@@ -99,7 +102,7 @@ function Missions() {
   );
 }
 
-function IconLabelValueTypography({ icon = '', label, value }) {
+function IconLabelValueTypography({ icon, label, value }) {
   return (
     <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'left' }}>
       {icon}
@@ -114,13 +117,14 @@ function IconLabelValueTypography({ icon = '', label, value }) {
 function MissionGridItem({
   id, missionProgress, missionRoute, children,
 }) {
-  // Near copy-paste of CustomGridItem in src/components
+  // CustomGridItem in src/components
+  //  but with dynamic background support
   const theme = useTheme();
   const backgroundColor = missionProgress === 100
     ? theme.palette.accent.main : theme.palette.background.main;
 
   return (
-    <Grid item xs={6} sm={4} md={3} key={id}>
+    <Grid item xs={6} sm={4} md={3} key={`mission-box-${id}`}>
       <Link to={missionRoute} style={{ textDecoration: 'none' }}>
         <Card
           sx={{
@@ -151,7 +155,7 @@ function MissionGridItem({
               width: '100%',
               height: '100%',
               padding: '10px',
-              backgroundColor, // the only change compared to CustomGridItem.
+              backgroundColor,
             }}
           >
             {children}
@@ -163,13 +167,9 @@ function MissionGridItem({
 }
 
 IconLabelValueTypography.propTypes = {
-  icon: PropTypes,
+  icon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
-};
-
-IconLabelValueTypography.defaultProps = {
-  icon: '',
 };
 
 MissionGridItem.propTypes = {
