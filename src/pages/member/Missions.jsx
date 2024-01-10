@@ -11,21 +11,19 @@ import PropTypes from 'prop-types';
 import CustomContainer from '../../components/CustomContainer';
 
 function Missions() {
-  const MISSIONS_API = `http://localhost:3000/api/missions/`;
+  const MISSIONS_API = 'http://localhost:3000/api/missions/';
   const [missions, setMissions] = useState([]);
 
   useEffect(() => {
     fetch(MISSIONS_API)
       .then((response) => response.json())
       .then((data) => {
-        console.log("Received data:", data);
-        setMissions(data.slice().sort((a, b) => a.progress <= b.progress))
+        setMissions(data.slice().sort((a, b) => a.progress <= b.progress));
       })
       .catch((error) => {
         throw new Error(error);
       });
   }, []);
-  console.log("Missions:", missions);
 
   const theme = useTheme();
   return (

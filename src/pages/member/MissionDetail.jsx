@@ -6,56 +6,62 @@ import {
 } from '@mui/material';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PropTypes from 'prop-types';
 
 // mock mission detail function
-// function mockMission(missionRoute) {
-//   function randomData(...items) {
-//     const randomIndex = Math.floor(Math.random() * items.length);
-//     return items[randomIndex];
-//   }
+function mockMission(missionRoute) {
+  function randomData(...items) {
+    const randomIndex = Math.floor(Math.random() * items.length);
+    return items[randomIndex];
+  }
 
-//   function randomProblem(index) {
-//     const link = index % 2 === 0
-//       ? 'https://leetcode.com/problems/sqrtx/'
-//       : 'https://leetcode.com/problems/maximum-69-number/';
-//     return {
-//       name: `Name ${index} ${Math.random()}`,
-//       link,
-//       difficulty: randomData('Easy', 'Medium', 'Hard'),
-//       aced: randomData(true, false),
-//     };
-//   }
+  function randomProblem(index) {
+    const link = index % 2 === 0
+      ? 'https://leetcode.com/problems/sqrtx/'
+      : 'https://leetcode.com/problems/maximum-69-number/';
+    return {
+      name: `Name ${index} ${Math.random()}`,
+      link,
+      difficulty: randomData('Easy', 'Medium', 'Hard'),
+      aced: randomData(true, false),
+    };
+  }
 
-//   return {
-//     name: missionRoute.toUpperCase(),
-//     description: `A short description of the mission ${Math.random()}`,
-//     type: randomData('Shown', 'Hidden'),
-//     problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
-//   };
-// }
+  return {
+    name: missionRoute.toUpperCase(),
+    desc: `A short description of the mission ${Math.random()}`,
+    type: randomData('Shown', 'Hidden'),
+    problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
+  };
+}
 // end of mock mission detail function
 
 function MissionDetail() {
   const { missionRoute } = useParams();
   const [missionDetail, setMissionDetail] = useState(null);
 
-  const MISSION_DETAIL_API = `http://localhost:3000/api/missions/${missionRoute}`;
+  // Uncomment this when data is taken from database
+  // const MISSION_DETAIL_API = `http://localhost:3000/api/missions/${missionRoute}`;
+
+  // useEffect(() => {
+  //   fetch(MISSION_DETAIL_API)
+  //     .then((response) => response.json())
+  //     .then((data) => setMissionDetail(data))
+  //     .catch((error) => {
+  //       throw new Error(error);
+  //     });
+  // }, []);
 
   useEffect(() => {
-    fetch(MISSION_DETAIL_API)
-      .then((response) => response.json())
-      .then((data) => setMissionDetail(data))
-      .catch((error) => {
-        throw new Error(error);
-      });
-  }, []);
+    setMissionDetail(mockMission(missionRoute));
+  }, [missionRoute]);
 
-  const missionListLink = '/missions'; // CHECK IF THIS STILL WORKS
+  const missionListLink = '/missions';
   const theme = useTheme();
 
   return (
-    <>
+    <div>
       {missionDetail ? (
         <>
           {/* Back button */}
@@ -102,7 +108,7 @@ function MissionDetail() {
             marginBottom: theme.spacing(2),
           }}
           >
-            {missionDetail.description}
+            {missionDetail.desc}
           </Card>
 
           {/* Mission problem list */}
@@ -114,7 +120,7 @@ function MissionDetail() {
       ) : (
         <p>Loading...</p>
       )}
-    </>
+    </div>
   );
 }
 
@@ -163,6 +169,8 @@ function ProblemList({ problemList, missionType }) {
           ? 'black' : shownProblemColor;
         const secondaryColor = isHiddenProblem
           ? 'grey' : getDifficultyColor(problem.difficulty);
+        const iconColor = !problem.aced
+          ? '#BEBEBE' : '#4CAF50';
 
         const primaryFontWeight = isHiddenProblem
           ? 'normal' : 'bold';
@@ -211,6 +219,17 @@ function ProblemList({ problemList, missionType }) {
                 '& .MuiListItemText-secondary': {
                   color: secondaryColor,
                 },
+              }}
+            />
+
+            {/* Checkmark Icon */}
+            <CheckCircleOutlineIcon
+              sx={{
+                position: 'absolute',
+                top: '50%',
+                right: '16px',
+                transform: 'translateY(-50%)',
+                color: iconColor,
               }}
             />
           </ListItem>
