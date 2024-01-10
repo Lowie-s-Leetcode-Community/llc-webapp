@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   List, ListItem, ListItemText, useTheme, Pagination, Grid,
+  Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
@@ -19,14 +20,14 @@ function CustomList({
     <>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <h4 style={{ margin: theme.spacing(2), textAlign: 'left' }}>{title}</h4>
+          <Typography variant="h6" style={{ margin: theme.spacing(2), textAlign: 'left' }}>{title}</Typography>
         </Grid>
         <Grid item>
-          <h4 style={{ margin: theme.spacing(2), textAlign: 'right' }}>
+          <Typography variant="h6" style={{ margin: theme.spacing(2), textAlign: 'right' }}>
             {totalTitle}
             {': '}
             {data.length}
-          </h4>
+          </Typography>
         </Grid>
       </Grid>
       <List>
