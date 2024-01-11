@@ -8,6 +8,7 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PropTypes from 'prop-types';
+import LabelValueTypography from './LabelValueTypography';
 
 // mock mission detail function
 function mockMission(missionRoute) {
@@ -74,7 +75,7 @@ function MissionDetail() {
             startIcon={<ArrowBackIosNewIcon />}
             sx={{ alignItems: 'center' }}
           >
-            <Typography variant="subtitle1" sx={{ marginTop: '7px' }}>
+            <Typography variant="subtitle1" sx={{ marginTop: '0.318rem' }}>
               B
               <span style={{ textTransform: 'lowercase' }}>
                 ack to mission list
@@ -86,7 +87,7 @@ function MissionDetail() {
           <Typography
             variant="h3"
             sx={{
-              marginTop: '14px', marginBottom: '14px', fontSize: '33px', fontWeight: 'bold',
+              marginTop: '0.636rem', marginBottom: '0.636rem', fontSize: '1.5rem', fontWeight: 'bold',
             }}
           >
             {missionDetail.name}
@@ -122,15 +123,6 @@ function MissionDetail() {
         <p>Loading...</p>
       )}
     </div>
-  );
-}
-
-function LabelValueTypography({ label, value }) {
-  return (
-    <Typography variant="subtitle2" sx={{ marginRight: '24px' }}>
-      <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{label}</span>
-      {value}
-    </Typography>
   );
 }
 
@@ -177,9 +169,9 @@ function ProblemList({ problemList, missionType }) {
           ? 'normal' : 'bold';
 
         const component = isHiddenProblem
-          ? null : Link;
+          ? 'div' : Link;
         const url = isHiddenProblem
-          ? null : problem.link;
+          ? '#' : problem.link;
 
         return (
           <ListItem
@@ -191,7 +183,7 @@ function ProblemList({ problemList, missionType }) {
             sx={{
               backgroundColor: problem.aced ? acedProblemBackgroundColor
                 : 'transparent',
-              border: '1px solid #ddd',
+              border: '0.05rem solid #ddd',
             }}
           >
             {/* list index */}
@@ -199,10 +191,10 @@ function ProblemList({ problemList, missionType }) {
               key={`list-index-${problem.id}`}
               variant="h6"
               sx={{
-                marginTop: '15px',
-                marginBottom: '15px',
-                marginLeft: '30px',
-                marginRight: '47px',
+                marginTop: '0.682rem',
+                marginBottom: '0.682rem',
+                marginLeft: '1.364rem',
+                marginRight: '2.136rem',
                 color: listIndexColor,
               }}
             >
@@ -231,7 +223,7 @@ function ProblemList({ problemList, missionType }) {
               sx={{
                 position: 'absolute',
                 top: '50%',
-                right: '16px',
+                right: '0.727rem',
                 transform: 'translateY(-50%)',
                 color: iconColor,
               }}
@@ -254,11 +246,6 @@ const problemListShape = PropTypes.shape({
 ProblemList.propTypes = {
   problemList: PropTypes.arrayOf(problemListShape).isRequired,
   missionType: PropTypes.string.isRequired,
-};
-
-LabelValueTypography.propTypes = {
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
 };
 
 export default MissionDetail;

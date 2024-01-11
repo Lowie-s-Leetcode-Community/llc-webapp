@@ -9,6 +9,7 @@ import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import PropTypes from 'prop-types';
 import CustomContainer from '../../components/CustomContainer';
+import IconLabelValueTypography from './IconLabelValueTypography';
 
 function Missions() {
   const MISSIONS_API = 'http://localhost:3000/api/missions/';
@@ -57,7 +58,7 @@ function Missions() {
             label="Aced"
             value={`${missions.filter((mission) => mission.progress === 100).length}/${missions.length}`}
           />
-          <div style={{ marginRight: '24px' }} />
+          <div style={{ marginRight: '1rem' }} />
           <IconLabelValueTypography
             icon={<MilitaryTechIcon sx={{ color: theme.palette.primary.main }} />}
             label="Rank"
@@ -102,18 +103,6 @@ function Missions() {
   );
 }
 
-function IconLabelValueTypography({ icon, label, value }) {
-  return (
-    <Box style={{ display: 'flex', flexDirection: 'row', alignItems: 'left' }}>
-      {icon}
-      <Typography variant="subtitle2">
-        <span style={{ fontWeight: 'bold', marginRight: '8px' }}>{label}</span>
-        {value}
-      </Typography>
-    </Box>
-  );
-}
-
 function MissionGridItem({
   id, missionProgress, missionRoute, children,
 }) {
@@ -133,7 +122,7 @@ function MissionGridItem({
             justifyContent: 'center',
             alignItems: 'center',
             cursor: 'pointer',
-            borderRadius: '10px',
+            borderRadius: '0.454rem',
             boxShadow: 1,
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
@@ -154,7 +143,7 @@ function MissionGridItem({
               alignItems: 'center',
               width: '100%',
               height: '100%',
-              padding: '10px',
+              padding: '0.454rem',
               backgroundColor,
             }}
           >
@@ -165,12 +154,6 @@ function MissionGridItem({
     </Grid>
   );
 }
-
-IconLabelValueTypography.propTypes = {
-  icon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
-  label: PropTypes.string.isRequired,
-  value: PropTypes.string.isRequired,
-};
 
 MissionGridItem.propTypes = {
   id: PropTypes.number.isRequired,
