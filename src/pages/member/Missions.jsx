@@ -12,7 +12,7 @@ import CustomContainer from '../../components/CustomContainer';
 import IconLabelValueTypography from './IconLabelValueTypography';
 
 function Missions() {
-  const MISSIONS_API = 'http://localhost:3000/api/missions/';
+  const MISSIONS_API = `${process.env.REACT_APP_SERVER_API_URL}/api/missions/`;
   const [missions, setMissions] = useState([]);
 
   useEffect(() => {

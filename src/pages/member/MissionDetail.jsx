@@ -44,7 +44,8 @@ function MissionDetail() {
   const [missionDetail, setMissionDetail] = useState(null);
 
   // Uncomment this when data is taken from database
-  // const MISSION_DETAIL_API = `http://localhost:3000/api/missions/${missionRoute}`;
+  // const MISSION_DETAIL_API = `${process.env.REACT_APP_SERVER_API_URL}
+  //   /api/missions/${missionRoute}`;
 
   // useEffect(() => {
   //   fetch(MISSION_DETAIL_API)
