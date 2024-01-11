@@ -23,7 +23,7 @@ function mockMission(missionRoute) {
       : 'https://leetcode.com/problems/maximum-69-number/';
     return {
       id: index,
-      name: `Name ${index} ${Math.random()}`,
+      name: `Problem No. ${index + 1} - ${Math.random().toFixed(Math.floor(Math.random() * 20) + 8)}`,
       link,
       difficulty: randomData('Easy', 'Medium', 'Hard'),
       aced: randomData(true, false),
@@ -31,7 +31,7 @@ function mockMission(missionRoute) {
   }
 
   return {
-    name: missionRoute.toUpperCase(),
+    name: `Mission ${missionRoute.toUpperCase()} - thiS tExT iS ranDOmlY CApiTAlIZeD.`,
     desc: `A short description of the mission ${Math.random()}`,
     type: randomData('Shown', 'Hidden'),
     problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
@@ -76,11 +76,8 @@ function MissionDetail() {
             startIcon={<ArrowBackIosNewIcon />}
             sx={{ alignItems: 'center' }}
           >
-            <Typography variant="subtitle1" sx={{ marginTop: '0.318rem' }}>
-              B
-              <span style={{ textTransform: 'lowercase' }}>
-                ack to mission list
-              </span>
+            <Typography sx={{ marginTop: '0.318rem', textTransform: 'none' }}>
+              Back to mission list
             </Typography>
           </Button>
 
@@ -88,7 +85,11 @@ function MissionDetail() {
           <Typography
             variant="h3"
             sx={{
-              marginTop: '0.636rem', marginBottom: '0.636rem', fontSize: '1.5rem', fontWeight: 'bold',
+              marginTop: '0.636rem',
+              marginBottom: '0.636rem',
+              fontSize: '1.5rem',
+              fontWeight: 'bold',
+              textTransform: 'none',
             }}
           >
             {missionDetail.name}
