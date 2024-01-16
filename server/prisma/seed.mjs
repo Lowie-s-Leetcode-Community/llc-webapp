@@ -48,7 +48,7 @@ async function main() {
       type: 'json'
     }
   })
-  Promise.all(
+  await Promise.all(
     topicsList.map(async topic => {
       const {id, topicName} = topic;
       await prisma.topic.upsert({
@@ -67,7 +67,7 @@ async function main() {
       type: 'json'
     }
   })
-  Promise.all(
+  await Promise.all(
     problemsList.map(async problem => {
       const { id, title,
         title_slug, difficulty, premium, topics } = problem;
@@ -99,7 +99,7 @@ async function main() {
       type: 'json'
     }
   })
-  Promise.all(
+  await Promise.all(
     usersList.map(async user => {
       const { id, lc_username, recent_ac, discord_id } = user;
       
@@ -124,7 +124,7 @@ async function main() {
       type: 'json'
     }
   })
-  Promise.all(
+  await Promise.all(
     userProblemsList.map(async userProblem => {
       const { id, problemId, userId } = userProblem;
       
