@@ -26,6 +26,7 @@ async function getUserIdFromDiscordId(discordId) {
 
 async function getUser(userId) {
     try {
+        userId = parseInt(userId);
         const user = await prisma.user.findUnique({
             where: { id: userId },
         });
@@ -40,6 +41,7 @@ async function getUser(userId) {
 // Get user's finished missions, rank in server, top 3 recent awards, favourite missions, and number of solved problems
 async function getUserStats(id) {
     try {
+        id = parseInt(id);
         const user = await prisma.user.findUnique({
             where: { id },
             include: {
@@ -107,8 +109,6 @@ async function getUserMissions(userId) {
             };
         });
 
-        console.log(userMissions)
-
         return userMissions;
     } catch (error) {
         console.log(error);
@@ -116,9 +116,10 @@ async function getUserMissions(userId) {
     }
 }
 
-// Get user's status of one mission
+// Get user's status of one mission (haven't tested)
 async function getUserMissionDetails(id, missionId) {
     try {
+        id = parseInt(id);
         const user = await prisma.user.findUnique({
             where: { id },
             include: {
@@ -130,7 +131,7 @@ async function getUserMissionDetails(id, missionId) {
             },
         });
 
-        const mission = await prisma.Mission.findUnique({
+        const mission = await prisma.mission.findUnique({
             where: { id: missionId },
             include: {
                 problems: true,

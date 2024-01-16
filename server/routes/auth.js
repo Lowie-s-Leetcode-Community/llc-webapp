@@ -7,9 +7,9 @@ const router = express.Router();
 
 require('dotenv').config();
 
-async function generateAccessToken(username) {
+async function generateAccessToken(discordId) {
   return jwt.sign({
-    username,
+    discordId,
   }, process.env.TOKEN_SECRET);
 }
 
@@ -52,7 +52,7 @@ router.post('/discord/callback', async (request, response) => {
       },
     });
 
-    const token = await generateAccessToken({user: userResponse.data.username});
+    const token = await generateAccessToken(userResponse.data.id);
     const userId = await getUserIdFromDiscordId(userResponse.data.id);
     response.json({token, access_token, user_id: userId, username: userResponse.data.username});
   } catch (error) {

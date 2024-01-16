@@ -1,9 +1,12 @@
-const prisma = require('./prisma.js')
-const {getFirstMondayOfMonth, getFirstMondayOfNextMonth} = require('../utils/dateUtils.js')
+const prisma = require('./prisma.js');
+const { getFirstMondayOfMonth, getFirstMondayOfNextMonth } = require('../utils/dateUtils.js');
 
-// Get all users sorted by score earned in current month
-async function getLeaderboard() {
+// Get leaderboard with pagination
+async function getLeaderboard(page) {
   try {
+    const pageSize = page ? 10 : undefined;
+    const offset = page ? (page - 1) * pageSize : 0;
+
     // TODO: Change leetcode username to discord username
     const leaderboard = await prisma.user.findMany({
       select: {
@@ -21,6 +24,8 @@ async function getLeaderboard() {
           },
         }
       },
+      skip: offset,
+      take: pageSize,
     });
 
     const leaderboardWithScore = leaderboard.map(user => {
@@ -39,5 +44,4 @@ async function getLeaderboard() {
   }
 }
 
-
-module.exports = {getLeaderboard}
+module.exports = { getLeaderboard };

@@ -5,6 +5,7 @@ import {
 import { EmojiEvents } from '@mui/icons-material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PropTypes from 'prop-types';
+import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import CustomGridItem from '../../components/CustomGridItem';
 
@@ -112,9 +113,10 @@ function RecentACList() {
   const [recentACData, setRecentACData] = useState([]);
 
   useEffect(() => {
-    fetch(RECENT_AC_API)
-      .then((response) => response.json())
-      .then((data) => { setRecentACData(data); console.log(data); })
+    axios.get(RECENT_AC_API)
+      .then((response) => {
+        setRecentACData(response.data);
+      })
       .catch((error) => {
         throw new Error(error);
       });

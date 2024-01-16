@@ -3,6 +3,7 @@ import {
   Grid,
 } from '@mui/material';
 // import useFetch from '../hooks/useFetch';
+import axios from 'axios';
 import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
 
@@ -51,9 +52,8 @@ function Leaderboard() {
   // const { leaderboardData, isLoading, error } = useFetch(leaderboardUrl);
   const [leaderboardData, setLeaderboarData] = useState([]);
   useEffect(() => {
-    fetch(leaderboardUrl)
-      .then((response) => response.json())
-      .then((data) => setLeaderboarData(data))
+    axios.get(leaderboardUrl)
+      .then((response) => setLeaderboarData(response.data))
       .catch((error) => {
         throw new Error(error);
       });

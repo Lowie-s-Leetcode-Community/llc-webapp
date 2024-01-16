@@ -1,18 +1,24 @@
 const express = require('express');
-const {getAllUsers, getUserStats, getUserMissions, getUserMissionDetails, getUserProfile} = require('../controllers/userController');
+const { getAllUsers, getUserStats, getUserMissions, getUserMissionDetails, getUserProfile, getUser } = require('../controllers/userController');
+const {authFilter, checkUser} = require('../middlewares/authFilter');
 const userRouter = express.Router();
 
-// GET all users
-userRouter.get('/all', async (req, res) => {
-  try {
-    const allUsers = await getAllUsers();
-    res.json(allUsers);
-  } catch (e) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }
-});
+// Apply the authFilter middleware to all routes
+userRouter.use(authFilter);
 
-// GET overall statistics of a user
+// Check if the user is the correct user
+userRouter.use('/:id', checkUser);
+
+// GET all users (temporarily disabled until proper role-based API access is implemented)
+// userRouter.get('/all', async (req, res) => {
+//   try {
+//     const allUsers = await getAllUsers();
+//     res.json(allUsers);
+//   } catch (e) {
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
+
 userRouter.get('/:id', async (req, res) => {
   try {
     const userStats = await getUser(req.params.id);
