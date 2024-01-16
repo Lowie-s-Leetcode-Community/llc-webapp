@@ -1,0 +1,302 @@
+[
+  {
+    "answer": "A tree with only one child per node",
+    "id": 1,
+    "discordQuizId": 1
+  },
+  {
+    "answer": "A tree with two children per node",
+    "id": 2,
+    "discordQuizId": 1
+  },
+  {
+    "answer": "A tree with three children per node",
+    "id": 3,
+    "discordQuizId": 1
+  },
+  {
+    "answer": "A tree with no children",
+    "id": 4,
+    "discordQuizId": 1
+  },
+  {
+    "answer": "O(1)",
+    "id": 5,
+    "discordQuizId": 2
+  },
+  {
+    "answer": "O(n)",
+    "id": 6,
+    "discordQuizId": 2
+  },
+  {
+    "answer": "O(log n)",
+    "id": 7,
+    "discordQuizId": 2
+  },
+  {
+    "answer": "O(n log n)",
+    "id": 8,
+    "discordQuizId": 2
+  },
+  {
+    "answer": "Sorting elements",
+    "id": 9,
+    "discordQuizId": 3
+  },
+  {
+    "answer": "Storing data in a sorted manner",
+    "id": 10,
+    "discordQuizId": 3
+  },
+  {
+    "answer": "Storing elements in a Last-In-First-Out (LIFO) order",
+    "id": 11,
+    "discordQuizId": 3
+  },
+  {
+    "answer": "Storing elements in a First-In-First-Out (FIFO) order",
+    "id": 12,
+    "discordQuizId": 3
+  },
+  {
+    "answer": "Bubble Sort",
+    "id": 13,
+    "discordQuizId": 4
+  },
+  {
+    "answer": "Merge Sort",
+    "id": 14,
+    "discordQuizId": 4
+  },
+  {
+    "answer": "Quick Sort",
+    "id": 15,
+    "discordQuizId": 4
+  },
+  {
+    "answer": "Selection Sort",
+    "id": 16,
+    "discordQuizId": 4
+  },
+  {
+    "answer": "A condition where two or more threads or processes access shared data simultaneously, leading to unpredictable outcomes.",
+    "id": 17,
+    "discordQuizId": 5
+  },
+  {
+    "answer": "A condition where code executes in a race against a timer.",
+    "id": 18,
+    "discordQuizId": 5
+  },
+  {
+    "answer": "A condition where a program crashes due to excessive CPU usage.",
+    "id": 19,
+    "discordQuizId": 5
+  },
+  {
+    "answer": "A condition where software exceeds its allocated memory.",
+    "id": 20,
+    "discordQuizId": 5
+  },
+  {
+    "answer": "A problem in parallel computing.",
+    "id": 21,
+    "discordQuizId": 6
+  },
+  {
+    "answer": "A problem in cryptography.",
+    "id": 22,
+    "discordQuizId": 6
+  },
+  {
+    "answer": "A problem in computational complexity theory, exploring whether every problem whose solution can be verified quickly (in 'P') can also be solved quickly (in 'NP').",
+    "id": 23,
+    "discordQuizId": 6
+  },
+  {
+    "answer": "A problem in network protocols.",
+    "id": 24,
+    "discordQuizId": 6
+  },
+  {
+    "answer": "It's a problem in software debugging.",
+    "id": 25,
+    "discordQuizId": 7
+  },
+  {
+    "answer": "It's a problem in compiler optimization.",
+    "id": 26,
+    "discordQuizId": 7
+  },
+  {
+    "answer": "It's an undecidable problem that demonstrates the limitations of algorithmic computation, proving that a general algorithm to solve the halting problem for all possible program-input pairs cannot exist.",
+    "id": 27,
+    "discordQuizId": 7
+  },
+  {
+    "answer": "It's a problem related to data compression.",
+    "id": 28,
+    "discordQuizId": 7
+  },
+  {
+    "answer": "It's a problem in artificial intelligence.",
+    "id": 29,
+    "discordQuizId": 8
+  },
+  {
+    "answer": "It's a problem in robotics.",
+    "id": 30,
+    "discordQuizId": 8
+  },
+  {
+    "answer": "It's a problem in distributed computing, illustrating the challenges of achieving consensus between two remote processes when there's the possibility of unreliable communication.",
+    "id": 31,
+    "discordQuizId": 8
+  },
+  {
+    "answer": "It's a problem in graphics rendering.",
+    "id": 32,
+    "discordQuizId": 8
+  },
+  {
+    "answer": "They are algorithms that consume a lot of system resources.",
+    "id": 33,
+    "discordQuizId": 9
+  },
+  {
+    "answer": "They are algorithms that are always optimal for solving any problem.",
+    "id": 34,
+    "discordQuizId": 9
+  },
+  {
+    "answer": "They are algorithms that make locally optimal choices at each step with the hope of finding a global optimum.",
+    "id": 35,
+    "discordQuizId": 9
+  },
+  {
+    "answer": "They are algorithms that are only used for sorting.",
+    "id": 36,
+    "discordQuizId": 9
+  },
+  {
+    "answer": "Blockchain is a type of database used for image storage.",
+    "id": 37,
+    "discordQuizId": 10
+  },
+  {
+    "answer": "Blockchain is a cryptographic algorithm used for secure file transfer.",
+    "id": 38,
+    "discordQuizId": 10
+  },
+  {
+    "answer": "Blockchain is a decentralized and distributed digital ledger technology that underlies cryptocurrencies like Bitcoin. It ensures secure and transparent transactions without the need for intermediaries.",
+    "id": 39,
+    "discordQuizId": 10
+  },
+  {
+    "answer": "Blockchain is a programming language.",
+    "id": 40,
+    "discordQuizId": 10
+  },
+  {
+    "answer": "Microservices are tiny software bugs, while monolithic architecture is a robust and error-free approach.",
+    "id": 41,
+    "discordQuizId": 11
+  },
+  {
+    "answer": "Microservices are a type of graphical user interface, while monolithic architecture is text-based.",
+    "id": 42,
+    "discordQuizId": 11
+  },
+  {
+    "answer": "Microservices are a design approach where applications are composed of small, independently deployable services that communicate over APIs. Monolithic architecture, in contrast, is a single, large codebase.",
+    "id": 43,
+    "discordQuizId": 11
+  },
+  {
+    "answer": "Microservices are a form of cloud computing, while monolithic architecture is on-premises computing.",
+    "id": 44,
+    "discordQuizId": 11
+  },
+  {
+    "answer": "TSP is a problem in airline ticket booking.",
+    "id": 45,
+    "discordQuizId": 12
+  },
+  {
+    "answer": "TSP is a problem in routing mail delivery trucks.",
+    "id": 46,
+    "discordQuizId": 12
+  },
+  {
+    "answer": "TSP is a classic optimization problem that seeks to find the shortest possible route that visits a given set of cities and returns to the origin city.",
+    "id": 47,
+    "discordQuizId": 12
+  },
+  {
+    "answer": "TSP is a problem in video game development.",
+    "id": 48,
+    "discordQuizId": 12
+  },
+  {
+    "answer": "Dijkstra's algorithm is used to search for files on a computer's hard drive.",
+    "id": 49,
+    "discordQuizId": 13
+  },
+  {
+    "answer": "Dijkstra's algorithm is a machine learning technique.",
+    "id": 50,
+    "discordQuizId": 13
+  },
+  {
+    "answer": "Dijkstra's algorithm is a graph traversal algorithm used to find the shortest path between nodes in a weighted graph.",
+    "id": 51,
+    "discordQuizId": 13
+  },
+  {
+    "answer": "Dijkstra's algorithm is a database management system.",
+    "id": 52,
+    "discordQuizId": 13
+  },
+  {
+    "answer": "It defines the basics of computer architecture.",
+    "id": 53,
+    "discordQuizId": 14
+  },
+  {
+    "answer": "It describes the trade-offs among Consistency, Availability, and Partition Tolerance in distributed systems.",
+    "id": 54,
+    "discordQuizId": 14
+  },
+  {
+    "answer": "It is a theorem in cryptography.",
+    "id": 55,
+    "discordQuizId": 14
+  },
+  {
+    "answer": "It stands for 'Centralized, Available, and Parallel' systems.",
+    "id": 56,
+    "discordQuizId": 14
+  },
+  {
+    "answer": "The Chinese Room Argument is a debate about whether AI can possess consciousness and self-awareness.",
+    "id": 57,
+    "discordQuizId": 15
+  },
+  {
+    "answer": "The Chinese Room Argument is a programming technique used in natural language processing.",
+    "id": 58,
+    "discordQuizId": 15
+  },
+  {
+    "answer": "The Chinese Room Argument is a proof that AI can never understand human languages.",
+    "id": 59,
+    "discordQuizId": 15
+  },
+  {
+    "answer": "The Chinese Room Argument is a philosophical thought experiment questioning whether a computer running a program can truly understand and generate human-like intelligence.",
+    "id": 60,
+    "discordQuizId": 15
+  }
+]

@@ -7,6 +7,42 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient();
 async function main() {
+  const {default: quizzesList} = await import('./backup_json_data/discord_quiz.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+  await Promise.all(
+    quizzesList.map(async quiz => {
+      const {id, category, difficulty, question, correctAnswerId} = quiz;
+      await prisma.discordQuiz.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          id, category, difficulty, question, correctAnswerId
+        }
+      })
+    })
+  )
+
+  const {default: answersList} = await import('./backup_json_data/discord_quiz_answer.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+  Promise.all(
+    answersList.map(async ans => {
+      const {answer, id, discordQuizId} = ans;
+      await prisma.discordQuizAnswer.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          answer, id, discordQuizId
+        }
+      })
+    })
+  )
+
   const {default: topicsList} = await import('./backup_json_data/topics.json', {
     assert: {
       type: 'json'
