@@ -1,10 +1,11 @@
 # How to setup Postgres
 
-- Install Postgres (I can only verify guide for Ubuntu): (TODO)
+- Install Postgres: https://www.postgresql.org/download/windows/
+- Ubuntu: https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04
 
-- Install Prisma: (TODO)
+- Install Prisma: https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql
 
-- Migrate data:
+- Migrate data: 
 
 ```
 cd server
