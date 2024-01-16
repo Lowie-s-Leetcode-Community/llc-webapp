@@ -55,7 +55,7 @@ function Header() {
 
   // Handle logout (remove token from local storage)
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    localStorage.clear();
     navigate('/');
   };
 

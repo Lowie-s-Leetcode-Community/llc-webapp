@@ -1,6 +1,7 @@
 const express = require('express');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const { getUserIdFromDiscordId } = require('../controllers/userController');
 
 const router = express.Router();
 
@@ -52,7 +53,8 @@ router.post('/discord/callback', async (request, response) => {
     });
 
     const token = await generateAccessToken({user: userResponse.data.username});
-    response.json({token, access_token, user: userResponse.data.user});
+    const userId = await getUserIdFromDiscordId(userResponse.data.id);
+    response.json({token, access_token, user_id: userId, username: userResponse.data.username});
   } catch (error) {
     response.status(400).json(error);
   }

@@ -7,8 +7,11 @@ import CustomContainer from '../../components/CustomContainer';
 import CustomGridItem from '../../components/CustomGridItem';
 
 function Missions() {
+  const username = localStorage.getItem('username');
   // Mock mission data
-  const MISSIONS_API = 'http://localhost:3000/api/missions/';
+  const serverUrl = process.env.REACT_APP_SERVER_API_URL;
+  const userId = localStorage.getItem('userId');
+  const MISSIONS_API = `${serverUrl}/api/users/${userId}/missions/all`;
   // eslint-disable-next-line no-unused-vars
   // const { missions, isLoading, error } = useFetch(MISSIONS_API);
   const [missions, setMissions] = useState([]);
@@ -24,7 +27,10 @@ function Missions() {
 
   return (
     <>
-      <h3>username&apos;s missions</h3>
+      <h3>
+        {username}
+        &apos;s missions
+      </h3>
       <CustomContainer>
         <Grid container spacing={3}>
           {missions.map((mission) => (

@@ -1,9 +1,25 @@
 const express = require("express");
-const router = express.Router();
+const missionRouter = express.Router();
+const {getAllMissions, getMissionById} = require('../controllers/missionsController');
 
-const mission_controller = require("../controllers/missionsController");
+// GET /missions/all
+missionRouter.get('/all', async (req, res) => {
+    try {
+      const allMissions = await getAllMissions();
+      res.json(allMissions);
+    } catch (e) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
-router.get('/', mission_controller.get_missions);
-  
+// GET /missions/:id
+missionRouter.get('/:id', async (req, res) => {
+    try {
+      const mission = await getMissionById(req.params.id);
+      res.json(mission);
+    } catch (e) {
+      res.status(500).json({ error: 'Internal Server Error' });
+    }
+});
 
-module.exports = router;
+module.exports = missionRouter;

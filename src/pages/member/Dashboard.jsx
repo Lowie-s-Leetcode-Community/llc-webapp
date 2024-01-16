@@ -7,9 +7,13 @@ import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
 
 function Dashboard() {
+  const username = localStorage.getItem('username');
   return (
     <>
-      <h3>username&apos;s dashboard</h3>
+      <h3>
+        {username}
+        &apos;s dashboard
+      </h3>
       <StatsBoard />
       <Leaderboard />
     </>
@@ -43,7 +47,7 @@ function StatsBoard() {
 function Leaderboard() {
   // Mock data for leaderboard
 
-  const leaderboardUrl = 'http://localhost:3000/api/home/leaderboard';
+  const leaderboardUrl = 'http://localhost:3000/api/leaderboard';
   // const { leaderboardData, isLoading, error } = useFetch(leaderboardUrl);
   const [leaderboardData, setLeaderboarData] = useState([]);
   useEffect(() => {
@@ -61,7 +65,7 @@ function Leaderboard() {
       {error && <div>{error}</div>} */}
 
       {leaderboardData && (
-        <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="aced" secondaryTitle="Aced" />
+        <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="scoreEarned" secondaryTitle="Score" />
       )}
     </>
   );
