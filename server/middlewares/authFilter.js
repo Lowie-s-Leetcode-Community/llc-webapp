@@ -4,16 +4,16 @@ const { getUser } = require('../controllers/userController');
 function authFilter(req, res, next) {
   const authHeader = req.headers['authorization']
   const token = authHeader && authHeader.startsWith('Bearer ') && authHeader.split(' ')[1]
-  if (token == null) return res.sendStatus(401)
+  if (!token) return res.sendStatus(401)
 
-  jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+  jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
 
     if (err) {
       console.log("Error while verifying JWT token", err)
       return res.sendStatus(403)
     }
 
-    req.discordId = user.discordId
+    req.discordId = decoded.discordId
 
     next()
   })
