@@ -15,7 +15,7 @@ function IconLabelValueTypography({ icon, label, value }) {
 }
 
 IconLabelValueTypography.propTypes = {
-  icon: PropTypes.oneOfType([PropTypes.func, PropTypes.object]).isRequired,
+  icon: PropTypes.element.isRequired,
   label: PropTypes.string.isRequired,
   value: PropTypes.string.isRequired,
 };
