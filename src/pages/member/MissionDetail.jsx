@@ -130,8 +130,6 @@ function MissionDetail() {
 
 function ProblemList({ problemList, missionType }) {
   const theme = useTheme();
-  const primaryTextForHiddenProblem = 'Hidden Problem';
-  const secondaryTextForHiddenProblem = <VisibilityOffIcon fontSize="small" />;
 
   function getDifficultyColor(difficulty) {
     switch (difficulty) {
@@ -154,27 +152,22 @@ function ProblemList({ problemList, missionType }) {
         // It's really unoptimized but I don't know how to only check only once.
         const isHiddenProblem = missionType === 'Hidden' && !problem.aced;
 
-        const primaryText = isHiddenProblem
-          ? primaryTextForHiddenProblem : problem.name;
-        const secondaryText = isHiddenProblem
-          ? secondaryTextForHiddenProblem : problem.difficulty;
+        const problemName = isHiddenProblem
+          ? 'Hidden Problem' : problem.name;
+        const problemDifficulty = isHiddenProblem
+          ? <VisibilityOffIcon fontSize="small" /> : problem.difficulty;
 
-        const primaryColor = isHiddenProblem
+        const problemNameColor = isHiddenProblem
           ? theme.palette.grey.dark : theme.palette.link.text;
-        const secondaryColor = isHiddenProblem
+        const problemDifficultyColor = isHiddenProblem
           ? theme.palette.grey.default : getDifficultyColor(problem.difficulty);
-        const iconColor = !problem.aced
+        const AcedIconColor = !problem.aced
           ? theme.palette.grey.dark : theme.palette.success.main;
-
-        const component = isHiddenProblem
-          ? 'div' : Link;
-        const url = isHiddenProblem
-          ? '#' : problem.link;
 
         return (
           <ListItem
-            component={component}
-            to={url}
+            component={isHiddenProblem ? 'div' : Link}
+            to={isHiddenProblem ? '#' : problem.link}
             target="_blank"
             rel="noopener noreferrer"
             key={problem.id}
@@ -202,15 +195,15 @@ function ProblemList({ problemList, missionType }) {
             {/* Problem name and difficulty */}
             <ListItemText
               key={`problem-info-${problem.id}`}
-              primary={primaryText}
-              secondary={secondaryText}
+              primary={problemName}
+              secondary={problemDifficulty}
               sx={{
                 '& .MuiListItemText-primary': {
-                  color: primaryColor,
+                  color: problemNameColor,
                   fontWeight: isHiddenProblem ? 'normal' : 'bold',
                 },
                 '& .MuiListItemText-secondary': {
-                  color: secondaryColor,
+                  color: problemDifficultyColor,
                 },
               }}
             />
@@ -223,7 +216,7 @@ function ProblemList({ problemList, missionType }) {
                 top: '50%',
                 right: '0.727rem',
                 transform: 'translateY(-50%)',
-                color: iconColor,
+                color: AcedIconColor,
               }}
             />
           </ListItem>
