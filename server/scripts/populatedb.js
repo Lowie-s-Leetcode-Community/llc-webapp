@@ -9,11 +9,13 @@ console.log(
   const Award = require("../models/awards");
   const Leaderboard = require("../models/leaderboard");
   const Mission = require("../models/missions");
+  const MissionDetail = require("../models/missionDetail");
   const RecentAC = require("../models/recentAC");
   
   const awards = [];
   const leaderboards = [];
   const missions = [];
+  const missionDetailList = [];
   const recentACs = [];
   
   const mongoose = require("mongoose");
@@ -29,6 +31,7 @@ console.log(
     await createAwards();
     await createLeaderboard();
     await createMissions();
+    // await createMissionDetailList();
     await createRecentAC();
     console.log("Debug: Closing mongoose");
     mongoose.connection.close();
@@ -55,8 +58,9 @@ console.log(
     console.log(`leaderboard: ${username} ${rank} ${aced}`);
   }
 
-  async function missionsCreate(index, name, route, progress) {
+  async function missionsCreate(index, id, name, route, progress) {
     const missiondetail = {
+        id,
         name: name,
         route: route, 
         progress: progress,
@@ -65,7 +69,42 @@ console.log(
     const mission = new Mission(missiondetail);
     await mission.save();
     missions[index] = mission;
-    console.log(`Added book: ${name} ${route} ${progress}`);
+    console.log(`Added missions: ${name} ${route} ${progress}`);
+  }
+
+  async function missionDetailCreate(index, name, description, type, problemAmount) {
+    // mock problem list function
+    function mockProblemList() {
+      function randomData(...items) {
+        const randomIndex = Math.floor(Math.random() * items.length);
+        return items[randomIndex];
+      }
+
+      function randomProblem(index) {
+        const link = index % 2 === 0
+          ? 'https://leetcode.com/problems/sqrtx/'
+          : 'https://leetcode.com/problems/maximum-69-number/';
+        return {
+          name: `Name ${index} ${Math.random()}`,
+          link,
+          difficulty: randomData('Easy', 'Medium', 'Hard'),
+          aced: randomData(true, false),
+        };
+      }
+      return Array.from({ length: problemAmount }, (_, _index) => randomProblem(_index));
+    }
+    // end of mock problem list function
+    const missiondetail = {
+        name: name,
+        description: description,
+        type: type,
+        problemList: mockProblemList(),
+    };
+  
+    const missionDetail = new MissionDetail(missiondetail);
+    await missionDetail.save();
+    missionDetailList[index] = missionDetail;
+    console.log(`Added missionDetail: ${name}, ${type} mission w/ ${problemAmount} problems`);
   }
 
   async function recentACCreate(index, name, date) {
@@ -121,12 +160,22 @@ async function createLeaderboard() {
 async function createMissions() {
     console.log("Adding missions");
     await Promise.all([
-        missionsCreate(0, "Mission 1", "/missions/1", 50),
-        missionsCreate(1, "Mission 2", "/missions/2", 75),
-        missionsCreate(2, "Mission 3", "/missions/3", 25),
+        missionsCreate(0, 1, "Mission 1", "/missions/1", 50),
+        missionsCreate(1, 2, "Mission 2", "/missions/2", 75),
+        missionsCreate(2, 3, "Mission 3", "/missions/3", 25),
+        missionsCreate(3, 4, "Mission 4", "/missions/4", 100),
     ]);
 }
 
+// async function createMissionDetailList() {
+//   console.log("Adding missionDetails");
+//   await Promise.all([
+//       missionDetailCreate(0, "Mission 1", "description of mission 1", "Hidden", 12),
+//       missionDetailCreate(1, "Mission 2", "description of mission 2", "Shown", 12),
+//       missionDetailCreate(2, "Mission 3", "description of mission 3", "Hidden", 7),
+//       missionDetailCreate(3, "Mission 4", "description of mission 4", "Shown", 7),
+//   ]);
+// }
 
 async function createRecentAC() {
     console.log("Adding recentACs");
