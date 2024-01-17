@@ -84,7 +84,7 @@ function Missions() {
                   key={`mission-checkmark-${mission.id}`}
                   sx={{
                     fontSize: '2.25rem',
-                    color: '#f8f4f4', // because theme.palette.background.main doesn't work, it returned black.
+                    color: theme.palette.background.card,
                   }}
                 />
               ) : (
@@ -110,7 +110,7 @@ function MissionGridItem({
   //  but with dynamic background support
   const theme = useTheme();
   const backgroundColor = missionProgress === 100
-    ? theme.palette.accent.main : theme.palette.background.main;
+    ? theme.palette.accent.main : theme.palette.background.card;
 
   return (
     <Grid item xs={6} sm={4} md={3} key={`mission-box-${id}`}>

@@ -129,24 +129,23 @@ function MissionDetail() {
 }
 
 function ProblemList({ problemList, missionType }) {
-  const acedProblemBackgroundColor = '#ECFDF5';
-  const listIndexColor = '#4B5563';
-  const shownProblemColor = '#5D52E6';
+  const theme = useTheme();
+  const primaryTextForHiddenProblem = 'Hidden Problem';
+  const secondaryTextForHiddenProblem = <VisibilityOffIcon fontSize="small" />;
+
   function getDifficultyColor(difficulty) {
     switch (difficulty) {
       case 'Easy':
-        return '#00AF9B';
+        return theme.leetcodeProblem.easy.main;
       case 'Medium':
-        return '#FFB800';
+        return theme.leetcodeProblem.medium.main;
       case 'Hard':
-        return '#FF2D55';
+        return theme.leetcodeProblem.hard.main;
       default:
-        return 'grey';
+        return theme.error.main;
+        // this should never return but switch case forces a 'default' case.
     }
   }
-
-  const primaryTextForHiddenProblem = 'Hidden Problem';
-  const secondaryTextForHiddenProblem = <VisibilityOffIcon fontSize="small" />;
 
   return (
     <List>
@@ -161,14 +160,11 @@ function ProblemList({ problemList, missionType }) {
           ? secondaryTextForHiddenProblem : problem.difficulty;
 
         const primaryColor = isHiddenProblem
-          ? 'black' : shownProblemColor;
+          ? theme.palette.grey.dark : theme.palette.link.text;
         const secondaryColor = isHiddenProblem
-          ? 'grey' : getDifficultyColor(problem.difficulty);
+          ? theme.palette.grey.default : getDifficultyColor(problem.difficulty);
         const iconColor = !problem.aced
-          ? '#BEBEBE' : '#4CAF50';
-
-        const primaryFontWeight = isHiddenProblem
-          ? 'normal' : 'bold';
+          ? theme.palette.grey.dark : theme.palette.success.main;
 
         const component = isHiddenProblem
           ? 'div' : Link;
@@ -183,7 +179,7 @@ function ProblemList({ problemList, missionType }) {
             rel="noopener noreferrer"
             key={problem.id}
             sx={{
-              backgroundColor: problem.aced ? acedProblemBackgroundColor
+              backgroundColor: problem.aced ? theme.palette.success.background
                 : 'transparent',
               border: '0.05rem solid #ddd',
             }}
@@ -197,7 +193,7 @@ function ProblemList({ problemList, missionType }) {
                 marginBottom: '0.682rem',
                 marginLeft: '1.364rem',
                 marginRight: '2.136rem',
-                color: listIndexColor,
+                color: theme.palette.grey.text,
               }}
             >
               {index + 1}
@@ -211,7 +207,7 @@ function ProblemList({ problemList, missionType }) {
               sx={{
                 '& .MuiListItemText-primary': {
                   color: primaryColor,
-                  fontWeight: primaryFontWeight,
+                  fontWeight: isHiddenProblem ? 'normal' : 'bold',
                 },
                 '& .MuiListItemText-secondary': {
                   color: secondaryColor,
