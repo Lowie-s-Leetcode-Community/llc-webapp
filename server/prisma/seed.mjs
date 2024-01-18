@@ -148,22 +148,16 @@ async function main() {
   })
   Promise.all(
     missionsList.map(async mission => {
-      const {id, name, description, isHidden, rewardImageUrl, problems} = mission;
+      const {id, name, description, isHidden, rewardImageURL, problems} = mission;
 
       await prisma.mission.upsert({
         where: { id: id },
         update: {},
         create: {
-          id: id,
-          name: name,
-          description: description,
-          isHidden: isHidden,
-          rewardImageURL: rewardImageUrl,
+          id, name, description, isHidden, rewardImageURL,
           problems: {
-            connect: problems.map(id => ({ id: id }))
-          },
-          createdAt: new Date(),
-          updatedAt: new Date()
+            connect: problems.map(id => (id))
+          }
         }
       })
     })
