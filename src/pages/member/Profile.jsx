@@ -79,19 +79,7 @@ MainContent.propTypes = {
 };
 
 function AllAwards() {
-  // const AWARDS_API = 'http://localhost:3000/api/profile/awards';
-  // const [awards, setAwards] = useState([]);
-
-  // useEffect(() => {
-  //   fetch(AWARDS_API)
-  //     .then((response) => response.json())
-  //     .then((data) => setAwards(data))
-  //     .catch((error) => {
-  //       throw new Error(error);
-  //     });
-  // }, []);
-
-  // Temporarily disable awards
+  // TODO: Implement Awards feature
   const awards = [];
 
   return (

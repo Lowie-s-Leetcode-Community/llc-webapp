@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Grid,
+  Grid, Box,
 } from '@mui/material';
-// import useFetch from '../hooks/useFetch';
 import axios from 'axios';
 import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
@@ -46,14 +45,12 @@ function StatsBoard() {
 }
 
 function Leaderboard() {
-  // Mock data for leaderboard
-
   const leaderboardUrl = 'http://localhost:3000/api/leaderboard';
-  // const { leaderboardData, isLoading, error } = useFetch(leaderboardUrl);
-  const [leaderboardData, setLeaderboarData] = useState([]);
+
+  const [leaderboardData, setLeaderboardData] = useState([]);
   useEffect(() => {
     axios.get(leaderboardUrl)
-      .then((response) => setLeaderboarData(response.data))
+      .then((response) => setLeaderboardData(response.data))
       .catch((error) => {
         throw new Error(error);
       });
@@ -61,9 +58,10 @@ function Leaderboard() {
 
   return (
     <>
-      {/* {isLoading && <div>Loading....</div>}
-      {error && <div>{error}</div>} */}
-
+      {!leaderboardData && (
+        // TODO: Add loading animation
+        <Box>Loading...</Box>
+      )}
       {leaderboardData && (
         <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="scoreEarned" secondaryTitle="Score" />
       )}
