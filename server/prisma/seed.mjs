@@ -161,7 +161,32 @@ async function main() {
         }
       })
     })
-  ) 
+  )
+
+  const {default: userMonthlyObjects} = await import('./backup_json_data/monthly_objects.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+
+  Promise.all(
+    userMonthlyObjects.map(async monthlyObject => {
+      const {id, userId, scoreEarned, firstDayOfMonth} = monthlyObject;
+
+      await prisma.userMonthlyObject.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          id: id,
+          userId: userId,
+          scoreEarned: scoreEarned,
+          firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      })
+    })
+  )
 }
 
 main()
