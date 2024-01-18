@@ -140,6 +140,33 @@ async function main() {
       })
     })
   )
+
+  // require missions.json, which would be .gitignored. Please contact PM if you haven't got the file.
+  const {default: missionsList} = await import('./backup_json_data/missions.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+
+  await Promise.all(
+    missionsList.map(async mission => {
+      const { id,name, problems, isHidden, rewardImageURL } = mission;
+
+      await prisma.mission.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          id: id,
+          // name: name,
+          isHidden: isHidden,
+          rewardImageURL: rewardImageURL,
+          problems: {
+            connect: problems.map(id => (id))
+          }
+        }
+      })
+    })
+  ) 
 }
 
 main()
