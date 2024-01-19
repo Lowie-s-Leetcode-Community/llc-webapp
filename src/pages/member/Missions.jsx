@@ -16,6 +16,7 @@ function Missions() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
   const MISSIONS_API = `${serverUrl}/api/users/${userId}/missions/all`;
+  const username = localStorage.getItem('username');
 
   const [missions, setMissions] = useState([]);
 
@@ -44,7 +45,7 @@ function Missions() {
       >
         <h3>
           <span style={{ color: theme.palette.primary.main }}>
-            Username
+            {username}
           </span>
           &apos;s missions
         </h3>
@@ -80,7 +81,7 @@ function Missions() {
               id={mission.id}
               key={`mission-grid-item-${mission.id}`}
               missionProgress={mission.progress}
-              missionRoute={mission.route}
+              missionRoute={`/missions/${mission.id}`}
             >
               <Typography variant="h6" sx={{ mb: 1 }} key={`mission-name-${mission.id}`}>
                 {mission.name}

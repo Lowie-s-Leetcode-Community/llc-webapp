@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Grid, Box,
+  Grid, Box, useTheme,
 } from '@mui/material';
 import axios from 'axios';
 import CustomList from '../../components/CustomList';
@@ -8,10 +8,13 @@ import { CustomCard } from '../../components/CustomCard';
 
 function Dashboard() {
   const username = localStorage.getItem('username');
+  const theme = useTheme();
   return (
     <>
       <h3>
-        {username}
+        <span style={{ color: theme.palette.primary.main }}>
+          {username}
+        </span>
         &apos;s dashboard
       </h3>
       <StatsBoard />
