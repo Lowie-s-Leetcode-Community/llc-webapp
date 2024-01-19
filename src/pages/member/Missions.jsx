@@ -10,20 +10,27 @@ import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import PropTypes from 'prop-types';
 import CustomContainer from '../../components/CustomContainer';
 import IconLabelValueTypography from './IconLabelValueTypography';
+import axios from '../../config/axios.interceptor';
 
 function Missions() {
-  const MISSIONS_API = `${process.env.REACT_APP_SERVER_API_URL}/api/missions/`;
+  const serverUrl = process.env.REACT_APP_SERVER_API_URL;
+  const userId = localStorage.getItem('userId');
+  const MISSIONS_API = `${serverUrl}/api/users/${userId}/missions/all`;
+  const username = localStorage.getItem('username');
+
   const [missions, setMissions] = useState([]);
 
   useEffect(() => {
-    fetch(MISSIONS_API)
-      .then((response) => response.json())
-      .then((data) => {
-        setMissions(data.slice().sort((a, b) => a.progress <= b.progress));
-      })
-      .catch((error) => {
+    const fetchMissions = async () => {
+      try {
+        const response = await axios.get(MISSIONS_API);
+        setMissions(response.data.slice().sort((a, b) => a.progress <= b.progress));
+      } catch (error) {
         throw new Error(error);
-      });
+      }
+    };
+
+    fetchMissions();
   }, []);
 
   const theme = useTheme();
@@ -38,7 +45,7 @@ function Missions() {
       >
         <h3>
           <span style={{ color: theme.palette.primary.main }}>
-            Username
+            {username}
           </span>
           &apos;s missions
         </h3>
@@ -74,7 +81,7 @@ function Missions() {
               id={mission.id}
               key={`mission-grid-item-${mission.id}`}
               missionProgress={mission.progress}
-              missionRoute={mission.route}
+              missionRoute={`/missions/${mission.id}`}
             >
               <Typography variant="h6" sx={{ mb: 1 }} key={`mission-name-${mission.id}`}>
                 {mission.name}

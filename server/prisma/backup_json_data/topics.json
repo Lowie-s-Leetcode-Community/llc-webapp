@@ -1,0 +1,290 @@
+[
+  {
+    "id": 1,
+    "topicName": "Array"
+  },
+  {
+    "id": 2,
+    "topicName": "Hash Table"
+  },
+  {
+    "id": 3,
+    "topicName": "Linked List"
+  },
+  {
+    "id": 4,
+    "topicName": "Math"
+  },
+  {
+    "id": 5,
+    "topicName": "Recursion"
+  },
+  {
+    "id": 6,
+    "topicName": "String"
+  },
+  {
+    "id": 7,
+    "topicName": "Sliding Window"
+  },
+  {
+    "id": 8,
+    "topicName": "Binary Search"
+  },
+  {
+    "id": 9,
+    "topicName": "Divide and Conquer"
+  },
+  {
+    "id": 10,
+    "topicName": "Dynamic Programming"
+  },
+  {
+    "id": 11,
+    "topicName": "Two Pointers"
+  },
+  {
+    "id": 12,
+    "topicName": "Greedy"
+  },
+  {
+    "id": 13,
+    "topicName": "Trie"
+  },
+  {
+    "id": 14,
+    "topicName": "Sorting"
+  },
+  {
+    "id": 15,
+    "topicName": "Backtracking"
+  },
+  {
+    "id": 16,
+    "topicName": "Stack"
+  },
+  {
+    "id": 17,
+    "topicName": "Heap (Priority Queue)"
+  },
+  {
+    "id": 18,
+    "topicName": "Merge Sort"
+  },
+  {
+    "id": 19,
+    "topicName": "String Matching"
+  },
+  {
+    "id": 20,
+    "topicName": "Bit Manipulation"
+  },
+  {
+    "id": 21,
+    "topicName": "Matrix"
+  },
+  {
+    "id": 22,
+    "topicName": "Monotonic Stack"
+  },
+  {
+    "id": 23,
+    "topicName": "Simulation"
+  },
+  {
+    "id": 24,
+    "topicName": "Combinatorics"
+  },
+  {
+    "id": 25,
+    "topicName": "Memoization"
+  },
+  {
+    "id": 26,
+    "topicName": "Tree"
+  },
+  {
+    "id": 27,
+    "topicName": "Depth-First Search"
+  },
+  {
+    "id": 28,
+    "topicName": "Binary Tree"
+  },
+  {
+    "id": 29,
+    "topicName": "Binary Search Tree"
+  },
+  {
+    "id": 30,
+    "topicName": "Breadth-First Search"
+  },
+  {
+    "id": 31,
+    "topicName": "Union Find"
+  },
+  {
+    "id": 32,
+    "topicName": "Graph"
+  },
+  {
+    "id": 33,
+    "topicName": "Design"
+  },
+  {
+    "id": 34,
+    "topicName": "Doubly-Linked List"
+  },
+  {
+    "id": 35,
+    "topicName": "Geometry"
+  },
+  {
+    "id": 36,
+    "topicName": "Interactive"
+  },
+  {
+    "id": 37,
+    "topicName": "Bucket Sort"
+  },
+  {
+    "id": 38,
+    "topicName": "Radix Sort"
+  },
+  {
+    "id": 39,
+    "topicName": "Counting"
+  },
+  {
+    "id": 40,
+    "topicName": "Data Stream"
+  },
+  {
+    "id": 41,
+    "topicName": "Iterator"
+  },
+  {
+    "id": 42,
+    "topicName": "Database"
+  },
+  {
+    "id": 43,
+    "topicName": "Rolling Hash"
+  },
+  {
+    "id": 44,
+    "topicName": "Hash Function"
+  },
+  {
+    "id": 45,
+    "topicName": "Shell"
+  },
+  {
+    "id": 46,
+    "topicName": "Enumeration"
+  },
+  {
+    "id": 47,
+    "topicName": "Number Theory"
+  },
+  {
+    "id": 48,
+    "topicName": "Topological Sort"
+  },
+  {
+    "id": 49,
+    "topicName": "Prefix Sum"
+  },
+  {
+    "id": 50,
+    "topicName": "Quickselect"
+  },
+  {
+    "id": 51,
+    "topicName": "Binary Indexed Tree"
+  },
+  {
+    "id": 52,
+    "topicName": "Segment Tree"
+  },
+  {
+    "id": 53,
+    "topicName": "Line Sweep"
+  },
+  {
+    "id": 54,
+    "topicName": "Ordered Set"
+  },
+  {
+    "id": 55,
+    "topicName": "Queue"
+  },
+  {
+    "id": 56,
+    "topicName": "Monotonic Queue"
+  },
+  {
+    "id": 57,
+    "topicName": "Counting Sort"
+  },
+  {
+    "id": 58,
+    "topicName": "Brainteaser"
+  },
+  {
+    "id": 59,
+    "topicName": "Game Theory"
+  },
+  {
+    "id": 60,
+    "topicName": "Eulerian Circuit"
+  },
+  {
+    "id": 61,
+    "topicName": "Randomized"
+  },
+  {
+    "id": 62,
+    "topicName": "Reservoir Sampling"
+  },
+  {
+    "id": 63,
+    "topicName": "Shortest Path"
+  },
+  {
+    "id": 64,
+    "topicName": "Bitmask"
+  },
+  {
+    "id": 65,
+    "topicName": "Rejection Sampling"
+  },
+  {
+    "id": 66,
+    "topicName": "Probability and Statistics"
+  },
+  {
+    "id": 67,
+    "topicName": "Suffix Array"
+  },
+  {
+    "id": 68,
+    "topicName": "Concurrency"
+  },
+  {
+    "id": 69,
+    "topicName": "Minimum Spanning Tree"
+  },
+  {
+    "id": 70,
+    "topicName": "Biconnected Component"
+  },
+  {
+    "id": 71,
+    "topicName": "Strongly Connected Component"
+  },
+  {
+    "id": 72,
+    "topicName": "Sort"
+  }
+]

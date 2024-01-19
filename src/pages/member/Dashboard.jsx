@@ -1,15 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Grid,
+  Grid, Box, useTheme,
 } from '@mui/material';
-// import useFetch from '../hooks/useFetch';
+import axios from 'axios';
 import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
 
 function Dashboard() {
+  const username = localStorage.getItem('username');
+  const theme = useTheme();
   return (
     <>
-      <h3>username&apos;s dashboard</h3>
+      <h3>
+        <span style={{ color: theme.palette.primary.main }}>
+          {username}
+        </span>
+        &apos;s dashboard
+      </h3>
       <StatsBoard />
       <Leaderboard />
     </>
@@ -41,15 +48,12 @@ function StatsBoard() {
 }
 
 function Leaderboard() {
-  // Mock data for leaderboard
+  const leaderboardUrl = 'http://localhost:3000/api/leaderboard';
 
-  const leaderboardUrl = 'http://localhost:3000/api/home/leaderboard';
-  // const { leaderboardData, isLoading, error } = useFetch(leaderboardUrl);
-  const [leaderboardData, setLeaderboarData] = useState([]);
+  const [leaderboardData, setLeaderboardData] = useState([]);
   useEffect(() => {
-    fetch(leaderboardUrl)
-      .then((response) => response.json())
-      .then((data) => setLeaderboarData(data))
+    axios.get(leaderboardUrl)
+      .then((response) => setLeaderboardData(response.data))
       .catch((error) => {
         throw new Error(error);
       });
@@ -57,11 +61,12 @@ function Leaderboard() {
 
   return (
     <>
-      {/* {isLoading && <div>Loading....</div>}
-      {error && <div>{error}</div>} */}
-
+      {!leaderboardData && (
+        // TODO: Add loading animation
+        <Box>Loading...</Box>
+      )}
       {leaderboardData && (
-        <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="aced" secondaryTitle="Aced" />
+        <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="scoreEarned" secondaryTitle="Score" />
       )}
     </>
   );

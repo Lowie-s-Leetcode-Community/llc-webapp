@@ -1,5 +1,7 @@
 ## How to populate DB?
 
+Note: This will be kept in this branch, in case someone still need mongodb.
+
 * `npm install`
 * `cd scripts`
 * Create database in MongoDB, called `LC_db`

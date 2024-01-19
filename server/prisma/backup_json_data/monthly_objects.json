@@ -1,0 +1,14 @@
+[
+    {
+        "id": 1,
+        "userId": 1,
+        "scoreEarned": 100,
+        "firstDayOfMonth": "2024-01-01"
+    },
+    {
+        "id": 2,
+        "userId": 2,
+        "scoreEarned": 150,
+        "firstDayOfMonth": "2024-02-01"
+    }
+]

@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from 'react-router-dom';
 import leetcodeLogo from '../assets/images/leetcode_logo.png';
-import { isLoggedIn } from '../utils/authUtils';
+import { isLoggedIn, clearCredentials } from '../utils/authUtils';
 
 function Header() {
   const navigate = useNavigate();
@@ -53,9 +53,9 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  // Handle logout (remove token from local storage)
+  // Handle logout (clear credentials from local storage)
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    clearCredentials();
     navigate('/');
   };
 
