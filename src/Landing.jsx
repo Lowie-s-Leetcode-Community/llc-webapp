@@ -1,15 +1,14 @@
 import { React } from 'react';
 import './Landing.css';
-import { Navigate } from 'react-router-dom';
-import Dashboard from './pages/Dashboard';
+import { Navigate, useLocation } from 'react-router-dom';
+import Dashboard from './pages/member/Dashboard';
+import { isLoggedIn } from './utils/authUtils';
 
 function Landing() {
-  // Mock login status
-  const isLoggedIn = true;
-
+  const location = useLocation();
   return (
     <div className="App">
-      {isLoggedIn ? <Dashboard /> : <Navigate to="/login" replace />}
+      {isLoggedIn() ? <Dashboard /> : <Navigate to="/welcome" state={{ from: location }} replace />}
     </div>
   );
 }

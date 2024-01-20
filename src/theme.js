@@ -1,3 +1,4 @@
+import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
@@ -11,6 +12,25 @@ const theme = createTheme({
     },
     background: {
       paper: '#f8f4f4',
+      default: '#fff',
+    },
+    text: {
+      main: '#1c1122',
+    },
+    success: {
+      main: '#4CAF50',
+      background: '#ECFDF5',
+    },
+    error: {
+      main: red.A400,
+    },
+    grey: {
+      default: '#808080',
+      dark: '#A9A9A9',
+      text: '#4B5563',
+    },
+    link: {
+      text: '#5D52E6',
     },
     gradients: {
       goldOrange: 'linear-gradient(to top, #e4805d, #ffa116)',
@@ -38,6 +58,18 @@ const theme = createTheme({
       },
     },
   },
+  leetcodeProblem: {
+    easy: {
+      main: '#00AF9B',
+    },
+    medium: {
+      main: '#FFB800',
+    },
+    hard: {
+      main: '#FF2D55',
+    },
+  },
+
 });
 
 export default theme;

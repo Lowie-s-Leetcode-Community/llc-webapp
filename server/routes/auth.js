@@ -1,19 +1,20 @@
 const express = require('express');
 const axios = require('axios');
 const jwt = require('jsonwebtoken');
+const { getUserIdFromDiscordId } = require('../controllers/userController');
 
 const router = express.Router();
 
 require('dotenv').config();
 
-async function generateAccessToken(username) {
+async function generateAccessToken(discordId) {
   return jwt.sign({
-    username,
-  }, process.env.TOKEN_SECRET, { expiresIn: 60 * 60 * 60 });
+    discordId,
+  }, process.env.TOKEN_SECRET);
 }
 
 router.get('/discord/login', (req, res) => {
-  const url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&redirect_uri=${process.env.DISCORD_REDIRECT_URI}&response_type=code&scope=identify%20guilds`;
+  const url = `https://discord.com/api/oauth2/authorize?client_id=${process.env.DISCORD_CLIENT_ID}&response_type=code&redirect_uri=${process.env.DISCORD_REDIRECT_URI}&scope=identify+guilds.members.read`;
 
   res.redirect(url);
 });
@@ -51,11 +52,11 @@ router.post('/discord/callback', async (request, response) => {
       },
     });
 
-    const token = await generateAccessToken(userResponse.data.username);
-    console.log(token);
-    response.send({ token });
+    const token = await generateAccessToken(userResponse.data.id);
+    const userId = await getUserIdFromDiscordId(userResponse.data.id);
+    response.json({token, access_token, user_id: userId, username: userResponse.data.username});
   } catch (error) {
-    console.log(error);
+    response.status(400).json(error);
   }
 });
 

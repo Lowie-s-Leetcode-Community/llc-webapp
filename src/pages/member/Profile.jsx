@@ -5,8 +5,9 @@ import {
 import { EmojiEvents } from '@mui/icons-material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PropTypes from 'prop-types';
-import CustomList from '../components/CustomList';
-import CustomGridItem from '../components/CustomGridItem';
+import axios from '../../config/axios.interceptor';
+import CustomList from '../../components/CustomList';
+import CustomGridItem from '../../components/CustomGridItem';
 
 function Profile() {
   const [selectedTab, setSelectedTab] = useState('allAwardsTab');
@@ -24,12 +25,13 @@ function Profile() {
 }
 
 function Sidebar({ selectedTab, handleTabChange }) {
+  const username = localStorage.getItem('username');
   return (
     <Card sx={{ padding: '16px', minWidth: 250, borderRadius: '20px' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar alt="User Avatar" style={{ width: '80px', height: '80px', marginBottom: '16px' }} />
         <Typography variant="h5" sx={{ marginBottom: '16px' }}>
-          username
+          {username}
         </Typography>
       </Box>
 
@@ -80,17 +82,8 @@ MainContent.propTypes = {
 };
 
 function AllAwards() {
-  const AWARDS_API = 'http://localhost:3000/api/profile/awards';
-  const [awards, setAwards] = useState([]);
-
-  useEffect(() => {
-    fetch(AWARDS_API)
-      .then((response) => response.json())
-      .then((data) => setAwards(data))
-      .catch((error) => {
-        throw new Error(error);
-      });
-  }, []);
+  // TODO: Implement Awards feature
+  const awards = [];
 
   return (
     <Card>
@@ -110,13 +103,16 @@ function AllAwards() {
 
 function RecentACList() {
   // Mock data for Recent AC list
-  const RECENT_AC_API = 'http://localhost:3000/api/profile/recentAC';
+  const serverUrl = process.env.REACT_APP_SERVER_API_URL;
+  const userId = localStorage.getItem('userId');
+  const RECENT_AC_API = `${serverUrl}/api/users/${userId}/profile/`;
   const [recentACData, setRecentACData] = useState([]);
 
   useEffect(() => {
-    fetch(RECENT_AC_API)
-      .then((response) => response.json())
-      .then((data) => setRecentACData(data))
+    axios.get(RECENT_AC_API)
+      .then((response) => {
+        setRecentACData(response.data);
+      })
       .catch((error) => {
         throw new Error(error);
       });

@@ -1,3 +1,7 @@
+## DEV UPDATE: Jan 07, 24 on Postgresql
+
+System is migrating to Postgres. All you need to know to set it up with current migration scheme is found in `server/prisma`. **You also need to update `server/.env`**.
+
 # LLC WebApp
 
 This is the Webapp for the Lowie's Leetcode Community.

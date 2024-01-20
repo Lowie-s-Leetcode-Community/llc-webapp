@@ -1,7 +1,15 @@
-const Missions = require('../models/missions');
-const asyncHandler = require('express-async-handler');
+const prisma = require('./prisma.js')
 
-exports.get_missions = asyncHandler(async (req, res, next) => {
-    const all_missions = await Missions.find({}).exec();
-    res.json(all_missions);
-});
+async function getAllMissions() {
+  return await prisma.mission.findMany();
+}
+
+async function getMissionById(id) {
+  return await prisma.mission.findUnique({
+    where: {
+      id: id,
+    },
+  });
+}
+
+module.exports = { getAllMissions, getMissionById };

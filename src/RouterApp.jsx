@@ -4,53 +4,67 @@ import Landing from './Landing';
 import Login from './authentication/Login';
 import NotFound from './error/NotFound';
 import Callback from './authentication/Callback';
-import Missions from './pages/Missions';
-import About from './pages/About';
-import Profile from './pages/Profile';
-import Logout from './authentication/Logout';
+import Missions from './pages/member/Missions';
+import MissionDetail from './pages/member/MissionDetail';
+import About from './pages/common/About';
+import Profile from './pages/member/Profile';
 import MainLayout from './layout/MainLayout';
+import AuthWrapper from './authentication/AuthWrapper';
+import Welcome from './pages/guest/Welcome';
 
 function RouterApp() {
   const routes = [
-    {
-      path: '/login',
-      element: <Login />,
-      isPrivate: false,
-    },
-    {
-      path: '/logout',
-      element: <Logout />,
-      isPrivate: true,
-    },
+    // COMMON ROUTES
     {
       path: '/',
       element: <Landing />,
-      isPrivate: true,
-    },
-    {
-      path: '/missions',
-      element: <Missions />,
-      isPrivate: true,
+      allowedRoles: [],
     },
     {
       path: '/about',
       element: <About />,
-      isPrivate: true,
+      allowedRoles: [],
     },
+
+    // GUEST ROUTES
     {
-      path: '/profile',
-      element: <Profile />,
-      isPrivate: true,
+      path: '/login',
+      element: <Login />,
+      allowedRoles: [],
     },
     {
       path: '/callback',
       element: <Callback />,
-      isPrivate: true,
+      allowedRoles: [],
     },
+    {
+      path: '/welcome',
+      element: <Welcome />,
+      allowedRoles: [],
+    },
+
+    // MEMBER ROUTES
+    {
+      path: '/missions',
+      element: <Missions />,
+      allowedRoles: ['member'],
+    },
+    {
+      path: '/missions/:missionRoute',
+      element: <MissionDetail />,
+      allowedRoles: ['member'],
+    },
+    {
+      path: '/profile',
+      element: <Profile />,
+      allowedRoles: ['member'],
+    },
+
+    // NOT FOUND ROUTE
     {
       path: '*',
       element: <NotFound />,
-      isPrivate: false,
+      allowedRoles: [],
     },
   ];
 
@@ -58,13 +72,29 @@ function RouterApp() {
     <BrowserRouter>
       <MainLayout>
         <Routes>
-          {routes.map((route) => (
-            <Route
-              key={route.path}
-              path={route.path}
-              element={route.element}
-            />
-          ))}
+          {routes.map((route) => {
+            if (route.allowedRoles.length > 0) {
+              return (
+                <Route
+                  key={route.path}
+                  element={<AuthWrapper allowedRoles={route.allowedRoles} />}
+                >
+                  <Route
+                    key={route.path}
+                    path={route.path}
+                    element={route.element}
+                  />
+                </Route>
+              );
+            }
+            return (
+              <Route
+                key={route.path}
+                path={route.path}
+                element={route.element}
+              />
+            );
+          })}
         </Routes>
       </MainLayout>
     </BrowserRouter>

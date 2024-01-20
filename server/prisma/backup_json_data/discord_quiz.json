@@ -1,0 +1,107 @@
+[
+  {
+    "category": "Data Structures",
+    "difficulty": "Medium",
+    "question": "What is a binary tree?",
+    "id": 1,
+    "correctAnswerId": 2
+  },
+  {
+    "category": "Algorithms",
+    "difficulty": "Medium",
+    "question": "What is the time complexity of a binary search algorithm?",
+    "id": 2,
+    "correctAnswerId": 7
+  },
+  {
+    "category": "Data Structures",
+    "difficulty": "Easy",
+    "question": "What is a stack data structure used for?",
+    "id": 3,
+    "correctAnswerId": 11
+  },
+  {
+    "category": "Algorithms",
+    "difficulty": "Hard",
+    "question": "Which sorting algorithm has the best average and worst-case time complexity?",
+    "id": 4,
+    "correctAnswerId": 14
+  },
+  {
+    "category": "Concurrency",
+    "difficulty": "Hard",
+    "question": "What does the term 'race condition' refer to in software development?",
+    "id": 5,
+    "correctAnswerId": 17
+  },
+  {
+    "category": "Complexity Theory",
+    "difficulty": "Hard",
+    "question": "What is the 'P vs NP' problem in computer science?",
+    "id": 6,
+    "correctAnswerId": 23
+  },
+  {
+    "category": "Computability",
+    "difficulty": "Hard",
+    "question": "What is the significance of the 'Halting Problem' in theoretical computer science?",
+    "id": 7,
+    "correctAnswerId": 27
+  },
+  {
+    "category": "Distributed Systems",
+    "difficulty": "Hard",
+    "question": "What is the 'Two Generals' problem and in which domain of computer science is it relevant?",
+    "id": 8,
+    "correctAnswerId": 31
+  },
+  {
+    "category": "Algorithms",
+    "difficulty": "Hard",
+    "question": "What is the significance of 'Greedy Algorithms' in computer science?",
+    "id": 9,
+    "correctAnswerId": 35
+  },
+  {
+    "category": "Blockchain",
+    "difficulty": "Hard",
+    "question": "Explain the concept of 'Blockchain' and its relevance in modern technology.",
+    "id": 10,
+    "correctAnswerId": 39
+  },
+  {
+    "category": "Software Architecture",
+    "difficulty": "Hard",
+    "question": "What are 'microservices' in software architecture, and how do they differ from monolithic architecture?",
+    "id": 11,
+    "correctAnswerId": 43
+  },
+  {
+    "category": "Algorithms",
+    "difficulty": "Hard",
+    "question": "What is the 'Traveling Salesman Problem' (TSP) in computer science, and why is it important?",
+    "id": 12,
+    "correctAnswerId": 47
+  },
+  {
+    "category": "Algorithms",
+    "difficulty": "Hard",
+    "question": "What is the purpose of 'Dijkstra's algorithm' in computer science?",
+    "id": 13,
+    "correctAnswerId": 51
+  },
+  {
+    "category": "Distributed Systems",
+    "difficulty": "Hard",
+    "question": "What is the significance of the 'CAP theorem' in distributed systems?",
+    "id": 14,
+    "correctAnswerId": 54
+  },
+  {
+    "category": "Artificial Intelligence",
+    "difficulty": "Hard",
+    "question": "What is the 'Chinese Room Argument,' and how does it relate to artificial intelligence (AI)?",
+    "id": 15,
+    "correctAnswerId": 60
+  }
+]
