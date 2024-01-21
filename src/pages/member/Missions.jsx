@@ -8,7 +8,6 @@ import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import PropTypes from 'prop-types';
-import CustomContainer from '../../components/CustomContainer';
 import IconLabelValueTypography from './IconLabelValueTypography';
 import axios from '../../config/axios.interceptor';
 
@@ -74,7 +73,7 @@ function Missions() {
         </Box>
       </Box>
 
-      <CustomContainer>
+      <Box>
         <Grid container spacing={3}>
           {missions.map((mission) => (
             <MissionGridItem
@@ -105,7 +104,7 @@ function Missions() {
             </MissionGridItem>
           ))}
         </Grid>
-      </CustomContainer>
+      </Box>
     </>
   );
 }

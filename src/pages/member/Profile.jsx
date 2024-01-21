@@ -27,10 +27,10 @@ function Profile() {
 function Sidebar({ selectedTab, handleTabChange }) {
   const username = localStorage.getItem('username');
   return (
-    <Card sx={{ padding: '16px', minWidth: 250, borderRadius: '20px' }}>
+    <Card sx={{ padding: '1rem', minWidth: 250, borderRadius: '1.25rem' }}>
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Avatar alt="User Avatar" style={{ width: '80px', height: '80px', marginBottom: '16px' }} />
-        <Typography variant="h5" sx={{ marginBottom: '16px' }}>
+        <Avatar alt="User Avatar" style={{ width: '5rem', height: '5rem', marginBottom: '1rem' }} />
+        <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
           {username}
         </Typography>
       </Box>
@@ -49,7 +49,7 @@ function Sidebar({ selectedTab, handleTabChange }) {
           <ListItemText primary="Recent AC" />
         </ListItemButton>
       </List>
-      <Button variant="contained" color="primary" fullWidth sx={{ marginTop: '24px', marginBottom: '16px', borderRadius: '16px' }}>
+      <Button variant="contained" color="primary" fullWidth sx={{ marginTop: '1.5rem', marginBottom: '1rem', borderRadius: '1rem' }}>
         Change Profile Info
       </Button>
     </Card>
@@ -64,7 +64,7 @@ Sidebar.propTypes = {
 function MainContent({ selectedTab }) {
   return (
     <Box sx={{
-      flexGrow: 1, paddingLeft: '24px', paddingRight: '24px',
+      flexGrow: 1, paddingLeft: '1.5rem', paddingRight: '1.5rem',
     }}
     >
       {selectedTab === 'allAwardsTab' && (
@@ -87,7 +87,7 @@ function AllAwards() {
 
   return (
     <Card>
-      <Typography variant="h6" sx={{ paddingLeft: '16px', paddingBottom: '16px' }}>All Awards</Typography>
+      <Typography variant="h6" sx={{ paddingLeft: '1rem', paddingBottom: '1rem' }}>All Awards</Typography>
       <Grid container spacing={3}>
         {awards.map((award) => (
         // eslint-disable-next-line dot-notation
