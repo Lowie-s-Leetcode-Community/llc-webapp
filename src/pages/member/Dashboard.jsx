@@ -3,7 +3,6 @@ import {
   Grid, Box, useTheme,
 } from '@mui/material';
 import axios from 'axios';
-// import useFetch from '../hooks/useFetch';
 import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
 

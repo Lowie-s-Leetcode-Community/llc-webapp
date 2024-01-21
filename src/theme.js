@@ -13,6 +13,7 @@ const theme = createTheme({
     background: {
       paper: '#f8f4f4',
       default: '#fff',
+      card: '#f8f4f4',
     },
     accent: {
       main: '#e4805d',

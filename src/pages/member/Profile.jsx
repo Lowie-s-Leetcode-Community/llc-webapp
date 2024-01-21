@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Grid, Typography, Button, Avatar, List, ListItemAvatar, ListItemText, ListItemButton, Box, Card,
+  Grid, Typography, Button, Avatar, List, ListItemAvatar,
+  ListItemText, ListItemButton, Box, Card, useTheme,
 } from '@mui/material';
 import { EmojiEvents } from '@mui/icons-material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
@@ -10,6 +11,8 @@ import CustomList from '../../components/CustomList';
 import CustomGridItem from '../../components/CustomGridItem';
 
 function Profile() {
+  const theme = useTheme();
+  const username = localStorage.getItem('username');
   const [selectedTab, setSelectedTab] = useState('allAwardsTab');
 
   const handleTabChange = (event, newValue) => {
@@ -17,17 +20,34 @@ function Profile() {
   };
 
   return (
-    <div style={{ display: 'flex', overflow: 'hidden' }}>
-      <Sidebar selectedTab={selectedTab} handleTabChange={handleTabChange} />
-      <MainContent selectedTab={selectedTab} />
-    </div>
+    <>
+      <Box>
+        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', marginBottom: '1rem' }}>
+          <Box component="span" sx={{ color: theme.palette.primary.main }}>
+            {username}
+          </Box>
+          &apos;s dashboard
+        </Typography>
+      </Box>
+      <Box style={{ display: 'flex', overflow: 'hidden' }}>
+        <Sidebar selectedTab={selectedTab} handleTabChange={handleTabChange} />
+        <MainContent selectedTab={selectedTab} />
+      </Box>
+    </>
+
   );
 }
 
 function Sidebar({ selectedTab, handleTabChange }) {
   const username = localStorage.getItem('username');
   return (
-    <Card sx={{ padding: '1rem', minWidth: 250, borderRadius: '1.25rem' }}>
+    <Card sx={{
+      padding: '1rem',
+      minWidth: '16.625rem',
+      height: '23rem',
+      borderRadius: '1.25rem',
+    }}
+    >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         <Avatar alt="User Avatar" style={{ width: '5rem', height: '5rem', marginBottom: '1rem' }} />
         <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
@@ -122,7 +142,6 @@ function RecentACList() {
     <Card>
       <CustomList data={recentACData} title="Recent AC" totalTitle="Total AC" primaryData="name" secondaryData="date" />
     </Card>
-
   );
 }
 
