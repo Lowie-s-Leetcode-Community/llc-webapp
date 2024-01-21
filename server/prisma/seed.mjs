@@ -109,8 +109,8 @@ async function main() {
           mostRecentSubId: parseInt(recent_ac || -1),
         },
         create: {
-          id: id,
-          discordId: BigInt(discord_id).toString(),
+          id,
+          discordId: discord_id,
           leetcodeUsername: lc_username,
           mostRecentSubId: parseInt(recent_ac || -1),
         }
