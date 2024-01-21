@@ -69,6 +69,22 @@ model UserDailyObject {
   updatedAt     DateTime    @updatedAt
   userId        Int
   dailyObjectId Int
+
+  // - These fields will only be written by bot. Web and other APIs can only read.
+  // - Note for bot: self-practice has cap. To save one field in this obj and avoid
+  // future complication, use this algorithm for each crawl:
+  // old_practice_score = sigma(usr.solvedDifficulty * config.ptsPerDifficulty)
+  // new_practice_score = min(practice_cap, old_practice_score + score_earned_for_newly_crawled)
+  // usr.scoreEarned += new_practice_score - old_practice_score
+  // commit
+  // - Note on scoreGacha: -1 = hasn't rolled, >= 0: score earned by gacha.
+  solvedDaily   Int         @default(0)
+  solvedEasy    Int         @default(0)
+  solvedMedium  Int         @default(0)
+  solvedHard    Int         @default(0)
+  scoreEarned   Int         @default(0)
+  scoreGacha    Int         @default(-1)
+
   dailyObject   DailyObject @relation(fields: [dailyObjectId], references: [id])
   user          User        @relation(fields: [userId], references: [id])
 }
