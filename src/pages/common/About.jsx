@@ -1,13 +1,14 @@
 import React from 'react';
-
-import CustomContainer from '../../components/CustomContainer';
+import {
+  Card,
+} from '@mui/material';
 
 function About() {
   return (
     <>
 
       <h3>About us</h3>
-      <CustomContainer>
+      <Card>
         <div>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit.
@@ -32,7 +33,7 @@ function About() {
           </p>
         </div>
 
-      </CustomContainer>
+      </Card>
 
     </>
   );
