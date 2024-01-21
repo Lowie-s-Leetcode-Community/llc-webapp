@@ -207,7 +207,7 @@ async function main() {
     })
   )
 
-  const {default: userMonthlyObjects} = await import('./backup_json_data/monthly_objects.json', {
+  const {default: userMonthlyObjects} = await import('./backup_json_data/user_monthlies.json', {
     assert: {
       type: 'json'
     }
@@ -221,9 +221,7 @@ async function main() {
         where: { id: id },
         update: {},
         create: {
-          id: id,
-          userId: userId,
-          scoreEarned: scoreEarned,
+          id, userId, scoreEarned,
           firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
         }
       })
