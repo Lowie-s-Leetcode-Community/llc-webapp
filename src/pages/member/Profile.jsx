@@ -102,27 +102,30 @@ MainContent.propTypes = {
 };
 
 function AllAwards() {
-  // TODO: Implement Awards feature
   const awards = [];
+  const theme = useTheme();
 
   return (
     <Card>
-      <Typography variant="h6" sx={{ paddingLeft: '1rem', paddingBottom: '1rem' }}>All Awards</Typography>
+      <Typography variant="h6" sx={{ paddingLeft: '1rem', paddingBottom: '1rem' }}>
+        All Awards
+      </Typography>
       <Grid container spacing={3}>
         {awards.map((award) => (
-        // eslint-disable-next-line dot-notation
-          <CustomGridItem key={award['_id']} id={award['_id']} sx={{ backgroundColor: '#ffffff' }}>
+          <CustomGridItem
+            key={award.id}
+            id={award.id}
+            sx={{ backgroundColor: theme.background.default }}
+          >
             <Typography variant="h6">{award.title}</Typography>
           </CustomGridItem>
         ))}
       </Grid>
     </Card>
-
   );
 }
 
 function RecentACList() {
-  // Mock data for Recent AC list
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
   const RECENT_AC_API = `${serverUrl}/api/users/${userId}/profile/`;
@@ -140,7 +143,13 @@ function RecentACList() {
 
   return (
     <Card>
-      <CustomList data={recentACData} title="Recent AC" totalTitle="Total AC" primaryData="name" secondaryData="date" />
+      <CustomList
+        data={recentACData}
+        title="Recent AC"
+        totalTitle="Total AC"
+        primaryData="name"
+        secondaryData="date"
+      />
     </Card>
   );
 }
