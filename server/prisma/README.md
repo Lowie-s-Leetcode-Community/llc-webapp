@@ -5,7 +5,7 @@
 
 - Install Prisma: https://www.prisma.io/docs/getting-started/setup-prisma/add-to-existing-project/relational-databases-typescript-postgresql
 
-- Migrate data: 
+- Migrate data:
 
 ```
 cd server
@@ -17,6 +17,13 @@ npx prisma migrate dev
 ```
 cd server
 npx prisma migrate dev --name <migration-name>
+```
+
+- Reset and re-seed DB:
+
+```
+cd server
+npx prisma db push --force-reset && npx prisma db seed
 ```
 
 ## Note
