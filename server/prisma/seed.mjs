@@ -110,7 +110,7 @@ async function main() {
         },
         create: {
           id: id,
-          discordId: String(discord_id),
+          discordId: BigInt(discord_id).toString(),
           leetcodeUsername: lc_username,
           mostRecentSubId: parseInt(recent_ac || -1),
         }
@@ -141,32 +141,52 @@ async function main() {
     })
   )
 
-  // require missions.json, which would be .gitignored. Please contact PM if you haven't got the file.
   const {default: missionsList} = await import('./backup_json_data/missions.json', {
     assert: {
       type: 'json'
     }
   })
-
-  await Promise.all(
+  Promise.all(
     missionsList.map(async mission => {
-      const { id,name, problems, isHidden, rewardImageURL } = mission;
+      const {id, name, description, isHidden, rewardImageURL, problems} = mission;
 
       await prisma.mission.upsert({
         where: { id: id },
         update: {},
         create: {
-          id: id,
-          // name: name,
-          isHidden: isHidden,
-          rewardImageURL: rewardImageURL,
+          id, name, description, isHidden, rewardImageURL,
           problems: {
             connect: problems.map(id => (id))
           }
         }
       })
     })
-  ) 
+  )
+
+  const {default: userMonthlyObjects} = await import('./backup_json_data/monthly_objects.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+
+  Promise.all(
+    userMonthlyObjects.map(async monthlyObject => {
+      const {id, userId, scoreEarned, firstDayOfMonth} = monthlyObject;
+
+      await prisma.userMonthlyObject.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          id: id,
+          userId: userId,
+          scoreEarned: scoreEarned,
+          firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
+          createdAt: new Date(),
+          updatedAt: new Date()
+        }
+      })
+    })
+  )
 }
 
 main()
