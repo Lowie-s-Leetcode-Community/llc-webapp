@@ -14,6 +14,9 @@ const theme = createTheme({
       paper: '#f8f4f4',
       default: '#fff',
     },
+    accent: {
+      main: '#e4805d',
+    },
     text: {
       main: '#1c1122',
     },
