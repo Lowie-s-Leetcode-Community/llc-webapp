@@ -6,6 +6,7 @@ import {
 import { EmojiEvents } from '@mui/icons-material';
 import TaskAltIcon from '@mui/icons-material/TaskAlt';
 import PropTypes from 'prop-types';
+import formatDate from '../../utils/dateUtils';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import CustomGridItem from '../../components/CustomGridItem';
@@ -134,7 +135,11 @@ function RecentACList() {
   useEffect(() => {
     axios.get(RECENT_AC_API)
       .then((response) => {
-        setRecentACData(response.data);
+        const formattedData = response.data.map((item) => ({
+          ...item,
+          date: formatDate(item.date),
+        }));
+        setRecentACData(formattedData);
       })
       .catch((error) => {
         throw new Error(error);
