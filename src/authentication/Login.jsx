@@ -21,11 +21,6 @@ function Login() {
     window.location.href = `${serverUrl}/api/auth/discord/login`;
   };
 
-  const handleDevLogin = () => {
-    localStorage.setItem('token', 'dev');
-    window.location.href = '/';
-  };
-
   return (
     <Grid container justifyContent="center" alignItems="center" sx={{ height: '100vh' }}>
       <Grid item xs={12} sm={8} md={6} lg={4}>
@@ -72,16 +67,6 @@ function Login() {
                   Join now!
                 </Link>
               </Typography>
-            </Box>
-
-            {/* TODO: Remove this on production */}
-            <Box sx={{ mt: 3 }}>
-              <Button
-                variant="contained"
-                onClick={handleDevLogin}
-              >
-                Log in as Developer
-              </Button>
             </Box>
           </Box>
         </Paper>
