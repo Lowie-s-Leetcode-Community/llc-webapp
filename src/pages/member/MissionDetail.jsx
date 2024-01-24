@@ -105,7 +105,7 @@ function MissionDetail() {
 
           {/* Mission overview */}
           <Box display="flex" alignItems="left">
-            <LabelValueTypography label="Solved" value={`${missionDetail.userSolvedProblems}/${missionDetail.problems.length}`} />
+            <LabelValueTypography label="Solved" value={`${missionDetail.problems.filter((problem) => problem.solved).length}/${missionDetail.problems.length}`} />
             <LabelValueTypography label="Type" value={missionDetail.isHidden ? 'Hidden' : 'Shown'} />
           </Box>
 
