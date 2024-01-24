@@ -7,6 +7,6 @@ OAuth2 là một cơ chế xác thực và phân quyền người dùng dựa v�
 0. Tạo tài khoản Discord Developer
 1. Tạo một application mới trong Discord 
 2. Chọn application vừa mới tạo và vào mục OAuth2
-3. Lấy giá trị client_id và client_secret và gán vào file.env
-4. Thêm một Redirect URL với giá trị `http://localhost:3001/callback` trong DISCORD_REDIRECT_URI (file .env) và Redirects (OAuth2 -> General)
+3. Lấy giá trị client_id và client_secret và gán vào file `.env` (Click `reset secret` if you can't see the client_secret)
+4. Thêm một Redirect URL với giá trị `http://localhost:3001/callback` trong DISCORD_REDIRECT_URI (file `.env`) và Redirects (OAuth2 -> General)
 ![](./OAuth2.png)
