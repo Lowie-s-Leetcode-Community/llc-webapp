@@ -152,18 +152,12 @@ async function getUserMissionDetails(id, missionId) {
                 solved,
             };
         });
-    
-        // PLEASE HELP. This code always returns 0
-        const userSolvedProblems = user.userSolvedProblems.filter((solvedProblem) => {
-            return solvedProblem.problem.missionId === missionId;
-        }).length;
         
         return {
             missionId: mission.id,
             missionName: mission.name,
             description: mission.description,
             isHidden: mission.isHidden,
-            userSolvedProblems,
             problems: missionProblems,
         };
     } catch (error) {

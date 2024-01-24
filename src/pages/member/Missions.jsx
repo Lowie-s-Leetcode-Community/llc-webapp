@@ -4,7 +4,6 @@ import {
   CircularProgress, Grid, Typography, Card, Box,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import PropTypes from 'prop-types';
@@ -61,7 +60,7 @@ function Missions() {
         >
           <IconLabelValueTypography
             icon={<EmojiEventsIcon sx={{ color: theme.palette.primary.main }} />}
-            label="Aced"
+            label="Solved"
             value={`${missions.filter((mission) => mission.progress === 100).length}/${missions.length}`}
           />
           <div style={{ marginRight: '1rem' }} />
@@ -69,6 +68,7 @@ function Missions() {
             icon={<MilitaryTechIcon sx={{ color: theme.palette.primary.main }} />}
             label="Rank"
             value="1/6969"
+            // TODO: update rank value from database.
           />
         </Box>
       </Box>
@@ -79,28 +79,20 @@ function Missions() {
             <MissionGridItem
               id={mission.id}
               key={`mission-grid-item-${mission.id}`}
-              missionProgress={mission.progress}
               missionRoute={`/missions/${mission.id}`}
             >
               <Typography variant="h6" sx={{ mb: 1 }} key={`mission-name-${mission.id}`}>
                 {mission.name}
               </Typography>
-              { mission.progress === 100 ? (
-                <CheckCircleOutlineIcon
-                  key={`mission-checkmark-${mission.id}`}
-                  sx={{
-                    fontSize: '2.25rem',
-                    color: theme.palette.background.card,
-                  }}
-                />
-              ) : (
-                <CircularProgress
-                  key={`mission-progress-${mission.id}`}
-                  sx={{ width: '1.5rem', height: '1.5rem', color: theme.palette.accent.main }}
-                  variant="determinate"
-                  value={mission.progress}
-                />
-              )}
+              {/* TODO: progress 100 is circular progress but filled so no change. */}
+              {/* the checkmark is not necessary. */}
+              <CircularProgress
+                key={`mission-progress-${mission.id}`}
+                sx={{ width: '1.5rem', height: '1.5rem', color: theme.palette.accent.main }}
+                variant="determinate"
+                value={mission.progress}
+              />
+              {/* TODO: circular progress should have some things inside or sth. */}
             </MissionGridItem>
           ))}
         </Grid>
@@ -110,13 +102,13 @@ function Missions() {
 }
 
 function MissionGridItem({
-  id, missionProgress, missionRoute, children,
+  id, missionRoute, children,
 }) {
   // CustomGridItem in src/components
   //  but with dynamic background support
   const theme = useTheme();
-  const backgroundColor = missionProgress === 100
-    ? theme.palette.accent.main : theme.palette.background.card;
+  const backgroundColor = theme.palette.background.card;
+  // TODO: remove this^ variable if there's no conditional
 
   return (
     <Grid item xs={6} sm={4} md={3} key={`mission-box-${id}`}>
@@ -164,7 +156,7 @@ function MissionGridItem({
 MissionGridItem.propTypes = {
   id: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
-  missionProgress: PropTypes.number.isRequired,
+  // missionProgress: PropTypes.number.isRequired,
   missionRoute: PropTypes.string,
 };
 
