@@ -8,57 +8,65 @@ import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PropTypes from 'prop-types';
+import axios from '../../config/axios.interceptor';
 import LabelValueTypography from './LabelValueTypography';
 
 // mock mission detail function
-function mockMission(missionRoute) {
-  function randomData(...items) {
-    const randomIndex = Math.floor(Math.random() * items.length);
-    return items[randomIndex];
-  }
+// function mockMission(missionRoute) {
+//   function randomData(...items) {
+//     const randomIndex = Math.floor(Math.random() * items.length);
+//     return items[randomIndex];
+//   }
 
-  function randomProblem(index) {
-    const link = index % 2 === 0
-      ? 'https://leetcode.com/problems/sqrtx/'
-      : 'https://leetcode.com/problems/maximum-69-number/';
-    return {
-      id: index,
-      name: `Problem No. ${index + 1} - ${Math.random().toFixed(Math.floor(Math.random() * 20) + 8)}`,
-      link,
-      difficulty: randomData('Easy', 'Medium', 'Hard'),
-      aced: randomData(true, false),
-    };
-  }
+//   function randomProblem(index) {
+//     const link = index % 2 === 0
+//       ? 'https://leetcode.com/problems/sqrtx/'
+//       : 'https://leetcode.com/problems/maximum-69-number/';
+//     return {
+//       id: index,
+//       name: `Problem No. ${index + 1} - ${Math.random().
+// toFixed(Math.floor(Math.random() * 20) + 8)}`,
+//       link,
+//       difficulty: randomData('Easy', 'Medium', 'Hard'),
+//       aced: randomData(true, false),
+//     };
+//   }
 
-  return {
-    name: `Mission ${missionRoute.toUpperCase()} - thiS tExT iS ranDOmlY CApiTAlIZeD.`,
-    desc: `A short description of the mission ${Math.random()}`,
-    type: randomData('Shown', 'Hidden'),
-    problemList: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
-  };
-}
+//   return {
+//     name: `Mission ${missionRoute.toUpperCase()} - thiS tExT iS ranDOmlY CApiTAlIZeD.`,
+//     desc: `A short description of the mission ${Math.random()}`,
+//     type: randomData('Shown', 'Hidden'),
+//     problems: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
+//   };
+// }
 // end of mock mission detail function
 
 function MissionDetail() {
   const { missionRoute } = useParams();
+  const serverUrl = process.env.REACT_APP_SERVER_API_URL;
+  const userId = localStorage.getItem('userId');
+  const MISSION_DETAIL_API = `${serverUrl}/api/users/${userId}/missions/${missionRoute}`;
   const [missionDetail, setMissionDetail] = useState(null);
 
-  // Uncomment this when data is taken from database
-  // const MISSION_DETAIL_API = `${process.env.REACT_APP_SERVER_API_URL}
-  //   /api/missions/${missionRoute}`;
-
-  // useEffect(() => {
-  //   fetch(MISSION_DETAIL_API)
-  //     .then((response) => response.json())
-  //     .then((data) => setMissionDetail(data))
-  //     .catch((error) => {
-  //       throw new Error(error);
-  //     });
-  // }, []);
-
   useEffect(() => {
-    setMissionDetail(mockMission(missionRoute));
-  }, [missionRoute]);
+    const fetchMissionDetail = async () => {
+      try {
+        const response = await axios.get(MISSION_DETAIL_API);
+        setMissionDetail(response.data);
+      } catch (error) {
+        throw new Error(error);
+      }
+    };
+
+    fetchMissionDetail();
+  }, []);
+
+  if (missionDetail != null) {
+    console.log(`mission id: ${missionDetail.missionId}`);
+    console.log(`mission Name: ${missionDetail.missionName}`);
+    console.log(`Hidden? ${missionDetail.isHidden}`);
+    console.log(`problems list ${missionDetail.problems}`);
+  }
 
   const missionListLink = '/missions';
   const theme = useTheme();
@@ -92,13 +100,13 @@ function MissionDetail() {
               textTransform: 'none',
             }}
           >
-            {missionDetail.name}
+            {missionDetail.missionName}
           </Typography>
 
           {/* Mission overview */}
           <Box display="flex" alignItems="left">
-            <LabelValueTypography label="Aced" value={`${missionDetail.problemList.filter((problem) => problem.aced).length}/${missionDetail.problemList.length}`} />
-            <LabelValueTypography label="Type" value={missionDetail.type} />
+            <LabelValueTypography label="Aced" value={`${missionDetail.userSolvedProblems}/${missionDetail.problems.length}`} />
+            <LabelValueTypography label="Type" value={missionDetail.isHidden ? 'Hidden' : 'Shown'} />
           </Box>
 
           {/* Mission description */}
@@ -112,13 +120,13 @@ function MissionDetail() {
             marginBottom: theme.spacing(2),
           }}
           >
-            {missionDetail.desc}
+            {missionDetail.description}
           </Card>
 
           {/* Mission problem list */}
           <ProblemList
-            problemList={missionDetail.problemList}
-            missionType={missionDetail.type}
+            problems={missionDetail.problems}
+            isHiddenMission={missionDetail.isHidden}
           />
         </>
       ) : (
@@ -128,7 +136,7 @@ function MissionDetail() {
   );
 }
 
-function ProblemList({ problemList, missionType }) {
+function ProblemList({ problems, isHiddenMission }) {
   const theme = useTheme();
 
   function getDifficultyColor(difficulty) {
@@ -147,13 +155,12 @@ function ProblemList({ problemList, missionType }) {
 
   return (
     <List>
-      {problemList.map((problem, index) => {
-        // This bugs me.
+      {problems.map((problem, index) => {
         // It's really unoptimized but I don't know how to only check only once.
-        const isHiddenProblem = missionType === 'Hidden' && !problem.aced;
+        const isHiddenProblem = isHiddenMission && !problem.solved;
 
         const problemName = isHiddenProblem
-          ? 'Hidden Problem' : problem.name;
+          ? 'Hidden Problem' : problem.title;
         const problemDifficulty = isHiddenProblem
           ? <VisibilityOffIcon fontSize="small" /> : problem.difficulty;
 
@@ -161,18 +168,18 @@ function ProblemList({ problemList, missionType }) {
           ? theme.palette.grey.dark : theme.palette.link.text;
         const problemDifficultyColor = isHiddenProblem
           ? theme.palette.grey.default : getDifficultyColor(problem.difficulty);
-        const AcedIconColor = !problem.aced
+        const AcedIconColor = !problem.solved
           ? theme.palette.grey.dark : theme.palette.success.main;
 
         return (
           <ListItem
             component={isHiddenProblem ? 'div' : Link}
-            to={isHiddenProblem ? '#' : problem.link}
+            to={isHiddenProblem ? '#' : `https://leetcode.com/problems/${problem.link}`}
             target="_blank"
             rel="noopener noreferrer"
             key={problem.id}
             sx={{
-              backgroundColor: problem.aced ? theme.palette.success.background
+              backgroundColor: problem.solved ? theme.palette.success.background
                 : 'transparent',
               border: '0.05rem solid #ddd',
             }}
@@ -187,6 +194,8 @@ function ProblemList({ problemList, missionType }) {
                 marginLeft: '1.364rem',
                 marginRight: '2.136rem',
                 color: theme.palette.grey.text,
+                width: '1.42069rem',
+                textAlign: 'center',
               }}
             >
               {index + 1}
@@ -226,17 +235,17 @@ function ProblemList({ problemList, missionType }) {
   );
 }
 
-const problemListShape = PropTypes.shape({
+const problemsShape = PropTypes.shape({
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
-  aced: PropTypes.bool.isRequired,
+  solved: PropTypes.bool.isRequired,
 });
 
 ProblemList.propTypes = {
-  problemList: PropTypes.arrayOf(problemListShape).isRequired,
-  missionType: PropTypes.string.isRequired,
+  problems: PropTypes.arrayOf(problemsShape).isRequired,
+  isHiddenMission: PropTypes.bool.isRequired,
 };
 
 export default MissionDetail;

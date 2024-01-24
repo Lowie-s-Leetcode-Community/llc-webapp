@@ -120,6 +120,8 @@ async function getUserMissions(userId) {
 async function getUserMissionDetails(id, missionId) {
     try {
         id = parseInt(id);
+        missionId = parseInt(missionId);
+
         const user = await prisma.user.findUnique({
             where: { id },
             include: {
@@ -143,9 +145,11 @@ async function getUserMissionDetails(id, missionId) {
                 return solvedProblem.problemId === problem.id;
             });
             return {
-                problemId: problem.id,
-                problemName: problem.name,
-                solved: solved,
+                id: problem.id,
+                title: problem.title,
+                link: problem.titleSlug,
+                difficulty: problem.difficulty,
+                solved,
             };
         });
 
@@ -153,12 +157,14 @@ async function getUserMissionDetails(id, missionId) {
             return solvedProblem.problem.missionId === missionId;
         }).length;
 
-        const progress = userSolvedProblems / missionProblems.length;
+        // const progress = userSolvedProblems / missionProblems.length;
 
         return {
             missionId: mission.id,
             missionName: mission.name,
-            progress: progress,
+            description: mission.description,
+            isHidden: mission.isHidden,
+            userSolvedProblems: userSolvedProblems,
             problems: missionProblems,
         };
     } catch (error) {
