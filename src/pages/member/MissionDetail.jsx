@@ -61,12 +61,12 @@ function MissionDetail() {
     fetchMissionDetail();
   }, []);
 
-  if (missionDetail != null) {
-    console.log(`mission id: ${missionDetail.missionId}`);
-    console.log(`mission Name: ${missionDetail.missionName}`);
-    console.log(`Hidden? ${missionDetail.isHidden}`);
-    console.log(`problems list ${missionDetail.problems}`);
-  }
+  // if (missionDetail != null) {
+  //   console.log(`mission id: ${missionDetail.missionId}`);
+  //   console.log(`mission Name: ${missionDetail.missionName}`);
+  //   console.log(`Hidden? ${missionDetail.isHidden}`);
+  //   console.log(`problems list ${missionDetail.problems}`);
+  // }
 
   const missionListLink = '/missions';
   const theme = useTheme();
@@ -105,7 +105,7 @@ function MissionDetail() {
 
           {/* Mission overview */}
           <Box display="flex" alignItems="left">
-            <LabelValueTypography label="Aced" value={`${missionDetail.userSolvedProblems}/${missionDetail.problems.length}`} />
+            <LabelValueTypography label="Solved" value={`${missionDetail.userSolvedProblems}/${missionDetail.problems.length}`} />
             <LabelValueTypography label="Type" value={missionDetail.isHidden ? 'Hidden' : 'Shown'} />
           </Box>
 
@@ -155,10 +155,12 @@ function ProblemList({ problems, isHiddenMission }) {
 
   return (
     <List>
-      {problems.map((problem, index) => {
+      {problems.map((problem) => {
         // It's really unoptimized but I don't know how to only check only once.
         const isHiddenProblem = isHiddenMission && !problem.solved;
 
+        const problemId = isHiddenProblem
+          ? '?' : problem.id;
         const problemName = isHiddenProblem
           ? 'Hidden Problem' : problem.title;
         const problemDifficulty = isHiddenProblem
@@ -184,21 +186,21 @@ function ProblemList({ problems, isHiddenMission }) {
               border: '0.05rem solid #ddd',
             }}
           >
-            {/* list index */}
+            {/* problem id */}
             <Typography
-              key={`list-index-${problem.id}`}
+              key={`problem-id-${problem.id}`}
               variant="h6"
               sx={{
                 marginTop: '0.682rem',
                 marginBottom: '0.682rem',
-                marginLeft: '1.364rem',
-                marginRight: '2.136rem',
+                marginLeft: '0rem',
+                marginRight: '0.5rem',
                 color: theme.palette.grey.text,
-                width: '1.42069rem',
+                width: '4.2069rem',
                 textAlign: 'center',
               }}
             >
-              {index + 1}
+              {problemId}
             </Typography>
 
             {/* Problem name and difficulty */}
@@ -237,7 +239,7 @@ function ProblemList({ problems, isHiddenMission }) {
 
 const problemsShape = PropTypes.shape({
   id: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   link: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
   solved: PropTypes.bool.isRequired,
