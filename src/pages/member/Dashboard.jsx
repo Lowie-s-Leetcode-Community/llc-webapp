@@ -118,7 +118,8 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
         <Link
           to="/missions"
           style={{
-            textDecoration: 'none', color: 'inherit', width: 0, height: 0,
+            textDecoration: 'none',
+            color: 'inherit',
           }}
         >
           <CustomCard
@@ -142,7 +143,6 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
                       textDecoration: 'none',
                       color: 'inherit',
                     }}
-                    target="_blank"
                   >
                     <Typography
                       variant="body1"
@@ -151,6 +151,7 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
                           cursor: 'pointer',
                           textDecoration: 'underline',
                         },
+                        display: 'inline-block',
                       }}
                     >
                       {mission.name}
