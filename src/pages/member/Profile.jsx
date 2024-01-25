@@ -10,6 +10,9 @@ import formatDate from '../../utils/dateUtils';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import CustomGridItem from '../../components/CustomGridItem';
+import NoDataFound from '../../components/NoDataFound';
+
+const sidebarHeight = '23rem';
 
 function Profile() {
   const theme = useTheme();
@@ -41,16 +44,31 @@ function Profile() {
 
 function Sidebar({ selectedTab, handleTabChange }) {
   const username = localStorage.getItem('username');
+  const avatar = localStorage.getItem('avatar');
+  const discordId = localStorage.getItem('discordId');
+  const avatarSize = '5rem';
+  const fontSize = `calc(${avatarSize} / 2)`;
   return (
     <Card sx={{
       padding: '1rem',
       minWidth: '16.625rem',
-      height: '23rem',
+      height: sidebarHeight,
       borderRadius: '1.25rem',
     }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <Avatar alt="User Avatar" style={{ width: '5rem', height: '5rem', marginBottom: '1rem' }} />
+        {avatar === null ? (
+          <Avatar src={`https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`} alt="User Avatar" sx={{ width: avatarSize, height: avatarSize, marginBottom: '1rem' }} />
+        ) : (
+          <Avatar
+            alt="User Avatar"
+            sx={{
+              width: avatarSize, height: avatarSize, marginBottom: '1rem', fontSize,
+            }}
+          >
+            {username.charAt(0)}
+          </Avatar>
+        )}
         <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
           {username}
         </Typography>
@@ -71,7 +89,7 @@ function Sidebar({ selectedTab, handleTabChange }) {
         </ListItemButton>
       </List>
       <Button variant="contained" color="primary" fullWidth sx={{ marginTop: '1.5rem', marginBottom: '1rem', borderRadius: '1rem' }}>
-        Change Profile Info
+        Visit Leetcode Profile
       </Button>
     </Card>
   );
@@ -107,21 +125,31 @@ function AllAwards() {
   const theme = useTheme();
 
   return (
-    <Card>
-      <Typography variant="h6" sx={{ paddingLeft: '1rem', paddingBottom: '1rem' }}>
+    <Card sx={{ minHeight: sidebarHeight }}>
+      <Typography variant="h5" sx={{ padding: '1rem', fontWeight: 'bold' }}>
         All Awards
       </Typography>
-      <Grid container spacing={3}>
-        {awards.map((award) => (
-          <CustomGridItem
-            key={award.id}
-            id={award.id}
-            sx={{ backgroundColor: theme.background.default }}
-          >
-            <Typography variant="h6">{award.title}</Typography>
-          </CustomGridItem>
-        ))}
-      </Grid>
+      { awards.length !== 0 ? (
+        <Grid container spacing={3}>
+          {awards.map((award) => (
+            <CustomGridItem
+              key={award.id}
+              id={award.id}
+              sx={{ backgroundColor: theme.background.default }}
+            >
+              <Typography variant="h6">{award.title}</Typography>
+            </CustomGridItem>
+          ))}
+        </Grid>
+      ) : (
+        <Box style={{
+          display: 'flex', height: '100%', width: '100%', alignItems: 'center', justifyContent: 'center',
+        }}
+        >
+          <NoDataFound />
+        </Box>
+
+      )}
     </Card>
   );
 }
@@ -147,7 +175,7 @@ function RecentACList() {
   }, []);
 
   return (
-    <Card>
+    <Card sx={{ minHeight: sidebarHeight }}>
       <CustomList
         data={recentACData}
         title="Recent AC"

@@ -59,6 +59,10 @@ function Header() {
     navigate('/');
   };
 
+  const username = localStorage.getItem('username');
+  const avatar = localStorage.getItem('avatar');
+  const discordId = localStorage.getItem('discordId');
+
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
       <Container maxWidth="xl">
@@ -157,9 +161,13 @@ function Header() {
             {userLoggedIn ? (
               <>
                 {/* Avatar Button */}
-                <Tooltip title="username">
+                <Tooltip title={username}>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="User Avatar" />
+                    {avatar === null ? (
+                      <Avatar src={`https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`} alt="User Avatar" />
+                    ) : (
+                      <Avatar alt="User Avatar">{username.charAt(0)}</Avatar>
+                    )}
                   </IconButton>
                 </Tooltip>
 

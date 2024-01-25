@@ -15,6 +15,8 @@ function Callback() {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userId', response.data.user_id);
         localStorage.setItem('username', response.data.username);
+        localStorage.setItem('avatar', response.data.avatar);
+        localStorage.setItem('discordId', response.data.discord_id);
         if (isLoggedIn()) {
           navigate('/');
         }
