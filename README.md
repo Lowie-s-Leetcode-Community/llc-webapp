@@ -2,7 +2,7 @@
 
 This is the Webapp for the Lowie's Leetcode Community.
 
-Quick link for team members: [Trello](https://trello.com/b/uYL1a8Bd/llc-web-agile-board)
+Quick link for team members: [Trello](https://trello.com/b/uYL1a8Bd/llc-web-agile-board).
 
 ## Quick description on Architecture
 
@@ -34,7 +34,7 @@ We use PostgreSQL for our Database. Therefore, if you tend to run the system loc
 - Ubuntu: <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04>
 - MacOS: <https://www.sqlshack.com/setting-up-a-postgresql-database-on-mac/>
 
-#### pgAdmin (to visualize DB, just like MySQL Workbench)
+#### pgAdmin (Optional, to visualize DB, just like MySQL Workbench)
 
 Windows: Included in the DB download above.
 Ubuntu: <https://www.commandprompt.com/education/how-to-install-pgadmin-on-ubuntu/>
@@ -44,7 +44,7 @@ MacOS: Included in the guide above.
 
 ### 3. Data Population (seeding)
 
-**IMPORTANT**: Most of seeding data can be found in `server/prisma/backup_json_data`. But since we don't push users' data onto our git, we git-ignored some necessary file for our seeding script to run.
+**IMPORTANT**: Most of seeding data can be found in `server/prisma/backup_json_data`. But since we don't push users' data onto our git (privacy issues), we git-ignored some necessary file for our seeding script to run.
 
 Please see the **Pinned Message** in our [*private* Discord channel](https://discord.com/channels/1085444549125611530/1150291748808044655).
 
@@ -75,15 +75,13 @@ cd server
 npm run dev
 ```
 
-Verify initiation successfully: [localhost:3000](http://localhost:3000)
+Verify initiation successfully: [localhost:3000](http://localhost:3000).
 
 #### The front-end
 
 ```sh
 npm start
 ```
-
-**Notes** (on Ports): I added `PORT` environment variable in the `start` script for the front-end. If it works, you can start both modules in any order. But in case it doesn't (usually, causing the back-end can't start), you should stop any process on port 3000, and start the back-end first, before starting the front-end.
 
 ## Linting & Clean code & Workflow
 
