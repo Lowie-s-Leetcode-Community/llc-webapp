@@ -9,6 +9,7 @@ const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const missionsRouter = require('./routes/missions');
 const problemsRouter = require('./routes/problems');
+const leaderboardRouter = require('./routes/leaderboard');
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/missions', missionsRouter);
 app.use('/api/problems', problemsRouter);
+app.use('/api/leaderboard', leaderboardRouter);
 
 app.use((req, res, next) => {
   next(createError(404));

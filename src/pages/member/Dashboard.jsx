@@ -102,7 +102,7 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
               /
               {totalMembers}
               {' '}
-              members solved
+              members completed
             </Typography>
             {dailyChallenge.topics && dailyChallenge.topics.length > 0 && (
             <Box sx={{ display: 'flex', flexWrap: 'wrap' }}>
@@ -138,43 +138,60 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
             }}
           >
             <Typography variant="h6" sx={{ marginBottom: '2rem' }}>Mission Progress</Typography>
-            {stats.topMissions.map((mission) => (
+            {stats.topMissions.length === 0 ? (
               <Box
-                key={mission.id}
                 display="flex"
                 flexDirection="row"
                 alignItems="center"
-                justifyContent="space-between"
+                justifyContent="center"
                 marginBottom="0.5rem"
                 width="100%"
+                sx={{ fontStyle: 'italic', color: 'gray' }}
               >
-                <Box sx={{ flex: 1, textAlign: 'left' }}>
-                  <Link
-                    to={`/missions/${mission.id}`}
-                    style={{
-                      textDecoration: 'none',
-                      color: 'inherit',
-                    }}
-                  >
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        '&:hover': {
-                          cursor: 'pointer',
-                          textDecoration: 'underline',
-                        },
-                        display: 'inline-block',
+                <Typography variant="body1">
+                  Looks like you haven&apos;t made any progress on missions yet.
+                  Time to embark on an adventure and start conquering missions! 🚀
+                </Typography>
+              </Box>
+            ) : (
+              stats.topMissions.map((mission) => (
+                <Box
+                  key={mission.id}
+                  display="flex"
+                  flexDirection="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  marginBottom="0.5rem"
+                  width="100%"
+                >
+                  <Box sx={{ flex: 1, textAlign: 'left' }}>
+                    <Link
+                      to={`/missions/${mission.id}`}
+                      style={{
+                        textDecoration: 'none',
+                        color: 'inherit',
                       }}
                     >
-                      {mission.name}
-                    </Typography>
-                  </Link>
+                      <Typography
+                        variant="body1"
+                        sx={{
+                          '&:hover': {
+                            cursor: 'pointer',
+                            textDecoration: 'underline',
+                          },
+                          display: 'inline-block',
+                        }}
+                      >
+                        {mission.name}
+                      </Typography>
+                    </Link>
+                  </Box>
+                  <Box sx={{ flex: 2 }}>
+                    <LinearProgress variant="determinate" color="secondary" value={mission.progress} sx={{ height: 12, borderRadius: 5 }} />
+                  </Box>
                 </Box>
-                <Box sx={{ flex: 2 }}>
-                  <LinearProgress variant="determinate" color="secondary" value={mission.progress} sx={{ height: 12, borderRadius: 5 }} />
-                </Box>
-              </Box>
-            ))}
+              ))
+            )}
           </CustomCard>
         </Link>
       </Grid>

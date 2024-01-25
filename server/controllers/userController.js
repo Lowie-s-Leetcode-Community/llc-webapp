@@ -1,5 +1,5 @@
 const prisma = require('./prisma.js')
-const { getFirstMondayOfMonth, getFirstMondayOfNextMonth } = require('../utils/dateUtils.js');
+const { getLeaderboard } = require('./leaderboardController.js');
 
 async function getAllUsers() {
     try {
@@ -168,44 +168,16 @@ async function getUserProfile(id) {
     }
 }
 
-// Get leaderboard along with user's rank and score in current month
-async function getLeaderboardAndUserMonthlyStats(userId) {
+// Get user's rank and score in current month
+async function getUserMonthlyStats(userId, leaderboard) {
     try {
-        // TODO: Change leetcode username to discord username
-        const leaderboard = await prisma.user.findMany({
-            select: {
-                id: true,
-                leetcodeUsername: true,
-                userMonthlyObjects: {
-                    select: {
-                        scoreEarned: true
-                    },
-                    where: {
-                        firstDayOfMonth: {
-                            gte: getFirstMondayOfMonth(),
-                            lt: getFirstMondayOfNextMonth()
-                        }
-                    },
-                }
-            },
-        });
-
-        const leaderboardWithScore = leaderboard.map(user => {
-            const scoreEarned = user.userMonthlyObjects.length > 0 ? user.userMonthlyObjects[0].scoreEarned : 0;
-            return {
-                id: user.id,
-                username: user.leetcodeUsername,
-                scoreEarned
-            }
-        });
-
-        leaderboardWithScore.sort((a, b) => b.scoreEarned - a.scoreEarned);
-
-        const userRank = leaderboardWithScore.findIndex(user => user.id === userId) + 1;
-        const userScore = leaderboardWithScore.find(user => user.id === userId).scoreEarned;
-
+        userId = parseInt(userId);
+        if (!leaderboard) {
+            leaderboard = await getLeaderboard();
+        }
+        const userRank = leaderboard.findIndex(user => user.id === userId) + 1;
+        const userScore = leaderboard.find(user => user.id === userId).scoreEarned;
         return {
-            leaderboard: leaderboardWithScore,
             rank: userRank,
             score: userScore
         };
@@ -215,6 +187,7 @@ async function getLeaderboardAndUserMonthlyStats(userId) {
     }
 }
 
+// Get user's number of aced missions
 async function getUserNumberOfAcedMissions(userId) {
     try {
         userId = parseInt(userId);
@@ -228,6 +201,7 @@ async function getUserNumberOfAcedMissions(userId) {
     }
 }
 
+// Get user's number of solved problems
 async function getUserNumberOfSolvedProblems(userId) {
     try {
         userId = parseInt(userId);
@@ -244,11 +218,12 @@ async function getUserNumberOfSolvedProblems(userId) {
     }
 }
 
+// Get user's top 5 missions with most progress
 async function getUserMostProgressedMissions(userId) {
     try {
         userId = parseInt(userId);
         const userMissions = await getUserMissions(userId);
-        const inProgressMissions = userMissions.filter((mission) => mission.progress < 100);
+        const inProgressMissions = userMissions.filter((mission) => mission.progress < 100 && mission.progress > 0);
         const completedMissions = userMissions.filter((mission) => mission.progress === 100);
         const sortedMissions = inProgressMissions.sort((a, b) => b.progress - a.progress);
         const topMissions = sortedMissions.slice(0, 5);
@@ -265,12 +240,14 @@ async function getUserMostProgressedMissions(userId) {
     }
 }
 
+// Get user's dashboard statistics
 async function getUserDashboardStats(userId) {
     try {
         userId = parseInt(userId);
         const userNumberOfAcedMissions = await getUserNumberOfAcedMissions(userId);
         const userNumberOfSolvedProblems = await getUserNumberOfSolvedProblems(userId);
-        const monthlyStats = await getLeaderboardAndUserMonthlyStats(userId);
+        const leaderboard = await getLeaderboard();
+        const monthlyStats = await getUserMonthlyStats(userId, leaderboard);
         const userMostProgressedMissions = await getUserMostProgressedMissions(userId);
         
         const dashboardStats = {
@@ -278,7 +255,7 @@ async function getUserDashboardStats(userId) {
             solved: userNumberOfSolvedProblems.solved,
             rank: monthlyStats.rank,
             score: monthlyStats.score,
-            leaderboard: monthlyStats.leaderboard,
+            leaderboard: leaderboard,
             topMissions: userMostProgressedMissions,
         };
         
@@ -289,4 +266,16 @@ async function getUserDashboardStats(userId) {
     }
 }
 
-module.exports = { getAllUsers, getUserMissions, getUserMissionDetails, getUserProfile, getUserIdFromDiscordId, getUser, getUserDashboardStats, getUserNumberOfAcedMissions, getUserNumberOfSolvedProblems, getLeaderboardAndUserMonthlyStats, getUserMostProgressedMissions }
+module.exports = {
+    getAllUsers,
+    getUserMissions,
+    getUserMissionDetails,
+    getUserProfile,
+    getUserIdFromDiscordId,
+    getUser,
+    getUserDashboardStats,
+    getUserNumberOfAcedMissions,
+    getUserNumberOfSolvedProblems,
+    getUserMostProgressedMissions,
+    getUserMonthlyStats
+};
