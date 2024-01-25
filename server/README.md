@@ -18,9 +18,7 @@ To use Discord OAuth2 locally, you need to:
 3. Click onto your newly created app to modify a few settings. Select the `OAuth2` section.
 
 <div style="display: flex; justify-content: center;">
-    <div style="display: flex; justify-content: center;">
-        <img src="assets/DiscordDevAppbar.png" alt="Discord Developer Appbar" width="300">
-    </div>
+    <img src="assets/DiscordDevAppbar.png" alt="Discord Developer Appbar" width="300">
 </div>
 
 4. Copy the value of "client id" and "client secret" and copy into your application. **Warning**: the client secret is shown only once after each reset.
