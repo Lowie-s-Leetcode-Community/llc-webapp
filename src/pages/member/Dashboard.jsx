@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Grid, Box, useTheme, Typography,
+  Grid, Box, Typography,
   LinearProgress, Chip,
 } from '@mui/material';
 import PropTypes from 'prop-types';
@@ -12,10 +12,9 @@ import GradeIcon from '@mui/icons-material/Grade';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
+import PageTitle from '../../components/PageTitle';
 
 function Dashboard() {
-  const username = localStorage.getItem('username');
-  const theme = useTheme();
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
   const DASHBOARD_API = `${serverUrl}/api/users/${userId}/dashboard`;
@@ -55,12 +54,7 @@ function Dashboard() {
 
   return (
     <>
-      <h3>
-        <span style={{ color: theme.palette.primary.main }}>
-          {username}
-        </span>
-        &apos;s dashboard
-      </h3>
+      <PageTitle title="dashboard" includeUsername />
       <StatsBoard
         stats={userStats}
         dailyChallenge={dailyChallenge}
@@ -87,7 +81,7 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
               },
             }}
           >
-            <Typography variant="h6" sx={{ marginBottom: '2rem' }}>Daily Challenge</Typography>
+            <Typography variant="h6" sx={{ marginBottom: '1rem' }}>Daily Challenge</Typography>
             <Typography variant="p" sx={{ marginBottom: '1rem', fontWeight: '600', fontSize: '1.5rem' }}>
               {dailyChallenge.id}
               {'. '}
@@ -121,49 +115,55 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
       </Grid>
 
       <Grid item xs={12} sm={6} md={5}>
-        <CustomCard
-          type="normal"
-          sx={{
-            height: '100%',
-            padding: '5% 10%',
+        <Link
+          to="/missions"
+          style={{
+            textDecoration: 'none', color: 'inherit', width: 0, height: 0,
           }}
         >
-          <Typography variant="h6" sx={{ marginBottom: '2rem' }}>Mission Progress</Typography>
-          {stats.topMissions.map((mission) => (
-            <Box key={mission.id} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" marginBottom="8px" width="100%">
-              <Box sx={{ flex: 1, textAlign: 'left' }}>
-                <Link
-                  to={`/missions/${mission.id}`}
-                  style={{
-                    textDecoration: 'none',
-                    color: 'inherit',
-                  }}
-                  target="_blank"
-                >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      '&:hover': {
-                        cursor: 'pointer',
-                        textDecoration: 'underline',
-                      },
+          <CustomCard
+            type="normal"
+            sx={{
+              height: '100%',
+              padding: '5% 10%',
+              '&:hover': {
+                filter: 'brightness(0.95)',
+                cursor: 'pointer',
+              },
+            }}
+          >
+            <Typography variant="h6" sx={{ marginBottom: '2rem' }}>Mission Progress</Typography>
+            {stats.topMissions.map((mission) => (
+              <Box key={mission.id} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" marginBottom="0.5rem" width="100%">
+                <Box sx={{ flex: 1, textAlign: 'left' }}>
+                  <Link
+                    to={`/missions/${mission.id}`}
+                    style={{
+                      textDecoration: 'none',
+                      color: 'inherit',
                     }}
+                    target="_blank"
                   >
-                    {mission.name}
-                  </Typography>
-                </Link>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        '&:hover': {
+                          cursor: 'pointer',
+                          textDecoration: 'underline',
+                        },
+                      }}
+                    >
+                      {mission.name}
+                    </Typography>
+                  </Link>
+                </Box>
+                <Box sx={{ flex: 2 }}>
+                  <LinearProgress variant="determinate" color="secondary" value={mission.progress} sx={{ height: 12, borderRadius: 5 }} />
+                </Box>
               </Box>
-              <Box sx={{ flex: 2 }}>
-                <LinearProgress variant="determinate" color="secondary" value={mission.progress} sx={{ height: 12, borderRadius: 5 }} />
-              </Box>
-            </Box>
-          ))}
-          <Box sx={{ position: 'relative', marginLeft: 'auto', marginTop: '0.5rem' }}>
-            <Link to="/missions" style={{ textDecoration: 'none', color: 'inherit' }}>
-              <Typography variant="body2" sx={{ '&:hover': { textDecoration: 'underline' } }}>View all &gt;&gt;</Typography>
-            </Link>
-          </Box>
-        </CustomCard>
+            ))}
+          </CustomCard>
+        </Link>
       </Grid>
       <Grid item xs={12} sm={6} md={3}>
         <Grid container rowSpacing={2} columnSpacing={2} sx={{ height: '105%' }}>
@@ -172,11 +172,14 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
               type="normal"
               sx={{
                 height: '100%',
+                '&:hover': {
+                  filter: 'brightness(0.95)',
+                },
               }}
             >
               <GradeIcon fontSize="large" color="secondary" />
               <Typography variant="h6">Score</Typography>
-              <Typography variant="p">{stats.score}</Typography>
+              <Typography variant="p" sx={{ fontSize: '1.5rem' }}>{stats.score}</Typography>
             </CustomCard>
           </Grid>
 
@@ -185,11 +188,14 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
               type="normal"
               sx={{
                 height: '100%',
+                '&:hover': {
+                  filter: 'brightness(0.95)',
+                },
               }}
             >
               <MilitaryTechIcon fontSize="large" color="secondary" />
               <Typography variant="h6">Rank</Typography>
-              <Typography variant="p">{stats.rank}</Typography>
+              <Typography variant="p" sx={{ fontSize: '1.5rem' }}>{stats.rank}</Typography>
             </CustomCard>
           </Grid>
 
@@ -198,11 +204,14 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
               type="normal"
               sx={{
                 height: '100%',
+                '&:hover': {
+                  filter: 'brightness(0.95)',
+                },
               }}
             >
               <EmojiEventsIcon fontSize="large" color="secondary" marginBottom="0.5rem" />
               <Typography variant="h6">Aced</Typography>
-              <Typography variant="p">{stats.aced}</Typography>
+              <Typography variant="p" sx={{ fontSize: '1.5rem' }}>{stats.aced}</Typography>
             </CustomCard>
           </Grid>
 
@@ -211,11 +220,14 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
               type="normal"
               sx={{
                 height: '100%',
+                '&:hover': {
+                  filter: 'brightness(0.95)',
+                },
               }}
             >
               <DoneIcon fontSize="large" color="secondary" />
               <Typography variant="h6">Solved</Typography>
-              <Typography variant="p">{stats.solved}</Typography>
+              <Typography variant="p" sx={{ fontSize: '1.5rem' }}>{stats.solved}</Typography>
             </CustomCard>
           </Grid>
         </Grid>

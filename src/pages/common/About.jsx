@@ -2,12 +2,13 @@ import React from 'react';
 import {
   Card,
 } from '@mui/material';
+import PageTitle from '../../components/PageTitle';
 
 function About() {
   return (
     <>
 
-      <h3>About us</h3>
+      <PageTitle title="About us" />
       <Card>
         <div>
           <p>
