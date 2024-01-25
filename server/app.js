@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const newLogger = require('./logger');
 
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
@@ -11,6 +12,9 @@ const missionsRouter = require('./routes/missions');
 const leaderboardRouter = require('./routes/leaderboard');
 
 const app = express();
+
+newLogger.log('info', 'Hello, Winston!');
+newLogger.log('error', 'Hello, Winston!');
 
 main().catch((err) => console.log(err));
 async function main() {
