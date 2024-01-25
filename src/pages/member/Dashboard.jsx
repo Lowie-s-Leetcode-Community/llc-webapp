@@ -69,7 +69,11 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
   return (
     <Grid container spacing={2} marginBottom="2%">
       <Grid item xs={12} sm={6} md={4}>
-        <Link to={`https://leetcode.com/problems/${dailyChallenge.titleSlug}`} target="_blank" style={{ textDecoration: 'none', height: 0, width: 0 }}>
+        <Link
+          to={`https://leetcode.com/problems/${dailyChallenge.titleSlug}`}
+          target="_blank"
+          style={{ textDecoration: 'none', height: 0, width: 0 }}
+        >
           <CustomCard
             type="gold"
             sx={{
@@ -135,7 +139,15 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
           >
             <Typography variant="h6" sx={{ marginBottom: '2rem' }}>Mission Progress</Typography>
             {stats.topMissions.map((mission) => (
-              <Box key={mission.id} display="flex" flexDirection="row" alignItems="center" justifyContent="space-between" marginBottom="0.5rem" width="100%">
+              <Box
+                key={mission.id}
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                justifyContent="space-between"
+                marginBottom="0.5rem"
+                width="100%"
+              >
                 <Box sx={{ flex: 1, textAlign: 'left' }}>
                   <Link
                     to={`/missions/${mission.id}`}
