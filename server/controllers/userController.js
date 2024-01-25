@@ -1,5 +1,5 @@
 const prisma = require('./prisma.js')
-const { getLeaderboard } = require('./leaderboardController.js')
+const { getFirstMondayOfMonth, getFirstMondayOfNextMonth } = require('../utils/dateUtils.js');
 
 async function getAllUsers() {
     try {
@@ -38,39 +38,6 @@ async function getUser(userId) {
     }
 }
 
-// Get user's finished missions, rank in server, top 3 recent awards, favourite missions, and number of solved problems
-async function getUserStats(id) {
-    try {
-        id = parseInt(id);
-        const user = await prisma.user.findUnique({
-            where: { id },
-            include: {
-                userSolvedProblems: {
-                    include: {
-                        problem: true,
-                    },
-                },
-                favoriteMissions: true,
-            },
-        });
-
-        const leaderboard = await getLeaderboard();
-        const userIndex = leaderboard.findIndex(user => user.id === id);
-        const userRank = userIndex !== -1 ? userIndex + 1 : null;
-
-        const solvedProblemsCount = user.userSolvedProblems.length;
-
-        return {
-            rank: userRank,
-            favoriteMissions: user.favoriteMissions,
-            solvedProblemsCount: solvedProblemsCount,
-        };
-    } catch (error) {
-        console.log(error);
-        throw error;
-    }
-}
-
 // Get user's status of all missions
 async function getUserMissions(userId) {
     try {
@@ -90,12 +57,12 @@ async function getUserMissions(userId) {
             },
         });
 
-        const missions = await prisma.Mission.findMany({
+        const missions = await prisma.mission.findMany({
             include: {
                 problems: true,
             },
         });
-        
+
         const userMissions = missions.map((mission) => {
             const missionProblems = mission.problems.length;
             const userSolvedProblems = user.userSolvedProblems.filter((solvedProblem) => {
@@ -201,4 +168,125 @@ async function getUserProfile(id) {
     }
 }
 
-module.exports = { getAllUsers, getUserStats, getUserMissions, getUserMissionDetails, getUserProfile, getUserIdFromDiscordId, getUser }
+// Get leaderboard along with user's rank and score in current month
+async function getLeaderboardAndUserMonthlyStats(userId) {
+    try {
+        // TODO: Change leetcode username to discord username
+        const leaderboard = await prisma.user.findMany({
+            select: {
+                id: true,
+                leetcodeUsername: true,
+                userMonthlyObjects: {
+                    select: {
+                        scoreEarned: true
+                    },
+                    where: {
+                        firstDayOfMonth: {
+                            gte: getFirstMondayOfMonth(),
+                            lt: getFirstMondayOfNextMonth()
+                        }
+                    },
+                }
+            },
+        });
+
+        const leaderboardWithScore = leaderboard.map(user => {
+            const scoreEarned = user.userMonthlyObjects.length > 0 ? user.userMonthlyObjects[0].scoreEarned : 0;
+            return {
+                id: user.id,
+                username: user.leetcodeUsername,
+                scoreEarned
+            }
+        });
+
+        leaderboardWithScore.sort((a, b) => b.scoreEarned - a.scoreEarned);
+
+        const userRank = leaderboardWithScore.findIndex(user => user.id === userId) + 1;
+        const userScore = leaderboardWithScore.find(user => user.id === userId).scoreEarned;
+
+        return {
+            leaderboard: leaderboardWithScore,
+            rank: userRank,
+            score: userScore
+        };
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function getUserNumberOfAcedMissions(userId) {
+    try {
+        userId = parseInt(userId);
+        const userMissions = await getUserMissions(userId);
+        const numberOfAcedMissions = userMissions.filter((mission) => mission.progress === 100).length;
+        return { aced: numberOfAcedMissions };
+
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function getUserNumberOfSolvedProblems(userId) {
+    try {
+        userId = parseInt(userId);
+        const user = await prisma.user.findUnique({
+            where: { id: userId },
+            select: {
+                userSolvedProblems: true,
+            },
+        });
+        return { solved: user.userSolvedProblems.length };
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function getUserMostProgressedMissions(userId) {
+    try {
+        userId = parseInt(userId);
+        const userMissions = await getUserMissions(userId);
+        const inProgressMissions = userMissions.filter((mission) => mission.progress < 100);
+        const completedMissions = userMissions.filter((mission) => mission.progress === 100);
+        const sortedMissions = inProgressMissions.sort((a, b) => b.progress - a.progress);
+        const topMissions = sortedMissions.slice(0, 5);
+        
+        if (topMissions.length < 5 && completedMissions.length > 0) {
+            const remainingMissions = completedMissions.slice(0, 5 - topMissions.length);
+            topMissions.push(...remainingMissions);
+        }
+        
+        return topMissions;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+async function getUserDashboardStats(userId) {
+    try {
+        userId = parseInt(userId);
+        const userNumberOfAcedMissions = await getUserNumberOfAcedMissions(userId);
+        const userNumberOfSolvedProblems = await getUserNumberOfSolvedProblems(userId);
+        const monthlyStats = await getLeaderboardAndUserMonthlyStats(userId);
+        const userMostProgressedMissions = await getUserMostProgressedMissions(userId);
+        
+        const dashboardStats = {
+            aced: userNumberOfAcedMissions.aced,
+            solved: userNumberOfSolvedProblems.solved,
+            rank: monthlyStats.rank,
+            score: monthlyStats.score,
+            leaderboard: monthlyStats.leaderboard,
+            topMissions: userMostProgressedMissions,
+        };
+        
+        return dashboardStats;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+
+module.exports = { getAllUsers, getUserMissions, getUserMissionDetails, getUserProfile, getUserIdFromDiscordId, getUser, getUserDashboardStats, getUserNumberOfAcedMissions, getUserNumberOfSolvedProblems, getLeaderboardAndUserMonthlyStats, getUserMostProgressedMissions }
