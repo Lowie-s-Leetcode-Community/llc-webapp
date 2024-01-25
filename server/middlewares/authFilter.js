@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { getUser } = require('../controllers/userController');
+const logger = require('../logger');
 
 function authFilter(req, res, next) {
   const authHeader = req.headers['authorization']
@@ -9,7 +10,8 @@ function authFilter(req, res, next) {
   jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
 
     if (err) {
-      console.log("Error while verifying JWT token", err)
+      // console.log("Error while verifying JWT token", err)
+      logger.error(err)
       return res.sendStatus(403)
     }
 

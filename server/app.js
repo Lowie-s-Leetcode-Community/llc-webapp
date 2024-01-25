@@ -10,9 +10,14 @@ const authRouter = require('./routes/auth');
 const missionsRouter = require('./routes/missions');
 const leaderboardRouter = require('./routes/leaderboard');
 
+const myLogger = require('./logger');
+
 const app = express();
 
-main().catch((err) => console.log(err));
+myLogger.info("Hello World");
+myLogger.error("Hello World!");
+
+main().catch((err) => myLogger.error(err));
 async function main() {
 }
 
