@@ -62,7 +62,7 @@ npx prisma db push --force-reset && npx prisma db seed
 
 ### 4. Setup `.env` files
 
-There are two `.env` files: in main directory and in `server`. Please check `.env.template` for the fields that you need to fill in.
+There are two `.env` files: in main directory and in `server`. Please clone `.env.template` into your own `.env` file and fill in all the necessary fields.
 
 We use OAuth Discord Authentication for our website. Therefore, it's a bit more complicated. See [`server/README.md`](server/README.md) for further instruction.
 
