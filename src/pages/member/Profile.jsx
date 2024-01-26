@@ -10,13 +10,10 @@ import formatDate from '../../utils/dateUtils';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import CustomGridItem from '../../components/CustomGridItem';
-
+import PageTitle from '../../components/PageTitle';
 import NoDataFound from '../../components/NoDataFound';
 
 const sidebarHeight = '23rem';
-
-import PageTitle from '../../components/PageTitle';
-
 
 function Profile() {
   const [selectedTab, setSelectedTab] = useState('allAwardsTab');
@@ -40,9 +37,22 @@ function Profile() {
 }
 
 function Sidebar({ selectedTab, handleTabChange }) {
+  const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const username = localStorage.getItem('username');
   const avatar = localStorage.getItem('avatar');
   const discordId = localStorage.getItem('discordId');
+  const userId = localStorage.getItem('userId');
+  const LEETCODE_USERNAME_API = `${serverUrl}/api/users/${userId}/leetcode-username/`;
+  const [leetcodeUsername, setLeetcodeUsername] = useState('');
+  useEffect(() => {
+    axios.get(LEETCODE_USERNAME_API)
+      .then((response) => {
+        setLeetcodeUsername(response.data);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }, []);
   const avatarSize = '5rem';
   const fontSize = `calc(${avatarSize} / 2)`;
   return (
@@ -85,7 +95,13 @@ function Sidebar({ selectedTab, handleTabChange }) {
           <ListItemText primary="Recent AC" />
         </ListItemButton>
       </List>
-      <Button variant="contained" color="primary" fullWidth sx={{ marginTop: '1.5rem', marginBottom: '1rem', borderRadius: '1rem' }}>
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        sx={{ marginTop: '1.5rem', marginBottom: '1rem', borderRadius: '1rem' }}
+        onClick={() => window.open(`https://leetcode.com/${leetcodeUsername}/`, '_blank')}
+      >
         Visit Leetcode Profile
       </Button>
     </Card>

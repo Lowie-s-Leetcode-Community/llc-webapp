@@ -77,4 +77,14 @@ userRouter.get('/:id/dashboard', async (req, res) => {
   }
 });
 
+// GET leetcode username
+userRouter.get('/:id/leetcode-username', async (req, res) => {
+  try {
+    const user = await getUser(req.params.id);
+    res.json(user.leetcodeUsername);
+  } catch (e) {
+    res.status(400).json({ error: 'Bad Request' });
+  }
+});
+
 module.exports = userRouter;
