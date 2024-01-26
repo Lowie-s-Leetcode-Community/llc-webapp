@@ -10,7 +10,6 @@ function authFilter(req, res, next) {
   jwt.verify(token, process.env.TOKEN_SECRET, (err, decoded) => {
 
     if (err) {
-      // console.log("Error while verifying JWT token", err)
       logger.error(err)
       return res.sendStatus(403)
     }
