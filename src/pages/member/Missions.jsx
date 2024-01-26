@@ -10,12 +10,12 @@ import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import PropTypes from 'prop-types';
 import IconLabelValueTypography from './IconLabelValueTypography';
 import axios from '../../config/axios.interceptor';
+import PageTitle from '../../components/PageTitle';
 
 function Missions() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
   const MISSIONS_API = `${serverUrl}/api/users/${userId}/missions/all`;
-  const username = localStorage.getItem('username');
 
   const [missions, setMissions] = useState([]);
 
@@ -42,12 +42,7 @@ function Missions() {
           alignItems: 'center',
         }}
       >
-        <h3>
-          <span style={{ color: theme.palette.primary.main }}>
-            {username}
-          </span>
-          &apos;s missions
-        </h3>
+        <PageTitle title="missions" includeUsername />
         <Box
           style={{
             borderRadius: 16,
