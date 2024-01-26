@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import { Grid, Card, Box } from '@mui/material';
 import PropTypes from 'prop-types';
 
-function CustomGridItem({ id, itemRoute = '#', children }) {
+function CustomGridItem({
+  id, itemRoute = '#', children, sx,
+}) {
   return (
-
     <Grid item xs={6} sm={4} md={3} key={id}>
       <Link to={itemRoute} style={{ textDecoration: 'none' }}>
         <Card
@@ -26,6 +27,7 @@ function CustomGridItem({ id, itemRoute = '#', children }) {
               transform: 'scale(0.95)',
               boxShadow: 4,
             },
+            ...sx,
           }}
         >
           <Box
@@ -48,9 +50,10 @@ function CustomGridItem({ id, itemRoute = '#', children }) {
 }
 
 CustomGridItem.propTypes = {
-  id: PropTypes.number.isRequired,
+  id: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
   itemRoute: PropTypes.string,
+  sx: PropTypes.shape({}).isRequired,
 };
 
 CustomGridItem.defaultProps = {

@@ -42,7 +42,6 @@ router.post('/discord/callback', async (request, response) => {
         headers,
       },
     );
-    // eslint-disable-next-line camelcase
     const { access_token } = res.data;
 
     const userResponse = await axios.get('https://discord.com/api/users/@me', {

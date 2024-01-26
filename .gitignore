@@ -35,3 +35,5 @@ server/prisma/backup_json_data/user*
 
 # log files
 server/logger/logs
+
+.vscode/**
