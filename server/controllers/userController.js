@@ -1,11 +1,12 @@
 const prisma = require('./prisma.js')
-const { getLeaderboard } = require('./leaderboardController.js');
+const { getLeaderboard } = require('./leaderboardController.js')
+const logger = require('../logger');
 
 async function getAllUsers() {
     try {
         return await prisma.user.findMany();
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -19,7 +20,7 @@ async function getUserIdFromDiscordId(discordId) {
 
         return user.id;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -33,7 +34,7 @@ async function getUser(userId) {
 
         return user;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -78,7 +79,7 @@ async function getUserMissions(userId) {
 
         return userMissions;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -129,7 +130,7 @@ async function getUserMissionDetails(id, missionId) {
             problems: missionProblems,
         };
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -163,7 +164,7 @@ async function getUserProfile(id) {
 
         return recentACs;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }

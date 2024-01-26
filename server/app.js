@@ -11,9 +11,15 @@ const missionsRouter = require('./routes/missions');
 const problemsRouter = require('./routes/problems');
 const leaderboardRouter = require('./routes/leaderboard');
 
+const winstonLogger = require('./logger');
+
 const app = express();
 
-main().catch((err) => console.log(err));
+// Winston demo
+winstonLogger.info("Hello World");
+winstonLogger.error("Hello World!");
+
+main().catch((err) => winstonLogger.error(err));
 async function main() {
 }
 
