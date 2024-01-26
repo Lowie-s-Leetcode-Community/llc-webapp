@@ -32,3 +32,5 @@ server/package-lock.json
 
 # protect our users' data
 server/prisma/backup_json_data/user*
+
+.vscode/**

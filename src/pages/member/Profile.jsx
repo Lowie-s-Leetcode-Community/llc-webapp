@@ -10,13 +10,15 @@ import formatDate from '../../utils/dateUtils';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import CustomGridItem from '../../components/CustomGridItem';
+
 import NoDataFound from '../../components/NoDataFound';
 
 const sidebarHeight = '23rem';
 
+import PageTitle from '../../components/PageTitle';
+
+
 function Profile() {
-  const theme = useTheme();
-  const username = localStorage.getItem('username');
   const [selectedTab, setSelectedTab] = useState('allAwardsTab');
 
   const handleTabChange = (event, newValue) => {
@@ -26,12 +28,7 @@ function Profile() {
   return (
     <>
       <Box>
-        <Typography variant="h6" component="div" sx={{ fontWeight: 'bold', marginBottom: '1rem' }}>
-          <Box component="span" sx={{ color: theme.palette.primary.main }}>
-            {username}
-          </Box>
-          &apos;s dashboard
-        </Typography>
+        <PageTitle title="profile" includeUsername />
       </Box>
       <Box style={{ display: 'flex', overflow: 'hidden' }}>
         <Sidebar selectedTab={selectedTab} handleTabChange={handleTabChange} />
