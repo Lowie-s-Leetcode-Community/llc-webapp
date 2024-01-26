@@ -14,6 +14,7 @@ const winstonLogger = require('./logger');
 
 const app = express();
 
+// Winston demo
 winstonLogger.info("Hello World");
 winstonLogger.error("Hello World!");
 
