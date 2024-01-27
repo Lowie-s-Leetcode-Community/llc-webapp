@@ -53,8 +53,8 @@ function Sidebar({ selectedTab, handleTabChange }) {
         throw new Error(error);
       });
   }, []);
-  const avtSize = '5rem';
-  const avtFontSize = `calc(${avatarSize} / 2)`;
+  const avatarSize = '5rem';
+  const avatarFontSize = `calc(${avatarSize} / 2)`;
   return (
     <Card sx={{
       padding: '1rem',
@@ -64,17 +64,17 @@ function Sidebar({ selectedTab, handleTabChange }) {
     }}
     >
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        {avatar === null ? (
-          <Avatar src={`https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`} alt="User Avatar" sx={{ width: avatarSize, height: avatarSize, marginBottom: '1rem' }} />
-        ) : (
+        {avatar === 'null' ? (
           <Avatar
             alt="User Avatar"
             sx={{
-              width: avtSize, height: avtSize, marginBottom: '1rem', avtFontSize,
+              width: avatarSize, height: avatarSize, marginBottom: '1rem', fontSize: avatarFontSize,
             }}
           >
             {username.charAt(0)}
           </Avatar>
+        ) : (
+          <Avatar src={`https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`} alt="User Avatar" sx={{ width: avatarSize, height: avatarSize, marginBottom: '1rem' }} />
         )}
         <Typography variant="h5" sx={{ marginBottom: '1rem' }}>
           {username}

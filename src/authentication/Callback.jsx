@@ -15,6 +15,7 @@ function Callback() {
         localStorage.setItem('token', response.data.token);
         localStorage.setItem('userId', response.data.user_id);
         localStorage.setItem('username', response.data.username);
+        // avatar is avatarId from Discord. If user do not have avatar, it will be STRING 'null'
         localStorage.setItem('avatar', response.data.avatar);
         localStorage.setItem('discordId', response.data.discord_id);
         if (isLoggedIn()) {

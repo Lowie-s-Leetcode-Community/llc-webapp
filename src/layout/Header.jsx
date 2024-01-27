@@ -163,7 +163,7 @@ function Header() {
                 {/* Avatar Button */}
                 <Tooltip title={username}>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    {avatar === null ? (
+                    {avatar === 'null' ? (
                       <Avatar alt="User Avatar">{username.charAt(0)}</Avatar>
                     ) : (
                       <Avatar src={`https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`} alt="User Avatar" />
