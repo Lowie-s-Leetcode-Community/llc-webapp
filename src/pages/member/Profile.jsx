@@ -53,8 +53,8 @@ function Sidebar({ selectedTab, handleTabChange }) {
         throw new Error(error);
       });
   }, []);
-  const avatarSize = '5rem';
-  const fontSize = `calc(${avatarSize} / 2)`;
+  const avtSize = '5rem';
+  const avtFontSize = `calc(${avatarSize} / 2)`;
   return (
     <Card sx={{
       padding: '1rem',
@@ -70,7 +70,7 @@ function Sidebar({ selectedTab, handleTabChange }) {
           <Avatar
             alt="User Avatar"
             sx={{
-              width: avatarSize, height: avatarSize, marginBottom: '1rem', fontSize,
+              width: avtSize, height: avtSize, marginBottom: '1rem', avtFontSize,
             }}
           >
             {username.charAt(0)}
