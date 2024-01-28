@@ -17,10 +17,14 @@ import axios from '../../config/axios.interceptor';
 function Missions() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
-  const MISSIONS_API = `${serverUrl}/api/users/${userId}/missions/all`;
   const username = localStorage.getItem('username');
 
+  const MISSIONS_API = `${serverUrl}/api/users/${userId}/missions/all`;
+  const RANK_API = `${serverUrl}/api/users/${userId}/rank`;
+
   const [missions, setMissions] = useState(null);
+  const [rank, setRank] = useState(null); // check how back-end is implemented.
+  const [totalUsers, setTotalUsers] = useState(null);
 
   useEffect(() => {
     const fetchMissions = async () => {
@@ -31,10 +35,22 @@ function Missions() {
         throw new Error(error);
       }
     };
+
+    const fetchRank = async () => {
+      try {
+        const response = await axios.get(RANK_API);
+        setRank(response.data.rank);
+        setTotalUsers(response.data.totalUsers);
+      } catch (error) {
+        throw new Error(error);
+      }
+    };
     // TODO: fetch using /:id/rank
     // data is from response.data.rank
+    // TODO: how is rank used??????
 
     fetchMissions();
+    fetchRank();
   }, []);
 
   const theme = useTheme();
@@ -69,13 +85,13 @@ function Missions() {
               <IconLabelValueTypography
                 icon={<EmojiEventsIcon sx={{ color: theme.palette.primary.main }} />}
                 label="Solved"
-                value={`${missions.filter((mission) => mission.progress === 100).length}/${missions.length}`}
+                value={`${missions.filter((mission) => mission.progress === 100).length} / ${missions.length}`}
               />
               <div style={{ marginRight: '1rem' }} />
               <IconLabelValueTypography
                 icon={<MilitaryTechIcon sx={{ color: theme.palette.primary.main }} />}
                 label="Rank"
-                value="1/6969"
+                value={`${rank} / ${totalUsers}`}
               />
             </Box>
           </Box>
