@@ -20,10 +20,10 @@ function CustomList({
     <>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Typography variant="h6" style={{ margin: theme.spacing(2), textAlign: 'left' }}>{title}</Typography>
+          <Typography variant="h5" style={{ margin: theme.spacing(2), textAlign: 'left', fontWeight: 'bold' }}>{title}</Typography>
         </Grid>
         <Grid item>
-          <Typography variant="h6" style={{ margin: theme.spacing(2), textAlign: 'right' }}>
+          <Typography variant="h5" style={{ margin: theme.spacing(2), textAlign: 'right', fontWeight: 'bold' }}>
             {totalTitle}
             {': '}
             {data.length}

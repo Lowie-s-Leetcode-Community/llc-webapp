@@ -45,9 +45,6 @@ function Missions() {
         throw new Error(error);
       }
     };
-    // TODO: fetch using /:id/rank
-    // data is from response.data.rank
-    // TODO: how is rank used??????
 
     fetchMissions();
     fetchRank();

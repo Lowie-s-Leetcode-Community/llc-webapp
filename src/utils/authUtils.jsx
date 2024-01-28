@@ -6,4 +6,6 @@ export const clearCredentials = () => {
   localStorage.removeItem('token');
   localStorage.removeItem('userId');
   localStorage.removeItem('username');
+  localStorage.removeItem('avatar');
+  localStorage.removeItem('discordId');
 };

@@ -148,7 +148,7 @@ function ProblemList({ problems, isHiddenMission }) {
       case 'Hard':
         return theme.leetcodeProblem.hard.main;
       default:
-        return theme.error.main;
+        return theme.palette.error.main;
         // this should never return but switch case forces a 'default' case.
     }
   }
