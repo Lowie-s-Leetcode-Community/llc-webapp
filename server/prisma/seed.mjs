@@ -109,8 +109,8 @@ async function main() {
           mostRecentSubId: parseInt(recent_ac || -1),
         },
         create: {
-          id: id,
-          discordId: BigInt(discord_id).toString(),
+          id,
+          discordId: discord_id,
           leetcodeUsername: lc_username,
           mostRecentSubId: parseInt(recent_ac || -1),
         }
@@ -163,7 +163,51 @@ async function main() {
     })
   )
 
-  const {default: userMonthlyObjects} = await import('./backup_json_data/monthly_objects.json', {
+  const {default: dailyObjects} = await import('./backup_json_data/dailies.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+
+  await Promise.all(
+    dailyObjects.map(async daily => {
+      const {id, problemId, isToday, generatedDate} = daily;
+      await prisma.dailyObject.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          id, problemId, isToday,
+          generatedDate: new Date(generatedDate).toISOString(),
+        }
+      })
+    })
+  )
+
+  const {default: userDailyObjects} = await import('./backup_json_data/user_dailies.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+
+  Promise.all(
+    userDailyObjects.map(async userDailyObject => {
+      const {
+        id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
+        solvedHard, scoreEarned, scoreGacha
+      } = userDailyObject;
+
+      await prisma.userDailyObject.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
+          solvedHard, scoreEarned, scoreGacha
+        }
+      })
+    })
+  )
+
+  const {default: userMonthlyObjects} = await import('./backup_json_data/user_monthlies.json', {
     assert: {
       type: 'json'
     }
@@ -177,12 +221,8 @@ async function main() {
         where: { id: id },
         update: {},
         create: {
-          id: id,
-          userId: userId,
-          scoreEarned: scoreEarned,
+          id, userId, scoreEarned,
           firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
-          createdAt: new Date(),
-          updatedAt: new Date()
         }
       })
     })

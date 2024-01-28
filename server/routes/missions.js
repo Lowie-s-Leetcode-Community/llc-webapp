@@ -21,5 +21,6 @@ missionRouter.get('/:id', async (req, res) => {
       res.status(500).json({ error: 'Internal Server Error' });
     }
 });
+// router.get('/', mission_controller.get_missions);
 
 module.exports = missionRouter;

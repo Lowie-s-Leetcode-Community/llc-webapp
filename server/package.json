@@ -12,7 +12,7 @@
   "dependencies": {
     "@adminjs/express": "^6.1.0",
     "@adminjs/prisma": "^5.0.1",
-    "@prisma/client": "^5.8.0",
+    "@prisma/client": "^5.8.1",
     "axios": "^1.6.0",
     "connect-pg-simple": "^9.0.1",
     "cookie-parser": "~1.4.4",
@@ -26,12 +26,13 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.0.3",
     "morgan": "~1.9.1",
     "tslib": "^2.6.2"
   },
   "devDependencies": {
     "nodemon": "^3.0.2",
-    "prisma": "^5.8.0"
+    "prisma": "^5.8.0",
+    "winston": "^3.11.0",
+    "winston-daily-rotate-file": "^4.7.1"
   }
 }

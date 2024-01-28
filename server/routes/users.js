@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllUsers, getUserStats, getUserMissions, getUserMissionDetails, getUserProfile, getUser } = require('../controllers/userController');
+const { getAllUsers, getUserStats, getUserMissions, getUserMissionDetails, getUserProfile, getUser, getUserDashboardStats } = require('../controllers/userController');
 const {authFilter, checkUser} = require('../middlewares/authFilter');
 const userRouter = express.Router();
 
@@ -63,6 +63,25 @@ userRouter.get('/:id/profile', async (req, res) => {
   try {
     const userProfile = await getUserProfile(req.params.id);
     res.json(userProfile);
+  } catch (e) {
+    res.status(400).json({ error: 'Bad Request' });
+  }
+});
+
+userRouter.get('/:id/dashboard', async (req, res) => {
+  try {
+    const userDashboards = await getUserDashboardStats(req.params.id);
+    res.json(userDashboards);
+  } catch (e) {
+    res.status(400).json({ error: 'Bad Request' });
+  }
+});
+
+// GET leetcode username
+userRouter.get('/:id/leetcode-username', async (req, res) => {
+  try {
+    const user = await getUser(req.params.id);
+    res.json(user.leetcodeUsername);
   } catch (e) {
     res.status(400).json({ error: 'Bad Request' });
   }

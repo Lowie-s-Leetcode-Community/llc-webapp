@@ -8,11 +8,18 @@ const cors = require('cors');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
 const missionsRouter = require('./routes/missions');
+const problemsRouter = require('./routes/problems');
 const leaderboardRouter = require('./routes/leaderboard');
+
+const winstonLogger = require('./logger');
 
 const app = express();
 
-main().catch((err) => console.log(err));
+// Winston demo
+winstonLogger.info("Hello World");
+winstonLogger.error("Hello World!");
+
+main().catch((err) => winstonLogger.error(err));
 async function main() {
 }
 
@@ -28,7 +35,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/missions', missionsRouter);
+app.use('/api/problems', problemsRouter);
 app.use('/api/leaderboard', leaderboardRouter);
+
 app.use((req, res, next) => {
   next(createError(404));
 });

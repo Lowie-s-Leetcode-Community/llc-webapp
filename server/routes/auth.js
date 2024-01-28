@@ -42,7 +42,6 @@ router.post('/discord/callback', async (request, response) => {
         headers,
       },
     );
-    // eslint-disable-next-line camelcase
     const { access_token } = res.data;
 
     const userResponse = await axios.get('https://discord.com/api/users/@me', {
@@ -54,7 +53,7 @@ router.post('/discord/callback', async (request, response) => {
 
     const token = await generateAccessToken(userResponse.data.id);
     const userId = await getUserIdFromDiscordId(userResponse.data.id);
-    response.json({token, access_token, user_id: userId, username: userResponse.data.username});
+    response.json({token, access_token, user_id: userId, discord_id:  userResponse.data.id, username: userResponse.data.username, avatar: userResponse.data.avatar});
   } catch (error) {
     response.status(400).json(error);
   }
