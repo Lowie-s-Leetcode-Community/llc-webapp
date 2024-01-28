@@ -16,7 +16,7 @@ const winstonLogger = require('./logger');
 const app = express();
 
 // Winston demo
-winstonLogger.info("Hello World");
+winstonLogger.info("LLC V0.5 WEBAAPP STARTED");
 winstonLogger.error("Hello World!");
 
 main().catch((err) => winstonLogger.error(err));
