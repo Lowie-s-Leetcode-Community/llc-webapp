@@ -38,7 +38,7 @@ async function getDailyProblem() {
         }
         return dailyChallenge;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
