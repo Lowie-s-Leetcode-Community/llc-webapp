@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("POSTGRES_URL")
+  url      = "postgresql://postgres:08022003@localhost:5432/lc_db?schema=lc_db"
 }
 
 model User {
@@ -144,4 +144,11 @@ model SystemConfiguration {
   timeBeforeKick       Int
   unverifiedRoleId     Int
   backupChannelId      Int
+}
+
+model Account {
+  id                   Int      @id @default(autoincrement())
+  email             String
+  password          String
+  role              String
 }

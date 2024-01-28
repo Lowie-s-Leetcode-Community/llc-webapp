@@ -1,5 +1,5 @@
 import { PrismaClient } from '@prisma/client'
-
+import argon2 from 'argon2';
 /**
  * Input for this seed: problems.json, topics.json, problem_topics.json
  *  
@@ -223,6 +223,28 @@ async function main() {
         create: {
           id, userId, scoreEarned,
           firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
+        }
+      })
+    })
+  )
+
+  const {default: accountList} = await import('./backup_json_data/account.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+  Promise.all(
+    accountList.map(async account => {
+      const {id, password, email, role} = account;
+      const hashedPassword = await argon2.hash(password);
+      await prisma.Account.upsert({
+        where: { id: id },
+        update: {},
+        create: {
+          id : id,
+          password: hashedPassword,
+          email: email,
+          role: role
         }
       })
     })
