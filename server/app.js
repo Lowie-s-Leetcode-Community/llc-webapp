@@ -17,7 +17,6 @@ const app = express();
 
 // Winston demo
 winstonLogger.info("LLC V0.5 WEBAAPP STARTED");
-winstonLogger.error("Hello World!");
 
 main().catch((err) => winstonLogger.error(err));
 async function main() {
