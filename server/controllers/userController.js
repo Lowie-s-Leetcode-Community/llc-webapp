@@ -278,6 +278,7 @@ async function getUserRank(userId, leaderboard) {
         const userRank = leaderboard.findIndex(user => user.id === userId) + 1;
         return {
             rank: userRank,
+            totalUsers: leaderboard.length,
         };
     } catch (error) {
         logger.error(error);
