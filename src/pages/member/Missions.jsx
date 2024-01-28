@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import {
-  CircularProgress, Grid, Typography, Card, Box,
+  Grid, Typography, Card, Box,
 } from '@mui/material';
+import CircularProgress, {
+  circularProgressClasses,
+} from '@mui/material/CircularProgress';
 import { useTheme } from '@mui/material/styles';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import PropTypes from 'prop-types';
 import IconLabelValueTypography from './IconLabelValueTypography';
+import CircularProgressWithLabel from './CircularProgressWithLabel';
 import axios from '../../config/axios.interceptor';
 
 function Missions() {
@@ -16,7 +20,7 @@ function Missions() {
   const MISSIONS_API = `${serverUrl}/api/users/${userId}/missions/all`;
   const username = localStorage.getItem('username');
 
-  const [missions, setMissions] = useState([]);
+  const [missions, setMissions] = useState(null);
 
   useEffect(() => {
     const fetchMissions = async () => {
@@ -27,77 +31,92 @@ function Missions() {
         throw new Error(error);
       }
     };
+    // TODO: fetch using /:id/rank
+    // data is from response.data.rank
 
     fetchMissions();
   }, []);
 
   const theme = useTheme();
   return (
-    <>
-      <Box
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-        }}
-      >
-        <h3>
-          <span style={{ color: theme.palette.primary.main }}>
-            {username}
-          </span>
-          &apos;s missions
-        </h3>
-        <Box
-          style={{
-            borderRadius: 16,
-            backgroundColor: theme.palette.background.card,
-            boxShadow: theme.customShadows.light,
-            display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-          }}
-          p={1}
-        >
-          <IconLabelValueTypography
-            icon={<EmojiEventsIcon sx={{ color: theme.palette.primary.main }} />}
-            label="Solved"
-            value={`${missions.filter((mission) => mission.progress === 100).length}/${missions.length}`}
-          />
-          <div style={{ marginRight: '1rem' }} />
-          <IconLabelValueTypography
-            icon={<MilitaryTechIcon sx={{ color: theme.palette.primary.main }} />}
-            label="Rank"
-            value="1/6969"
-            // TODO: update rank value from database.
-          />
-        </Box>
-      </Box>
-
-      <Box>
-        <Grid container spacing={3}>
-          {missions.map((mission) => (
-            <MissionGridItem
-              id={mission.id}
-              key={`mission-grid-item-${mission.id}`}
-              missionRoute={`/missions/${mission.id}`}
+    <div>
+      {missions ? (
+        <>
+          <Box
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
+            <h3>
+              <span style={{ color: theme.palette.primary.main }}>
+                {username}
+              </span>
+              &apos;s missions
+            </h3>
+            <Box
+              style={{
+                borderRadius: 16,
+                backgroundColor: theme.palette.background.card,
+                boxShadow: theme.customShadows.light,
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
+              }}
+              p={1}
             >
-              <Typography variant="h6" sx={{ mb: 1 }} key={`mission-name-${mission.id}`}>
-                {mission.name}
-              </Typography>
-              {/* TODO: progress 100 is circular progress but filled so no change. */}
-              {/* the checkmark is not necessary. */}
-              <CircularProgress
-                key={`mission-progress-${mission.id}`}
-                sx={{ width: '1.5rem', height: '1.5rem', color: theme.palette.accent.main }}
-                variant="determinate"
-                value={mission.progress}
+              <IconLabelValueTypography
+                icon={<EmojiEventsIcon sx={{ color: theme.palette.primary.main }} />}
+                label="Solved"
+                value={`${missions.filter((mission) => mission.progress === 100).length}/${missions.length}`}
               />
-              {/* TODO: circular progress should have some things inside or sth. */}
-            </MissionGridItem>
-          ))}
-        </Grid>
-      </Box>
-    </>
+              <div style={{ marginRight: '1rem' }} />
+              <IconLabelValueTypography
+                icon={<MilitaryTechIcon sx={{ color: theme.palette.primary.main }} />}
+                label="Rank"
+                value="1/6969"
+              />
+            </Box>
+          </Box>
+
+          <Box>
+            <Grid container spacing={3}>
+              {missions.map((mission) => (
+                <MissionGridItem
+                  id={mission.id}
+                  key={`mission-grid-item-${mission.id}`}
+                  missionRoute={`/missions/${mission.id}`}
+                >
+                  <Typography variant="h6" sx={{ mb: 1, margin: '0' }} key={`mission-name-${mission.id}`}>
+                    {mission.name}
+                  </Typography>
+                  <CircularProgressWithLabel
+                    baseCircularProgress={(
+                      <CircularProgress
+                        style={{ width: '4rem', height: '4rem' }}
+                        sx={{
+                          color: theme.palette.accent.main,
+                          [`& .${circularProgressClasses.circle}`]: {
+                            strokeLinecap: 'round',
+                          },
+                        }}
+                        variant="determinate"
+                        value={(mission.userSolvedProblems / mission.problemCount) * 100}
+                        thickness={4}
+                      />
+                    )}
+                    label={`${mission.userSolvedProblems} / ${mission.problemCount}`}
+                  />
+                </MissionGridItem>
+              ))}
+            </Grid>
+          </Box>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
 }
 
@@ -107,20 +126,28 @@ function MissionGridItem({
   // CustomGridItem in src/components
   //  but with dynamic background support
   const theme = useTheme();
-  const backgroundColor = theme.palette.background.card;
-  // TODO: remove this^ variable if there's no conditional
 
   return (
-    <Grid item xs={6} sm={4} md={3} key={`mission-box-${id}`}>
-      <Link to={missionRoute} style={{ textDecoration: 'none' }}>
+    <Grid item xs={6} sm={4} md={3} sx={{ height: '10rem' }} key={`mission-box-${id}`}>
+      <Link
+        to={missionRoute}
+        style={{
+          textDecoration: 'none',
+          width: '100%',
+          height: '100%',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <Card
           sx={{
+            width: '100%',
             height: '100%',
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
             cursor: 'pointer',
-            borderRadius: '0.454rem',
+            borderRadius: '1rem',
             boxShadow: 1,
             transition: 'all 0.2s ease-in-out',
             '&:hover': {
@@ -142,7 +169,7 @@ function MissionGridItem({
               width: '100%',
               height: '100%',
               padding: '0.454rem',
-              backgroundColor,
+              backgroundColor: theme.palette.background.card,
             }}
           >
             {children}
@@ -156,7 +183,6 @@ function MissionGridItem({
 MissionGridItem.propTypes = {
   id: PropTypes.number.isRequired,
   children: PropTypes.node.isRequired,
-  // missionProgress: PropTypes.number.isRequired,
   missionRoute: PropTypes.string,
 };
 

@@ -105,7 +105,9 @@ async function getUserMissions(userId) {
             return {
                 id: mission.id,
                 name: mission.name,
-                progress: progress,
+                userSolvedProblems,
+                problemCount: missionProblems,
+                progress,
             };
         });
 
