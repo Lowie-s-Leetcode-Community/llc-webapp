@@ -28,11 +28,12 @@ app.use(helmet());
 app.use(express.static(path.join(__dirname, "build")));
 
 let corsOptions = { 
-  origin : [process.env.CLIENT_REDIRECT_URL], 
+  origin : process.env.NODE_ENV === 'production' ? [process.env.CLIENT_REDIRECT_URL] : '*',
 } 
+
+winstonLogger.debug("Enviroment: " + process.env.NODE_ENV);
  
 app.use(cors(corsOptions)) 
-
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
