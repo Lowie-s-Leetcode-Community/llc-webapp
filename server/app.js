@@ -1,50 +1,51 @@
 const createError = require('http-errors');
 const express = require('express');
-const mongoose = require('mongoose');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const helmet = require("helmet");
 
-const authFilter = require('./middleware/authFilter');
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
-const homeRouter = require('./routes/home');
 const missionsRouter = require('./routes/missions');
-const profileRouter = require('./routes/profile');
+const problemsRouter = require('./routes/problems');
+const leaderboardRouter = require('./routes/leaderboard');
+
+const winstonLogger = require('./logger');
+require('dotenv').config();
 
 const app = express();
 
-mongoose.set("strictQuery", false);
-const mongoDB = process.env.MONGODB_URI
+// Winston demo
+winstonLogger.info("LLC V0.5 WEBAAPP STARTED");
 
-main().catch((err) => console.log(err));
+main().catch((err) => winstonLogger.error(err));
 async function main() {
-  await mongoose.connect(mongoDB);
 }
 
+app.use(helmet());
 app.use(express.static(path.join(__dirname, "build")));
-app.use(cors());
 
+let corsOptions = { 
+  origin : process.env.NODE_ENV === 'production' ? [process.env.CLIENT_REDIRECT_URL] : '*',
+} 
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
-
-
+winstonLogger.debug("Enviroment: " + process.env.NODE_ENV);
+ 
+app.use(cors(corsOptions)) 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/api/index', indexRouter);
-app.use('/api/users/', usersRouter);
-app.use('/api/auth/', authRouter);
-app.use('/api/home/', homeRouter);
+app.use('/api/auth', authRouter);
+app.use('/api/users', usersRouter);
 app.use('/api/missions', missionsRouter);
-app.use('/api/profile', profileRouter);
+app.use('/api/problems', problemsRouter);
+app.use('/api/leaderboard', leaderboardRouter);
+
 app.use((req, res, next) => {
   next(createError(404));
 });

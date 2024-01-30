@@ -6,54 +6,85 @@ Quick link for team members: [Trello](https://trello.com/b/uYL1a8Bd/llc-web-agil
 
 ## Quick description on Architecture
 
-My (Lowie's) plan is to combine both the front-end and back-end into one same repo, since with the current scalings, the smoothness of our team workflow should be prioritize, rather than scalings in the (far) future.
+- Front-end (NodeJS): in main directory, except for `server`.
+- Back-end (ReactJS): in `server`.
 
-Therefore, you can find every code related to the back-end (uses ExpressJS), in `server`. All other files in the directory belongs to the front-end (which uses `ReactJS`).
+We followed [this guide](https://burkeholland.dev/posts/express-react-starter-refresh/) while set up this project.
 
-I followed [this guide](https://burkeholland.dev/posts/express-react-starter-refresh/) while set up this project.
+## First-time set-up
 
-## Boot up
+### 1. Package installation
 
-### 0. First time installation/pulling new feature
-```
+```sh
 cd server
 npm i
 cd ..
 npm i
 ```
-### 1. Start the back-end
 
-```
+Please do not install any new packages on your own if you're not developing features.
+
+### 2. DB Installation
+
+We use PostgreSQL for our Database. Therefore, if you tend to run the system locally, you'll need to install PostgreSQL.
+
+#### PostgreSQL Module
+
+- Windows: <https://www.postgresql.org/download/windows/>
+- Ubuntu: <https://www.digitalocean.com/community/tutorials/how-to-install-and-use-postgresql-on-ubuntu-20-04>
+- MacOS: <https://www.sqlshack.com/setting-up-a-postgresql-database-on-mac/>
+
+#### pgAdmin (Optional, to visualize DB, just like MySQL Workbench)
+
+Windows: Included in the DB download above.
+Ubuntu: <https://www.commandprompt.com/education/how-to-install-pgadmin-on-ubuntu/>
+MacOS: Included in the guide above.
+
+**Note**: Please follow the guide closely and report to the PM if the above guide has any problem, as previous devs haven't put hands on every OS, and they follows different guides.
+
+### 3. Data Population (seeding)
+
+**IMPORTANT**: Most of seeding data can be found in `server/prisma/backup_json_data`. But since we don't push users' data onto our git (privacy issues), we git-ignored some necessary file for our seeding script to run.
+
+Please see the **Pinned Message** in our [*private* Discord channel](https://discord.com/channels/1085444549125611530/1150291748808044655).
+
+```sh
 cd server
+npx prisma migrate dev
+npx prisma db seed
+```
+
+Reset local DB, in case something bad happened:
+
+```sh
+npx prisma db push --force-reset && npx prisma db seed
+```
+
+### 4. Setup `.env` files
+
+There are two `.env` files: in main directory and in `server`. Please clone `.env.template` into your own `.env` file and fill in all the necessary fields.
+
+We use OAuth Discord Authentication for our website. Therefore, it's a bit more complicated. See [`server/README.md`](server/README.md) for further instruction.
+
+### 5. Boot the application
+
+#### The Back-end
+
+```sh
+cd server
+npm run dev
+```
+
+Verify initiation successfully: [localhost:3000](http://localhost:3000).
+
+#### The front-end
+
+```sh
 npm start
 ```
-
-Verify initiation successfully: [localhost:3000](http://localhost:3000)
-
-### 2. Start the front-end
-```
-npm start
-```
-Verify initiation successfully: [localhost:3001](http://localhost:3001)
-
-**Notes** (populating db, if you haven't done so): please check out: `server/scripts/README.md`.
-
-**Notes** (on Ports): I added `PORT` environment variable in the `start` script for the front-end. If it works, you can start both modules in any order. But in case it doesn't (usually, causing the back-end can't start), you should stop any process on port 3000, and start the back-end first, before starting the front-end.
-
-**Notes** (dev only): If front-end is fetching mock data, open a new terminal and run mock data server with `json-server --watch --no-cors ./mock-data/data.json`.
-
-If `json-server` is not found, it's because this command is not installed yet. Run this: `npm install -g json-server`.
-
-### 3. Update new code
-
-Hot-reload is implemented in the React module in this project, so any changes on the UI level is updated immediately. Only if you had just installed new modules, you'll have to restart this module.
-
-The Express back-end, however, haven't got it (yet). So, restart it after an update.
 
 ## Linting & Clean code & Workflow
 
 Linting is enforced on all front-end code and adhere to the [AirBNB guidelines](https://airbnb.io/javascript/). Or, their [github link](https://github.com/airbnb/javascript).
-
-The branch `main` (on remote) will be locked so you can't commit to it directly. Please, check out to your own branch and create pull request. The best: one branch/one feature. :)
 
 ### Have fun developing! :D

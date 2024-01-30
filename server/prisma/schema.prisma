@@ -1,0 +1,147 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_URL")
+}
+
+model User {
+  id                 Int                 @id @default(autoincrement())
+  discordId          String              @unique
+  leetcodeUsername   String              @unique
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  mostRecentSubId    Int
+  userDailyObjects   UserDailyObject[]
+  userMonthlyObjects UserMonthlyObject[]
+  userSolvedProblems UserSolvedProblem[]
+}
+
+model Problem {
+  id                 Int                 @id @default(autoincrement())
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  title              String
+  titleSlug          String
+  difficulty         String
+  isPremium          Boolean
+  dailyObjects       DailyObject[]
+  userSolvedProblems UserSolvedProblem[]
+  missions           Mission[]           @relation("MissionToProblem")
+  topics             Topic[]             @relation("ProblemToTopic")
+}
+
+model UserSolvedProblem {
+  id           Int      @id @default(autoincrement())
+  submissionId Int
+  problemId    Int
+  userId       Int
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  problem      Problem  @relation(fields: [problemId], references: [id])
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model Topic {
+  id        Int       @id @default(autoincrement())
+  topicName String    @unique
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  problems  Problem[] @relation("ProblemToTopic")
+}
+
+model DailyObject {
+  id               Int               @id @default(autoincrement())
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  problemId        Int
+  isToday          Boolean
+  generatedDate    DateTime          @db.Date
+  problem          Problem           @relation(fields: [problemId], references: [id])
+  userDailyObjects UserDailyObject[]
+}
+
+model UserDailyObject {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  userId        Int
+  dailyObjectId Int
+
+  // - These fields will only be written by bot. Web and other APIs can only read.
+  // - Note for bot: self-practice has cap. To save one field in this obj and avoid
+  // future complication, use this algorithm for each crawl:
+  // old_practice_score = sigma(usr.solvedDifficulty * config.ptsPerDifficulty)
+  // new_practice_score = min(practice_cap, old_practice_score + score_earned_for_newly_crawled)
+  // usr.scoreEarned += new_practice_score - old_practice_score
+  // commit
+  // - Note on scoreGacha: -1 = hasn't rolled, >= 0: score earned by gacha.
+  solvedDaily   Int         @default(0)
+  solvedEasy    Int         @default(0)
+  solvedMedium  Int         @default(0)
+  solvedHard    Int         @default(0)
+  scoreEarned   Int         @default(0)
+  scoreGacha    Int         @default(-1)
+
+  dailyObject   DailyObject @relation(fields: [dailyObjectId], references: [id])
+  user          User        @relation(fields: [userId], references: [id])
+}
+
+model UserMonthlyObject {
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          Int
+  scoreEarned     Int
+  firstDayOfMonth DateTime @db.Date
+  user            User     @relation(fields: [userId], references: [id])
+}
+
+model Mission {
+  id             Int       @id @default(autoincrement())
+  name           String
+  description    String
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  isHidden       Boolean
+  rewardImageURL String?
+  problems       Problem[] @relation("MissionToProblem")
+}
+
+model DiscordQuiz {
+  id                Int                 @id @default(autoincrement())
+  createdAt         DateTime            @default(now())
+  updatedAt         DateTime            @updatedAt
+  category          String
+  question          String
+  difficulty        String
+  correctAnswerId   Int
+  discordQuizAnswer DiscordQuizAnswer[]
+}
+
+model DiscordQuizAnswer {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  answer        String
+  discordQuizId Int
+  discordQuiz   DiscordQuiz @relation(fields: [discordQuizId], references: [id])
+}
+
+model SystemConfiguration {
+  id                   Int      @id @default(autoincrement())
+  serverId             Int
+  verifiedRoleId       Int
+  trackingChannelId    Int
+  scoreLogChannelId    Int
+  dailyThreadChannelId Int
+  lastDailyCheck       DateTime
+  feedbackChannelId    Int
+  qaChannelId          Int
+  eventChannelId       Int
+  timeBeforeKick       Int
+  unverifiedRoleId     Int
+  backupChannelId      Int
+}

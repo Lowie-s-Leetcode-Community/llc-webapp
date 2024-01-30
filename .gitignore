@@ -29,3 +29,11 @@ yarn-error.log*
 
 package-lock.json
 server/package-lock.json
+
+# protect our users' data
+server/prisma/backup_json_data/user*
+
+# log files
+server/logger/logs
+
+.vscode/**

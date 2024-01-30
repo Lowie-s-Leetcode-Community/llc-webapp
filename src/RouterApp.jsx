@@ -5,6 +5,7 @@ import Login from './authentication/Login';
 import NotFound from './error/NotFound';
 import Callback from './authentication/Callback';
 import Missions from './pages/member/Missions';
+import MissionDetail from './pages/member/MissionDetail';
 import About from './pages/common/About';
 import Profile from './pages/member/Profile';
 import MainLayout from './layout/MainLayout';
@@ -46,6 +47,11 @@ function RouterApp() {
     {
       path: '/missions',
       element: <Missions />,
+      allowedRoles: ['member'],
+    },
+    {
+      path: '/missions/:missionRoute',
+      element: <MissionDetail />,
       allowedRoles: ['member'],
     },
     {

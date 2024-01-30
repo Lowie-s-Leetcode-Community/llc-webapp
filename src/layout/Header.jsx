@@ -13,7 +13,7 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import { Link, useNavigate } from 'react-router-dom';
 import leetcodeLogo from '../assets/images/leetcode_logo.png';
-import { isLoggedIn } from '../utils/authUtils';
+import { isLoggedIn, clearCredentials } from '../utils/authUtils';
 
 function Header() {
   const navigate = useNavigate();
@@ -53,11 +53,15 @@ function Header() {
     setAnchorElUser(null);
   };
 
-  // Handle logout (remove token from local storage)
+  // Handle logout (clear credentials from local storage)
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    clearCredentials();
     navigate('/');
   };
+
+  const username = localStorage.getItem('username');
+  const avatar = localStorage.getItem('avatar');
+  const discordId = localStorage.getItem('discordId');
 
   return (
     <AppBar position="static" sx={{ backgroundColor: 'transparent', boxShadow: 'none' }}>
@@ -157,9 +161,13 @@ function Header() {
             {userLoggedIn ? (
               <>
                 {/* Avatar Button */}
-                <Tooltip title="username">
+                <Tooltip title={username}>
                   <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                    <Avatar alt="User Avatar" />
+                    {avatar === 'null' ? (
+                      <Avatar alt="User Avatar">{username.charAt(0)}</Avatar>
+                    ) : (
+                      <Avatar src={`https://cdn.discordapp.com/avatars/${discordId}/${avatar}.png`} alt="User Avatar" />
+                    )}
                   </IconButton>
                 </Tooltip>
 
