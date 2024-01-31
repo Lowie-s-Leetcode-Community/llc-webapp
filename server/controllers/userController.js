@@ -267,6 +267,53 @@ async function getUserDashboardStats(userId) {
     }
 }
 
+const getUserStreaks = async (req, res) => {
+    console.log("get user streaks")
+    try {
+        const userId = parseInt(req.params.id);
+        console.log(userId)
+        const userDailies = await prisma.userDailyObject.findMany({
+            where: {
+                userId: userId
+            },
+            include: {
+                dailyObject: true
+            },
+            orderBy: {
+                dailyObject: {
+                    generatedDate: 'desc'
+                }
+            }
+        })
+        console.log(userDailies)
+        // console.log(daily)
+        let currentCount = 0, longestStreak = 0, currentStreak = 0, isCurrent = true
+        userDailies.forEach(daily => {
+            if (daily.solvedDaily) {
+                currentCount++
+                if (currentCount > longestStreak) {
+                    longestStreak = currentCount
+                }
+                if (isCurrent) {
+                    currentStreak++
+                }
+            } else {
+                currentCount = 0
+                isCurrent = false
+            }
+            // if (daily.dailyObject.generatedDate === new Date().toISOString().slice(0, 10)) {
+            //     current = currentStreak
+            // }
+        })
+        console.log(longestStreak, currentStreak)
+        res.json(userDailies)
+    }
+    catch (error) {
+        console.log(error);
+        res.status(400).json({ error: 'Bad Request' });
+    }
+}
+
 module.exports = {
     getAllUsers,
     getUserMissions,
@@ -278,5 +325,6 @@ module.exports = {
     getUserNumberOfAcedMissions,
     getUserNumberOfSolvedProblems,
     getUserMostProgressedMissions,
-    getUserMonthlyStats
+    getUserMonthlyStats,
+    getUserStreaks
 };
