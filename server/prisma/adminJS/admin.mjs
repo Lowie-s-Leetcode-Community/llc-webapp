@@ -1,20 +1,18 @@
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
 import AdminJS from 'adminjs'
 import AdminJSExpress from '@adminjs/express'
 import express from 'express'
-import Connect from 'connect-pg-simple'
-import session from 'express-session'
 import argon2 from 'argon2';
-import passwordsFeature from '@adminjs/passwords';
-
 import { Database, Resource, getModelByName } from '@adminjs/prisma'
 import { PrismaClient } from '@prisma/client'
 
+const winstonLogger = require('../../logger')
 const prisma = new PrismaClient()
 
 AdminJS.registerAdapter({ Database, Resource })
 
-const PORT = 3005
-
+const PORT = process.env.ADMIN_PORT
 
 const start = async () => {
     
@@ -64,15 +62,6 @@ const start = async () => {
                     },
                   },
                 },
-                // features: [
-                //   passwordsFeature({
-                //     properties: {
-                //       encryptedPassword: 'password',
-                //       password: 'newPassword'
-                //     },
-                //     hash: argon2.hash,
-                // })
-                // ]
             },
         }, {
             resource: { model: getModelByName('Problem'), client: prisma },
@@ -83,12 +72,6 @@ const start = async () => {
 
     const admin = new AdminJS(adminOptions)
     
-    // app.use(session({
-    //     secret: 'your-session-secret',
-    //     resave: false,
-    //     saveUninitialized: true,
-    //   }));
-
     const adminRouter = AdminJSExpress.buildAuthenticatedRouter(admin, {
 
         authenticate: async (email, password) => {
@@ -109,7 +92,7 @@ const start = async () => {
     app.use(admin.options.rootPath, adminRouter)
 
     app.listen(PORT, () => {
-        console.log(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
+        winstonLogger.info(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
     })
 }
 
