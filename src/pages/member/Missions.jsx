@@ -23,7 +23,7 @@ function Missions() {
   const RANK_API = `${serverUrl}/api/users/${userId}/rank`;
 
   const [missions, setMissions] = useState(null);
-  const [rank, setRank] = useState(null); // check how back-end is implemented.
+  const [rank, setRank] = useState(null);
   const [totalUsers, setTotalUsers] = useState(null);
 
   useEffect(() => {
@@ -137,7 +137,7 @@ function MissionGridItem({
   id, missionRoute, children,
 }) {
   // CustomGridItem in src/components
-  //  but with dynamic background support
+  //   but allows for dynamic background and shape support
   const theme = useTheme();
 
   return (

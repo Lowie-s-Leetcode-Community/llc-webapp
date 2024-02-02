@@ -117,7 +117,7 @@ async function getUserMissionDetails(id, missionId) {
             return {
                 id: problem.id,
                 title: problem.title,
-                link: problem.titleSlug,
+                titleSlug: problem.titleSlug,
                 difficulty: problem.difficulty,
                 solved,
             };

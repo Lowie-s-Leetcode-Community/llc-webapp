@@ -11,36 +11,6 @@ import PropTypes from 'prop-types';
 import axios from '../../config/axios.interceptor';
 import LabelValueTypography from './LabelValueTypography';
 
-// mock mission detail function
-// function mockMission(missionRoute) {
-//   function randomData(...items) {
-//     const randomIndex = Math.floor(Math.random() * items.length);
-//     return items[randomIndex];
-//   }
-
-//   function randomProblem(index) {
-//     const link = index % 2 === 0
-//       ? 'https://leetcode.com/problems/sqrtx/'
-//       : 'https://leetcode.com/problems/maximum-69-number/';
-//     return {
-//       id: index,
-//       name: `Problem No. ${index + 1} - ${Math.random().
-// toFixed(Math.floor(Math.random() * 20) + 8)}`,
-//       link,
-//       difficulty: randomData('Easy', 'Medium', 'Hard'),
-//       aced: randomData(true, false),
-//     };
-//   }
-
-//   return {
-//     name: `Mission ${missionRoute.toUpperCase()} - thiS tExT iS ranDOmlY CApiTAlIZeD.`,
-//     desc: `A short description of the mission ${Math.random()}`,
-//     type: randomData('Shown', 'Hidden'),
-//     problems: Array.from({ length: 7 }, (_, index) => randomProblem(index)),
-//   };
-// }
-// end of mock mission detail function
-
 function MissionDetail() {
   const { missionRoute } = useParams();
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
@@ -60,13 +30,6 @@ function MissionDetail() {
 
     fetchMissionDetail();
   }, []);
-
-  // if (missionDetail != null) {
-  //   console.log(`mission id: ${missionDetail.missionId}`);
-  //   console.log(`mission Name: ${missionDetail.missionName}`);
-  //   console.log(`Hidden? ${missionDetail.isHidden}`);
-  //   console.log(`problems list ${missionDetail.problems}`);
-  // }
 
   const missionListLink = '/missions';
   const theme = useTheme();
@@ -156,7 +119,6 @@ function ProblemList({ problems, isHiddenMission }) {
   return (
     <List>
       {problems.map((problem) => {
-        // It's really unoptimized but I don't know how to only check only once.
         const isHiddenProblem = isHiddenMission && !problem.solved;
 
         const problemId = isHiddenProblem
@@ -176,7 +138,7 @@ function ProblemList({ problems, isHiddenMission }) {
         return (
           <ListItem
             component={isHiddenProblem ? 'div' : Link}
-            to={isHiddenProblem ? '#' : `https://leetcode.com/problems/${problem.link}`}
+            to={isHiddenProblem ? '#' : `https://leetcode.com/problems/${problem.titleSlug}`}
             target="_blank"
             rel="noopener noreferrer"
             key={problem.id}
@@ -240,7 +202,7 @@ function ProblemList({ problems, isHiddenMission }) {
 const problemsShape = PropTypes.shape({
   id: PropTypes.number.isRequired,
   title: PropTypes.string.isRequired,
-  link: PropTypes.string.isRequired,
+  titleSlug: PropTypes.string.isRequired,
   difficulty: PropTypes.string.isRequired,
   solved: PropTypes.bool.isRequired,
 });
