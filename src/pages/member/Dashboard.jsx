@@ -165,26 +165,14 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
                   width="100%"
                 >
                   <Box sx={{ flex: 1, textAlign: 'left' }}>
-                    <Link
-                      to={`/missions/${mission.id}`}
-                      style={{
-                        textDecoration: 'none',
-                        color: 'inherit',
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: 'inline-block',
                       }}
                     >
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          '&:hover': {
-                            cursor: 'pointer',
-                            textDecoration: 'underline',
-                          },
-                          display: 'inline-block',
-                        }}
-                      >
-                        {mission.name}
-                      </Typography>
-                    </Link>
+                      {mission.name}
+                    </Typography>
                   </Box>
                   <Box sx={{ flex: 2 }}>
                     <LinearProgress variant="determinate" color="secondary" value={mission.progress} sx={{ height: 12, borderRadius: 5 }} />
@@ -239,7 +227,7 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
                 },
               }}
             >
-              <EmojiEventsIcon fontSize="large" color="secondary" marginBottom="0.5rem" />
+              <EmojiEventsIcon fontSize="large" color="secondary" />
               <Typography variant="h6">Aced</Typography>
               <Typography variant="p" sx={{ fontSize: '1.5rem' }}>{stats.aced}</Typography>
             </CustomCard>
@@ -279,7 +267,7 @@ StatsBoard.propTypes = {
     title: PropTypes.string,
     titleSlug: PropTypes.string,
     difficulty: PropTypes.string,
-    id: PropTypes.string,
+    id: PropTypes.number,
     topics: PropTypes.arrayOf(Object),
     numberOfMembersSolved: PropTypes.number,
   }).isRequired,
