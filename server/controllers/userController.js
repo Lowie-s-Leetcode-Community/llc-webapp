@@ -268,16 +268,22 @@ async function getUserDashboardStats(userId) {
 }
 
 const getUserStreaks = async (req, res) => {
-    console.log("get user streaks")
     try {
         const userId = parseInt(req.params.id);
-        console.log(userId)
         const userDailies = await prisma.userDailyObject.findMany({
             where: {
                 userId: userId
             },
-            include: {
-                dailyObject: true
+            select :{
+                solvedDaily: true,
+                solvedEasy: true,
+                solvedMedium: true,
+                solvedHard: true,
+                dailyObject: {
+                    select: {
+                        generatedDate: true
+                    }
+                }
             },
             orderBy: {
                 dailyObject: {
@@ -285,31 +291,35 @@ const getUserStreaks = async (req, res) => {
                 }
             }
         })
-        console.log(userDailies)
-        // console.log(daily)
-        let currentCount = 0, longestStreak = 0, currentStreak = 0, isCurrent = true
+        // console.log(userDailies)
+        let currentCount = 0, longestStreak = 0, currentStreak = 0
+        let isCurrent = true
         userDailies.forEach(daily => {
-            if (daily.solvedDaily) {
+            if (daily.solvedDaily ||
+                daily.solvedEasy >= 2 ||
+                daily.solvedMedium >= 1 ||
+                daily.solvedHard >= 1) {
+                
                 currentCount++
-                if (currentCount > longestStreak) {
+                if (currentCount > longestStreak)
                     longestStreak = currentCount
-                }
-                if (isCurrent) {
+                if (isCurrent)
                     currentStreak++
-                }
+                
             } else {
                 currentCount = 0
-                isCurrent = false
+                if (daily.dailyObject.generatedDate.toISOString().slice(0, 10) !== new Date().toISOString().slice(0, 10))
+                    isCurrent = false
             }
-            // if (daily.dailyObject.generatedDate === new Date().toISOString().slice(0, 10)) {
-            //     current = currentStreak
-            // }
         })
-        console.log(longestStreak, currentStreak)
-        res.json(userDailies)
+        // console.log(longestStreak, currentStreak)
+        res.json({
+            currentStreak: currentStreak,
+            longestStreak: longestStreak
+        })
     }
     catch (error) {
-        console.log(error);
+        logger.error(error);
         res.status(400).json({ error: 'Bad Request' });
     }
 }
