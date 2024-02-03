@@ -227,6 +227,35 @@ async function main() {
       })
     })
   )
+
+  // Configurations
+  await prisma.systemConfiguration.upsert({
+    where: { id: 1 },
+    update: {
+      serverId: process.env.SERVER_ID,
+      verifiedRoleId: process.env.VERIFIED_ROLE_ID,
+      unverifiedRoleId: process.env.UNVERIFIED_ROLE_ID,
+      submissionChannelId: process.env.SUBMISSION_CHANNEL_ID,
+      scoreLogChannelId: process.env.SCORE_LOG_CHANNEL_ID,
+      dailyThreadChannelId: process.env.DAILY_THREAD_CHANNEL_ID,
+      devErrorLogId: process.env.DEV_ERROR_LOG_ID,
+      databaseLogId: process.env.DATABASE_LOG_ID,
+      backupChannelId: process.env.BACKUP_CHANNEL_ID,
+      eventLoggingId: process.env.EVENT_LOGGING_ID
+    },
+    create: {
+      serverId: process.env.SERVER_ID,
+      verifiedRoleId: process.env.VERIFIED_ROLE_ID,
+      unverifiedRoleId: process.env.UNVERIFIED_ROLE_ID,
+      submissionChannelId: process.env.SUBMISSION_CHANNEL_ID,
+      scoreLogChannelId: process.env.SCORE_LOG_CHANNEL_ID,
+      dailyThreadChannelId: process.env.DAILY_THREAD_CHANNEL_ID,
+      devErrorLogId: process.env.DEV_ERROR_LOG_ID,
+      databaseLogId: process.env.DATABASE_LOG_ID,
+      backupChannelId: process.env.BACKUP_CHANNEL_ID,
+      eventLoggingId: process.env.EVENT_LOGGING_ID
+    }
+  })
 }
 
 main()
