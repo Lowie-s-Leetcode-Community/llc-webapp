@@ -310,14 +310,11 @@ const getUserStreaks = async (req, res) => {
                 }
             }
         })
-        // console.log(userDailies)
         let currentCount = 0, longestStreak = 0, currentStreak = 0
         let isCurrent = true
         userDailies.forEach(daily => {
             if (daily.solvedDaily ||
-                daily.solvedEasy >= 2 ||
-                daily.solvedMedium >= 1 ||
-                daily.solvedHard >= 1) {
+                daily.scoreEarned >= 2) {
                 
                 currentCount++
                 if (currentCount > longestStreak)
@@ -331,7 +328,6 @@ const getUserStreaks = async (req, res) => {
                     isCurrent = false
             }
         })
-        // console.log(longestStreak, currentStreak)
         res.json({
             currentStreak: currentStreak,
             longestStreak: longestStreak
