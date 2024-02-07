@@ -17,6 +17,7 @@ model User {
   userDailyObjects   UserDailyObject[]
   userMonthlyObjects UserMonthlyObject[]
   userSolvedProblems UserSolvedProblem[]
+  userAwards         UserAward[]
 }
 
 model Problem {
@@ -108,6 +109,27 @@ model Mission {
   isHidden       Boolean
   rewardImageURL String?
   problems       Problem[] @relation("MissionToProblem")
+}
+
+model Award {
+  id          Int      @id @default(autoincrement())
+  name        String
+  nameSlug    String
+  description String
+  image String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  userAwards  UserAward[]
+}
+
+model UserAward {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    Int
+  awardId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  award     Award    @relation(fields: [awardId], references: [id])
 }
 
 model DiscordQuiz {

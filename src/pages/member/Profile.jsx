@@ -9,7 +9,6 @@ import PropTypes from 'prop-types';
 import formatDate from '../../utils/dateUtils';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
-import CustomGridItem from '../../components/CustomGridItem';
 import PageTitle from '../../components/PageTitle';
 import NoDataFound from '../../components/NoDataFound';
 
@@ -134,24 +133,35 @@ MainContent.propTypes = {
 };
 
 function AllAwards() {
-  const awards = [];
-  const theme = useTheme();
+  const serverUrl = process.env.REACT_APP_SERVER_API_URL;
+  const userId = localStorage.getItem('userId');
+  const AWARDS_API = `${serverUrl}/api/users/${userId}/awards/`;
+  const [awards, setAwards] = useState([]);
+
+  useEffect(() => {
+    axios.get(AWARDS_API)
+      .then((response) => {
+        const formattedData = response.data.map((item) => ({
+          ...item,
+          date: formatDate(item.date),
+        }));
+        setAwards(formattedData);
+      })
+      .catch((error) => {
+        throw new Error(error);
+      });
+  }, []);
+  // const theme = useTheme();
 
   return (
     <Card sx={{ minHeight: sidebarHeight }}>
       <Typography variant="h5" sx={{ padding: '1rem', fontWeight: 'bold' }}>
         All Awards
       </Typography>
-      { awards.length !== 0 ? (
+      { awards && awards.length !== 0 ? (
         <Grid container spacing={3}>
           {awards.map((award) => (
-            <CustomGridItem
-              key={award.id}
-              id={award.id}
-              sx={{ backgroundColor: theme.background.default }}
-            >
-              <Typography variant="h6">{award.title}</Typography>
-            </CustomGridItem>
+            <AwardGridItem award={award} key={award.id} />
           ))}
         </Grid>
       ) : (
@@ -170,7 +180,7 @@ function AllAwards() {
 function RecentACList() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
-  const RECENT_AC_API = `${serverUrl}/api/users/${userId}/profile/`;
+  const RECENT_AC_API = `${serverUrl}/api/users/${userId}/recent-acs/`;
   const [recentACData, setRecentACData] = useState([]);
 
   useEffect(() => {
@@ -199,5 +209,59 @@ function RecentACList() {
     </Card>
   );
 }
+
+function AwardGridItem({ award }) {
+  const theme = useTheme();
+  return (
+    <Grid item xs={12} sm={6} md={2} key={award.id}>
+      <Card
+        sx={{
+          height: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          cursor: 'pointer',
+          borderRadius: '10px',
+          boxShadow: 0,
+          '&:hover': {
+            transition: 'all 0.2s ease-in-out',
+            border: `1px solid ${theme.palette.primary.main}`,
+          },
+          border: `1px solid ${theme.palette.secondary.main}`,
+        }}
+      >
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width: '100%',
+            height: '100%',
+            padding: '10px',
+          }}
+        >
+          <Box sx={{
+            display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '100%',
+          }}
+          >
+            <img src={award.image} alt="award" style={{ maxWidth: '100%', maxHeight: '50px' }} />
+          </Box>
+          <Typography variant="h6">{award.name}</Typography>
+        </Box>
+      </Card>
+    </Grid>
+  );
+}
+
+AwardGridItem.propTypes = {
+  award: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    image: PropTypes.string.isRequired,
+    desciption: PropTypes.string.isRequired,
+    date: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 export default Profile;
