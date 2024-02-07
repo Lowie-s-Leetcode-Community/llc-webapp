@@ -1,6 +1,5 @@
 const express = require('express');
-const { getAllUsers, getUserRank, getUserMissions, getUserMissionDetails, getUserProfile, getUser, 
-  getUserDashboardStats, getUserAwards, getUserRecentACs } = require('../controllers/userController');
+const { getAllUsers, getUserRank, getUserMissions, getUserMissionDetails, getUserProfile, getUser, getUserDashboardStats } = require('../controllers/userController');
 const {authFilter, checkUser} = require('../middlewares/authFilter');
 const userRouter = express.Router();
 
@@ -59,6 +58,16 @@ userRouter.get('/:id/missions/:missionId', async (req, res) => {
   }
 });
 
+// GET user profile
+userRouter.get('/:id/profile', async (req, res) => {
+  try {
+    const userProfile = await getUserProfile(req.params.id);
+    res.json(userProfile);
+  } catch (e) {
+    res.status(400).json({ error: 'Bad Request' });
+  }
+});
+
 userRouter.get('/:id/dashboard', async (req, res) => {
   try {
     const userDashboards = await getUserDashboardStats(req.params.id);
@@ -82,24 +91,6 @@ userRouter.get('/:id/rank', async (req, res) => {
   try {
     const rank = await getUserRank(req.params.id);
     res.json(rank);
-  } catch (e) {
-    res.status(400).json({ error: 'Bad Request' });
-  }
-});
-
-userRouter.get('/:id/awards', async (req, res) => {
-  try {
-    const awards = await getUserAwards(req.params.id);
-    res.json(awards);
-  } catch (e) {
-    res.status(400).json({ error: 'Bad Request' });
-  }
-});
-
-userRouter.get('/:id/recent-acs', async (req, res) => {
-  try {
-    const recentACs = await getUserRecentACs(req.params.id);
-    res.json(recentACs);
   } catch (e) {
     res.status(400).json({ error: 'Bad Request' });
   }

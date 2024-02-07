@@ -135,8 +135,8 @@ async function getUserMissionDetails(id, missionId) {
     }
 }
 
-// Get user's recent ACs
-async function getUserRecentACs(id) {
+// Get user's profile (awards, recent ACs) - currently returning only recent ACs
+async function getUserProfile(id) {
     try {
         id = parseInt(id);
         const user = await prisma.user.findUnique({
@@ -284,42 +284,11 @@ async function getUserRank(userId, leaderboard) {
     }
 }
 
-// Get user's awards
-async function getUserAwards(userId) {
-    try {
-        userId = parseInt(userId);
-        const user = await prisma.user.findUnique({
-            where: { id: userId },
-            select: {
-                userAwards: {
-                    include: {
-                        award: true,
-                    },
-                },
-            },
-        });
-
-        const awards = user.userAwards.map((userAward) => {
-            return {
-                id: userAward.id,
-                name: userAward.award.name,
-                description: userAward.award.description,
-                image: userAward.award.image,
-                date: userAward.createdAt,
-            };
-        });
-
-        return awards;
-    } catch (error) {
-        logger.error(error);
-        throw error;
-    }
-}
-
 module.exports = {
     getAllUsers,
     getUserMissions,
     getUserMissionDetails,
+    getUserProfile,
     getUserIdFromDiscordId,
     getUser,
     getUserDashboardStats,
@@ -328,6 +297,4 @@ module.exports = {
     getUserMostProgressedMissions,
     getUserMonthlyStats,
     getUserRank,
-    getUserAwards,
-    getUserRecentACs,
 };
