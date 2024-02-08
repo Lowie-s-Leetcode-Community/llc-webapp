@@ -298,6 +298,7 @@ const getUserStreaks = async (req, res) => {
                 solvedEasy: true,
                 solvedMedium: true,
                 solvedHard: true,
+                scoreEarned: true,
                 dailyObject: {
                     select: {
                         generatedDate: true
@@ -324,7 +325,7 @@ const getUserStreaks = async (req, res) => {
                 
             } else {
                 currentCount = 0
-                if (daily.dailyObject.generatedDate.toISOString().slice(0, 10) !== new Date().toISOString().slice(0, 10))
+                if (daily.dailyObject.generatedDate.toLocaleDateString() !== new Date().toLocaleDateString())
                     isCurrent = false
             }
         })
