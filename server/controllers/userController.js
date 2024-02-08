@@ -314,8 +314,7 @@ const getUserStreaks = async (req, res) => {
         let currentCount = 0, longestStreak = 0, currentStreak = 0
         let isCurrent = true
         userDailies.forEach(daily => {
-            if (daily.solvedDaily ||
-                daily.scoreEarned >= 2) {
+            if (daily.scoreEarned >= 2) {
                 
                 currentCount++
                 if (currentCount > longestStreak)
