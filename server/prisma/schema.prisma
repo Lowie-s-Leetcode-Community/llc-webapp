@@ -58,8 +58,7 @@ model DailyObject {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   problemId        Int
-  isToday          Boolean
-  generatedDate    DateTime          @db.Date
+  generatedDate    DateTime          @db.Date @unique
   problem          Problem           @relation(fields: [problemId], references: [id])
   userDailyObjects UserDailyObject[]
 }

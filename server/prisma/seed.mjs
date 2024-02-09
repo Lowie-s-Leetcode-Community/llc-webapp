@@ -171,12 +171,12 @@ async function main() {
 
   await Promise.all(
     dailyObjects.map(async daily => {
-      const {id, problemId, isToday, generatedDate} = daily;
+      const {id, problemId, generatedDate} = daily;
       await prisma.dailyObject.upsert({
         where: { id: id },
         update: {},
         create: {
-          id, problemId, isToday,
+          id, problemId,
           generatedDate: new Date(generatedDate).toISOString(),
         }
       })
