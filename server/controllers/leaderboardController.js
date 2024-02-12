@@ -1,5 +1,5 @@
 const prisma = require('./prisma.js');
-const { getFirstMondayOfMonth, getFirstMondayOfNextMonth } = require('../utils/dateUtils.js');
+const { getFirstDayOfMonth } = require('../utils/dateUtils.js');
 const logger = require('../logger');
 
 // Get leaderboard with pagination
@@ -18,10 +18,7 @@ async function getLeaderboard(page) {
             scoreEarned: true
           },
           where: {
-            firstDayOfMonth: {
-              gte: getFirstMondayOfMonth(),
-              lt: getFirstMondayOfNextMonth()
-            }
+            firstDayOfMonth: getFirstDayOfMonth()
           },
         }
       },
