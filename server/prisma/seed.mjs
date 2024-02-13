@@ -1,9 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
-/**
- * Input for this seed: problems.json, topics.json, problem_topics.json
- *  
- */
+// Find the required imports here (which has been .gitignored due to privacy):
+// https://discord.com/channels/1085444549125611530/1200665465329033306
 
 const prisma = new PrismaClient();
 async function main() {
@@ -67,7 +65,6 @@ async function main() {
     })
   )
 
-  // require users.json, which would be .gitignored. Please contact PM if you haven't got the file.
   const {default: usersList} = await import('./backup_json_data/users.json', {
     assert: {
       type: 'json'
@@ -92,7 +89,6 @@ async function main() {
     })
   )
 
-  // require user_solved_problems.json, which would be .gitignored. Please contact PM if you haven't got the file.
   const {default: userProblemsList} = await import('./backup_json_data/user_solved_problems.json', {
     assert: {
       type: 'json'
@@ -101,22 +97,6 @@ async function main() {
   const createUserSolvedProblem = prisma.userSolvedProblem.createMany({
     data: userProblemsList.map((sub) => ({...sub, submissionId: -1})),
   });
-  // await Promise.all(
-  //   userProblemsList.map(async userProblem => {
-  //     const { id, problemId, userId } = userProblem;
-      
-  //     await prisma.userSolvedProblem.upsert({
-  //       where: { id: id },
-  //       update: {},
-  //       create: {
-  //         id: id,
-  //         problemId: problemId,
-  //         userId: userId,
-  //         submissionId: -1
-  //       }
-  //     })
-  //   })
-  // )
 
   const {default: missionsList} = await import('./backup_json_data/missions.json', {
     assert: {
@@ -150,19 +130,6 @@ async function main() {
       id, problemId, generatedDate: new Date(generatedDate).toISOString()
     })),
   });
-  // await Promise.all(
-  //   dailyObjects.map(async daily => {
-  //     const {id, problemId, generatedDate} = daily;
-  //     await prisma.dailyObject.upsert({
-  //       where: { id: id },
-  //       update: {},
-  //       create: {
-  //         id, problemId,
-  //         generatedDate: new Date(generatedDate).toISOString(),
-  //       }
-  //     })
-  //   })
-  // )
 
   const {default: userDailyObjects} = await import('./backup_json_data/user_dailies.json', {
     assert: {
@@ -172,24 +139,6 @@ async function main() {
   const createUserDailyObject = prisma.userDailyObject.createMany({
     data: userDailyObjects,
   });
-  // await Promise.all(
-  //   userDailyObjects.map(async userDailyObject => {
-  //     const {
-  //       id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
-  //       solvedHard, scoreEarned, scoreGacha
-  //     } = userDailyObject;
-
-  //     await prisma.userDailyObject.upsert({
-  //       where: { id: id },
-  //       update: {},
-  //       create: {
-  //         id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
-  //         solvedHard, scoreEarned, scoreGacha
-  //       }
-  //     })
-  //   })
-  // )
-
   const {default: userMonthlyObjects} = await import('./backup_json_data/user_monthlies.json', {
     assert: {
       type: 'json'
@@ -201,20 +150,6 @@ async function main() {
       firstDayOfMonth: new Date(firstDayOfMonth).toISOString()
     })),
   });
-  // await Promise.all(
-  //   userMonthlyObjects.map(async monthlyObject => {
-  //     const {id, userId, scoreEarned, firstDayOfMonth} = monthlyObject;
-
-  //     await prisma.userMonthlyObject.upsert({
-  //       where: { id: id },
-  //       update: {},
-  //       create: {
-  //         id, userId, scoreEarned,
-  //         firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
-  //       }
-  //     })
-  //   })
-  // )
   await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject]);
 
   // Configurations
