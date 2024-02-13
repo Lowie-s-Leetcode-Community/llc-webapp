@@ -11,56 +11,30 @@ async function main() {
     assert: {
       type: 'json'
     }
-  })
-  await Promise.all(
-    quizzesList.map(async quiz => {
-      const {id, category, difficulty, question, correctAnswerId} = quiz;
-      await prisma.discordQuiz.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, category, difficulty, question, correctAnswerId
-        }
-      })
-    })
-  )
+  });
+  const createDiscordQuiz = prisma.discordQuiz.createMany({
+    data: quizzesList,
+  });
 
   const {default: answersList} = await import('./backup_json_data/discord_quiz_answer.json', {
     assert: {
       type: 'json'
     }
-  })
-  Promise.all(
-    answersList.map(async ans => {
-      const {answer, id, discordQuizId} = ans;
-      await prisma.discordQuizAnswer.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          answer, id, discordQuizId
-        }
-      })
-    })
-  )
+  });
+  const createDiscordQuizAnswer = prisma.discordQuizAnswer.createMany({
+    data: answersList,
+  });
 
   const {default: topicsList} = await import('./backup_json_data/topics.json', {
     assert: {
       type: 'json'
     }
   })
-  await Promise.all(
-    topicsList.map(async topic => {
-      const {id, topicName} = topic;
-      await prisma.topic.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id: id,
-          topicName: topicName,
-        }
-      })
-    })
-  )
+  const createTopic = prisma.topic.createMany({
+    data: topicsList,
+  })
+
+  await prisma.$transaction([createDiscordQuiz, createDiscordQuizAnswer, createTopic]);
 
   const {default: problemsList} = await import('./backup_json_data/problems.json', {
     assert: {
@@ -124,29 +98,32 @@ async function main() {
       type: 'json'
     }
   })
-  await Promise.all(
-    userProblemsList.map(async userProblem => {
-      const { id, problemId, userId } = userProblem;
+  const createUserSolvedProblem = prisma.userSolvedProblem.createMany({
+    data: userProblemsList.map((sub) => ({...sub, submissionId: -1})),
+  });
+  // await Promise.all(
+  //   userProblemsList.map(async userProblem => {
+  //     const { id, problemId, userId } = userProblem;
       
-      await prisma.userSolvedProblem.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id: id,
-          problemId: problemId,
-          userId: userId,
-          submissionId: -1
-        }
-      })
-    })
-  )
+  //     await prisma.userSolvedProblem.upsert({
+  //       where: { id: id },
+  //       update: {},
+  //       create: {
+  //         id: id,
+  //         problemId: problemId,
+  //         userId: userId,
+  //         submissionId: -1
+  //       }
+  //     })
+  //   })
+  // )
 
   const {default: missionsList} = await import('./backup_json_data/missions.json', {
     assert: {
       type: 'json'
     }
   })
-  Promise.all(
+  await Promise.all(
     missionsList.map(async mission => {
       const {id, name, description, isHidden, rewardImageURL, problems} = mission;
 
@@ -168,65 +145,77 @@ async function main() {
       type: 'json'
     }
   })
-
-  await Promise.all(
-    dailyObjects.map(async daily => {
-      const {id, problemId, generatedDate} = daily;
-      await prisma.dailyObject.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, problemId,
-          generatedDate: new Date(generatedDate).toISOString(),
-        }
-      })
-    })
-  )
+  const createDailyObject = prisma.dailyObject.createMany({
+    data: dailyObjects.map(({ id, problemId, generatedDate }) => ({
+      id, problemId, generatedDate: new Date(generatedDate).toISOString()
+    })),
+  });
+  // await Promise.all(
+  //   dailyObjects.map(async daily => {
+  //     const {id, problemId, generatedDate} = daily;
+  //     await prisma.dailyObject.upsert({
+  //       where: { id: id },
+  //       update: {},
+  //       create: {
+  //         id, problemId,
+  //         generatedDate: new Date(generatedDate).toISOString(),
+  //       }
+  //     })
+  //   })
+  // )
 
   const {default: userDailyObjects} = await import('./backup_json_data/user_dailies.json', {
     assert: {
       type: 'json'
     }
-  })
+  });
+  const createUserDailyObject = prisma.userDailyObject.createMany({
+    data: userDailyObjects,
+  });
+  // await Promise.all(
+  //   userDailyObjects.map(async userDailyObject => {
+  //     const {
+  //       id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
+  //       solvedHard, scoreEarned, scoreGacha
+  //     } = userDailyObject;
 
-  Promise.all(
-    userDailyObjects.map(async userDailyObject => {
-      const {
-        id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
-        solvedHard, scoreEarned, scoreGacha
-      } = userDailyObject;
-
-      await prisma.userDailyObject.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
-          solvedHard, scoreEarned, scoreGacha
-        }
-      })
-    })
-  )
+  //     await prisma.userDailyObject.upsert({
+  //       where: { id: id },
+  //       update: {},
+  //       create: {
+  //         id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
+  //         solvedHard, scoreEarned, scoreGacha
+  //       }
+  //     })
+  //   })
+  // )
 
   const {default: userMonthlyObjects} = await import('./backup_json_data/user_monthlies.json', {
     assert: {
       type: 'json'
     }
   })
+  const createUserMonthlyObject = prisma.userMonthlyObject.createMany({
+    data: userMonthlyObjects.map(({id, userId, scoreEarned, firstDayOfMonth}) => ({
+      id, userId, scoreEarned,
+      firstDayOfMonth: new Date(firstDayOfMonth).toISOString()
+    })),
+  });
+  // await Promise.all(
+  //   userMonthlyObjects.map(async monthlyObject => {
+  //     const {id, userId, scoreEarned, firstDayOfMonth} = monthlyObject;
 
-  Promise.all(
-    userMonthlyObjects.map(async monthlyObject => {
-      const {id, userId, scoreEarned, firstDayOfMonth} = monthlyObject;
-
-      await prisma.userMonthlyObject.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, userId, scoreEarned,
-          firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
-        }
-      })
-    })
-  )
+  //     await prisma.userMonthlyObject.upsert({
+  //       where: { id: id },
+  //       update: {},
+  //       create: {
+  //         id, userId, scoreEarned,
+  //         firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
+  //       }
+  //     })
+  //   })
+  // )
+  await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject]);
 
   // Configurations
   await prisma.systemConfiguration.upsert({
