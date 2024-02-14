@@ -1,5 +1,5 @@
 const express = require('express');
-const { getAllUsers, getUserRank, getUserMissions, getUserMissionDetails, getUserProfile, getUser, getUserDashboardStats } = require('../controllers/userController');
+const { getAllUsers, getUserRank, getUserMissions, getUserMissionDetails, getUserProfile, getUser, getUserDashboardStats, getUserStreaks } = require('../controllers/userController');
 const {authFilter, checkUser} = require('../middlewares/authFilter');
 const userRouter = express.Router();
 
@@ -86,6 +86,11 @@ userRouter.get('/:id/leetcode-username', async (req, res) => {
     res.status(400).json({ error: 'Bad Request' });
   }
 });
+
+
+// GET user's streaks
+userRouter.route('/:id/streaks')
+    .get(getUserStreaks)
 
 userRouter.get('/:id/rank', async (req, res) => {
   try {

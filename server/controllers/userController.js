@@ -286,6 +286,59 @@ async function getUserRank(userId, leaderboard) {
     }
 }
 
+const getUserStreaks = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+        const userDailies = await prisma.userDailyObject.findMany({
+            where: {
+                userId: userId
+            },
+            select :{
+                solvedDaily: true,
+                solvedEasy: true,
+                solvedMedium: true,
+                solvedHard: true,
+                scoreEarned: true,
+                dailyObject: {
+                    select: {
+                        generatedDate: true
+                    }
+                }
+            },
+            orderBy: {
+                dailyObject: {
+                    generatedDate: 'desc'
+                }
+            }
+        })
+        let currentCount = 0, longestStreak = 0, currentStreak = 0
+        let isCurrent = true
+        userDailies.forEach(daily => {
+            if (daily.scoreEarned >= 2) {
+                
+                currentCount++
+                if (currentCount > longestStreak)
+                    longestStreak = currentCount
+                if (isCurrent)
+                    currentStreak++
+                
+            } else {
+                currentCount = 0
+                if (daily.dailyObject.generatedDate.toLocaleDateString() !== new Date().toLocaleDateString())
+                    isCurrent = false
+            }
+        })
+        res.json({
+            currentStreak: currentStreak,
+            longestStreak: longestStreak
+        })
+    }
+    catch (error) {
+        logger.error(error);
+        res.status(400).json({ error: 'Bad Request' });
+    }
+}
+
 module.exports = {
     getAllUsers,
     getUserMissions,
@@ -298,5 +351,6 @@ module.exports = {
     getUserNumberOfSolvedProblems,
     getUserMostProgressedMissions,
     getUserMonthlyStats,
+    getUserStreaks,
     getUserRank,
 };
