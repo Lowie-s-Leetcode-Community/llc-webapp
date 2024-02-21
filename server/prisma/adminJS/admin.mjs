@@ -12,7 +12,7 @@ const prisma = new PrismaClient()
 
 AdminJS.registerAdapter({ Database, Resource })
 
-const PORT = process.env.ADMIN_PORT
+const ADMIN_PORT = process.env.ADMIN_PORT
 
 const start = async () => {
     
@@ -91,8 +91,7 @@ const start = async () => {
 
     app.use(admin.options.rootPath, adminRouter)
 
-    app.listen(PORT, () => {
-        winstonLogger.info(`AdminJS started on http://localhost:${PORT}${admin.options.rootPath}`)
+    app.listen(ADMIN_PORT, () => {
     })
 }
 

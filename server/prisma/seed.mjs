@@ -1,9 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import argon2 from 'argon2';
-/**
- * Input for this seed: problems.json, topics.json, problem_topics.json
- *  
- */
 
 // Find the required imports here (which has been .gitignored due to privacy):
 // https://discord.com/channels/1085444549125611530/1200665465329033306
@@ -157,42 +152,7 @@ async function main() {
   });
   await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject]);
 
-  Promise.all(
-    userMonthlyObjects.map(async monthlyObject => {
-      const {id, userId, scoreEarned, firstDayOfMonth} = monthlyObject;
-
-      await prisma.userMonthlyObject.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, userId, scoreEarned,
-          firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
-        }
-      })
-    })
-  )
-
-  const {default: accountList} = await import('./backup_json_data/account.json', {
-    assert: {
-      type: 'json'
-    }
-  })
-  Promise.all(
-    accountList.map(async account => {
-      const {id, password, email, role} = account;
-      const hashedPassword = await argon2.hash(password);
-      await prisma.Account.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id : id,
-          password: hashedPassword,
-          email: email,
-          role: role
-        }
-      })
-    })
-  )
+  
   // Configurations
   await prisma.systemConfiguration.upsert({
     where: { id: 1 },
