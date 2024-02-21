@@ -4,6 +4,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
+const helmet = require("helmet");
 
 const usersRouter = require('./routes/users');
 const authRouter = require('./routes/auth');
@@ -12,20 +13,27 @@ const problemsRouter = require('./routes/problems');
 const leaderboardRouter = require('./routes/leaderboard');
 
 const winstonLogger = require('./logger');
+require('dotenv').config();
 
 const app = express();
 
 // Winston demo
-winstonLogger.info("Hello World");
-winstonLogger.error("Hello World!");
+winstonLogger.info("LLC V0.5 WEBAAPP STARTED");
 
 main().catch((err) => winstonLogger.error(err));
 async function main() {
 }
 
+app.use(helmet());
 app.use(express.static(path.join(__dirname, "build")));
-app.use(cors());
 
+let corsOptions = { 
+  origin : process.env.NODE_ENV === 'production' ? [process.env.CLIENT_REDIRECT_URL] : '*',
+} 
+
+winstonLogger.debug("Enviroment: " + process.env.NODE_ENV);
+ 
+app.use(cors(corsOptions)) 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

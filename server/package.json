@@ -3,9 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www",
-    "dev": "nodemon ./bin/www",
-    "admin": "nodemon --experimental-json-modules prisma/adminJS/admin.mjs"
+    "start": "cross-env NODE_ENV=production node ./bin/www",
+    "dev": "cross-env NODE_ENV=development nodemon ./bin/www"
   },
   "prisma": {
     "seed": "node --experimental-json-modules prisma/seed.mjs"
@@ -27,6 +26,7 @@
     "express-async-handler": "^1.2.0",
     "express-formidable": "^1.2.0",
     "express-session": "^1.17.3",
+    "helmet": "^7.1.0",
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.2",
@@ -38,5 +38,8 @@
     "prisma": "^5.8.0",
     "winston": "^3.11.0",
     "winston-daily-rotate-file": "^4.7.1"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

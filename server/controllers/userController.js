@@ -73,7 +73,9 @@ async function getUserMissions(userId) {
             return {
                 id: mission.id,
                 name: mission.name,
-                progress: progress,
+                userSolvedProblems,
+                problemCount: missionProblems,
+                progress,
             };
         });
 
@@ -88,6 +90,8 @@ async function getUserMissions(userId) {
 async function getUserMissionDetails(id, missionId) {
     try {
         id = parseInt(id);
+        missionId = parseInt(missionId);
+
         const user = await prisma.user.findUnique({
             where: { id },
             include: {
@@ -111,22 +115,19 @@ async function getUserMissionDetails(id, missionId) {
                 return solvedProblem.problemId === problem.id;
             });
             return {
-                problemId: problem.id,
-                problemName: problem.name,
-                solved: solved,
+                id: problem.id,
+                title: problem.title,
+                titleSlug: problem.titleSlug,
+                difficulty: problem.difficulty,
+                solved,
             };
         });
-
-        const userSolvedProblems = user.userSolvedProblems.filter((solvedProblem) => {
-            return solvedProblem.problem.missionId === missionId;
-        }).length;
-
-        const progress = userSolvedProblems / missionProblems.length;
-
+        
         return {
             missionId: mission.id,
             missionName: mission.name,
-            progress: progress,
+            description: mission.description,
+            isHidden: mission.isHidden,
             problems: missionProblems,
         };
     } catch (error) {
@@ -183,7 +184,7 @@ async function getUserMonthlyStats(userId, leaderboard) {
             score: userScore
         };
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -197,7 +198,7 @@ async function getUserNumberOfAcedMissions(userId) {
         return { aced: numberOfAcedMissions };
 
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -214,7 +215,7 @@ async function getUserNumberOfSolvedProblems(userId) {
         });
         return { solved: user.userSolvedProblems.length };
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -236,7 +237,7 @@ async function getUserMostProgressedMissions(userId) {
         
         return topMissions;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
     }
 }
@@ -262,8 +263,79 @@ async function getUserDashboardStats(userId) {
         
         return dashboardStats;
     } catch (error) {
-        console.log(error);
+        logger.error(error);
         throw error;
+    }
+}
+
+// Get user's rank in current month
+async function getUserRank(userId, leaderboard) {
+    try {
+        userId = parseInt(userId);
+        if (!leaderboard) {
+            leaderboard = await getLeaderboard();
+        }
+        const userRank = leaderboard.findIndex(user => user.id === userId) + 1;
+        return {
+            rank: userRank,
+            totalUsers: leaderboard.length,
+        };
+    } catch (error) {
+        logger.error(error);
+        throw error;
+    }
+}
+
+const getUserStreaks = async (req, res) => {
+    try {
+        const userId = parseInt(req.params.id);
+        const userDailies = await prisma.userDailyObject.findMany({
+            where: {
+                userId: userId
+            },
+            select :{
+                solvedDaily: true,
+                solvedEasy: true,
+                solvedMedium: true,
+                solvedHard: true,
+                scoreEarned: true,
+                dailyObject: {
+                    select: {
+                        generatedDate: true
+                    }
+                }
+            },
+            orderBy: {
+                dailyObject: {
+                    generatedDate: 'desc'
+                }
+            }
+        })
+        let currentCount = 0, longestStreak = 0, currentStreak = 0
+        let isCurrent = true
+        userDailies.forEach(daily => {
+            if (daily.scoreEarned >= 2) {
+                
+                currentCount++
+                if (currentCount > longestStreak)
+                    longestStreak = currentCount
+                if (isCurrent)
+                    currentStreak++
+                
+            } else {
+                currentCount = 0
+                if (daily.dailyObject.generatedDate.toLocaleDateString() !== new Date().toLocaleDateString())
+                    isCurrent = false
+            }
+        })
+        res.json({
+            currentStreak: currentStreak,
+            longestStreak: longestStreak
+        })
+    }
+    catch (error) {
+        logger.error(error);
+        res.status(400).json({ error: 'Bad Request' });
     }
 }
 
@@ -278,5 +350,7 @@ module.exports = {
     getUserNumberOfAcedMissions,
     getUserNumberOfSolvedProblems,
     getUserMostProgressedMissions,
-    getUserMonthlyStats
+    getUserMonthlyStats,
+    getUserStreaks,
+    getUserRank,
 };
