@@ -37,3 +37,6 @@ server/prisma/backup_json_data/user*
 server/logger/logs
 
 .vscode/**
+
+#admin
+server/prisma/adminJS/.adminjs/.entry.js
