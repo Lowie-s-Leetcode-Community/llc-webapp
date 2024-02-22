@@ -150,8 +150,19 @@ async function main() {
       firstDayOfMonth: new Date(firstDayOfMonth).toISOString()
     })),
   });
-  await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject]);
+  
+  const {default: accountList} = await import('./backup_json_data/account.json', {
+    assert: {
+      type: 'json'
+    }
+  })
+  const createAccountList = prisma.account.createMany({
+    data: accountList.map(({id, email, password, role}) => ({
+      id, email, password, role
+    })),
+  });
 
+  await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject, createAccountList]);
   
   // Configurations
   await prisma.systemConfiguration.upsert({
