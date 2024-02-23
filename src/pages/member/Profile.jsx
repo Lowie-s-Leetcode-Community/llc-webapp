@@ -224,7 +224,6 @@ function AwardGridItem({ award }) {
           borderRadius: '10px',
           boxShadow: 0,
           '&:hover': {
-            transition: 'all 0.2s ease-in-out',
             border: `1px solid ${theme.palette.primary.main}`,
           },
           border: `1px solid ${theme.palette.secondary.main}`,
