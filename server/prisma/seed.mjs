@@ -1,9 +1,7 @@
 import { PrismaClient } from '@prisma/client'
 
-/**
- * Input for this seed: problems.json, topics.json, problem_topics.json
- *  
- */
+// Find the required imports here (which has been .gitignored due to privacy):
+// https://discord.com/channels/1085444549125611530/1200665465329033306
 
 const prisma = new PrismaClient();
 async function main() {
@@ -11,56 +9,30 @@ async function main() {
     assert: {
       type: 'json'
     }
-  })
-  await Promise.all(
-    quizzesList.map(async quiz => {
-      const {id, category, difficulty, question, correctAnswerId} = quiz;
-      await prisma.discordQuiz.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, category, difficulty, question, correctAnswerId
-        }
-      })
-    })
-  )
+  });
+  const createDiscordQuiz = prisma.discordQuiz.createMany({
+    data: quizzesList,
+  });
 
   const {default: answersList} = await import('./backup_json_data/discord_quiz_answer.json', {
     assert: {
       type: 'json'
     }
-  })
-  Promise.all(
-    answersList.map(async ans => {
-      const {answer, id, discordQuizId} = ans;
-      await prisma.discordQuizAnswer.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          answer, id, discordQuizId
-        }
-      })
-    })
-  )
+  });
+  const createDiscordQuizAnswer = prisma.discordQuizAnswer.createMany({
+    data: answersList,
+  });
 
   const {default: topicsList} = await import('./backup_json_data/topics.json', {
     assert: {
       type: 'json'
     }
   })
-  await Promise.all(
-    topicsList.map(async topic => {
-      const {id, topicName} = topic;
-      await prisma.topic.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id: id,
-          topicName: topicName,
-        }
-      })
-    })
-  )
+  const createTopic = prisma.topic.createMany({
+    data: topicsList,
+  })
+
+  await prisma.$transaction([createDiscordQuiz, createDiscordQuizAnswer, createTopic]);
 
   const {default: problemsList} = await import('./backup_json_data/problems.json', {
     assert: {
@@ -93,7 +65,6 @@ async function main() {
     })
   )
 
-  // require users.json, which would be .gitignored. Please contact PM if you haven't got the file.
   const {default: usersList} = await import('./backup_json_data/users.json', {
     assert: {
       type: 'json'
@@ -118,35 +89,21 @@ async function main() {
     })
   )
 
-  // require user_solved_problems.json, which would be .gitignored. Please contact PM if you haven't got the file.
   const {default: userProblemsList} = await import('./backup_json_data/user_solved_problems.json', {
     assert: {
       type: 'json'
     }
   })
-  await Promise.all(
-    userProblemsList.map(async userProblem => {
-      const { id, problemId, userId } = userProblem;
-      
-      await prisma.userSolvedProblem.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id: id,
-          problemId: problemId,
-          userId: userId,
-          submissionId: -1
-        }
-      })
-    })
-  )
+  const createUserSolvedProblem = prisma.userSolvedProblem.createMany({
+    data: userProblemsList.map((sub) => ({...sub, submissionId: -1})),
+  });
 
   const {default: missionsList} = await import('./backup_json_data/missions.json', {
     assert: {
       type: 'json'
     }
   })
-  Promise.all(
+  await Promise.all(
     missionsList.map(async mission => {
       const {id, name, description, isHidden, rewardImageURL, problems} = mission;
 
@@ -168,65 +125,61 @@ async function main() {
       type: 'json'
     }
   })
-
-  await Promise.all(
-    dailyObjects.map(async daily => {
-      const {id, problemId, isToday, generatedDate} = daily;
-      await prisma.dailyObject.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, problemId, isToday,
-          generatedDate: new Date(generatedDate).toISOString(),
-        }
-      })
-    })
-  )
+  const createDailyObject = prisma.dailyObject.createMany({
+    data: dailyObjects.map(({ id, problemId, generatedDate }) => ({
+      id, problemId, generatedDate: new Date(generatedDate).toISOString()
+    })),
+  });
 
   const {default: userDailyObjects} = await import('./backup_json_data/user_dailies.json', {
     assert: {
       type: 'json'
     }
-  })
-
-  Promise.all(
-    userDailyObjects.map(async userDailyObject => {
-      const {
-        id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
-        solvedHard, scoreEarned, scoreGacha
-      } = userDailyObject;
-
-      await prisma.userDailyObject.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, userId, dailyObjectId, solvedDaily, solvedEasy, solvedMedium,
-          solvedHard, scoreEarned, scoreGacha
-        }
-      })
-    })
-  )
-
+  });
+  const createUserDailyObject = prisma.userDailyObject.createMany({
+    data: userDailyObjects,
+  });
   const {default: userMonthlyObjects} = await import('./backup_json_data/user_monthlies.json', {
     assert: {
       type: 'json'
     }
   })
+  const createUserMonthlyObject = prisma.userMonthlyObject.createMany({
+    data: userMonthlyObjects.map(({id, userId, scoreEarned, firstDayOfMonth}) => ({
+      id, userId, scoreEarned,
+      firstDayOfMonth: new Date(firstDayOfMonth).toISOString()
+    })),
+  });
+  await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject]);
 
-  Promise.all(
-    userMonthlyObjects.map(async monthlyObject => {
-      const {id, userId, scoreEarned, firstDayOfMonth} = monthlyObject;
-
-      await prisma.userMonthlyObject.upsert({
-        where: { id: id },
-        update: {},
-        create: {
-          id, userId, scoreEarned,
-          firstDayOfMonth: new Date(firstDayOfMonth).toISOString(),
-        }
-      })
-    })
-  )
+  // Configurations
+  await prisma.systemConfiguration.upsert({
+    where: { id: 1 },
+    update: {
+      serverId: process.env.SERVER_ID,
+      verifiedRoleId: process.env.VERIFIED_ROLE_ID,
+      unverifiedRoleId: process.env.UNVERIFIED_ROLE_ID,
+      submissionChannelId: process.env.SUBMISSION_CHANNEL_ID,
+      scoreLogChannelId: process.env.SCORE_LOG_CHANNEL_ID,
+      dailyThreadChannelId: process.env.DAILY_THREAD_CHANNEL_ID,
+      devErrorLogId: process.env.DEV_ERROR_LOG_ID,
+      databaseLogId: process.env.DATABASE_LOG_ID,
+      backupChannelId: process.env.BACKUP_CHANNEL_ID,
+      eventLoggingId: process.env.EVENT_LOGGING_ID
+    },
+    create: {
+      serverId: process.env.SERVER_ID,
+      verifiedRoleId: process.env.VERIFIED_ROLE_ID,
+      unverifiedRoleId: process.env.UNVERIFIED_ROLE_ID,
+      submissionChannelId: process.env.SUBMISSION_CHANNEL_ID,
+      scoreLogChannelId: process.env.SCORE_LOG_CHANNEL_ID,
+      dailyThreadChannelId: process.env.DAILY_THREAD_CHANNEL_ID,
+      devErrorLogId: process.env.DEV_ERROR_LOG_ID,
+      databaseLogId: process.env.DATABASE_LOG_ID,
+      backupChannelId: process.env.BACKUP_CHANNEL_ID,
+      eventLoggingId: process.env.EVENT_LOGGING_ID
+    }
+  })
 }
 
 main()

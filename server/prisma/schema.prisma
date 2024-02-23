@@ -43,6 +43,7 @@ model UserSolvedProblem {
   updatedAt    DateTime @updatedAt
   problem      Problem  @relation(fields: [problemId], references: [id])
   user         User     @relation(fields: [userId], references: [id])
+  @@unique([userId, problemId], name: "submissionPairing")
 }
 
 model Topic {
@@ -58,8 +59,7 @@ model DailyObject {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   problemId        Int
-  isToday          Boolean
-  generatedDate    DateTime          @db.Date
+  generatedDate    DateTime          @db.Date @unique
   problem          Problem           @relation(fields: [problemId], references: [id])
   userDailyObjects UserDailyObject[]
 }
@@ -88,6 +88,7 @@ model UserDailyObject {
 
   dailyObject   DailyObject @relation(fields: [dailyObjectId], references: [id])
   user          User        @relation(fields: [userId], references: [id])
+  @@unique([userId, dailyObjectId], name: "userDailyObjectPairing")
 }
 
 model UserMonthlyObject {
@@ -98,6 +99,7 @@ model UserMonthlyObject {
   scoreEarned     Int
   firstDayOfMonth DateTime @db.Date
   user            User     @relation(fields: [userId], references: [id])
+  @@unique([userId, firstDayOfMonth], name: "userMonthlyObjectPairing")
 }
 
 model Mission {
@@ -154,16 +156,30 @@ model DiscordQuizAnswer {
 
 model SystemConfiguration {
   id                   Int      @id @default(autoincrement())
-  serverId             Int
-  verifiedRoleId       Int
-  trackingChannelId    Int
-  scoreLogChannelId    Int
-  dailyThreadChannelId Int
-  lastDailyCheck       DateTime
-  feedbackChannelId    Int
-  qaChannelId          Int
-  eventChannelId       Int
-  timeBeforeKick       Int
-  unverifiedRoleId     Int
-  backupChannelId      Int
+  serverId             String
+
+  // Config on members
+  // - Verification
+  verifiedRoleId       String
+  unverifiedRoleId     String
+  timeBeforeKick       Int      @default(604800) // seconds
+
+  // - Scoring
+  dailySolveScore      Int      @default(2)
+  easySolveScore       Int      @default(1)
+  mediumSolveScore     Int      @default(2)
+  hardSolveScore       Int      @default(3)
+  practiceScoreCap     Int      @default(6)
+  streakBonus          Int      @default(4)
+
+  // - Logging
+  submissionChannelId  String
+  scoreLogChannelId    String
+  dailyThreadChannelId String
+
+  // Dev channels
+  devErrorLogId        String
+  databaseLogId        String
+  backupChannelId      String
+  eventLoggingId       String
 }
