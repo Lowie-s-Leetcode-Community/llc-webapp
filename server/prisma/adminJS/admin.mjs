@@ -10,8 +10,7 @@ import { PrismaClient } from "@prisma/client";
 const winstonLogger = require("../../logger");
 const prisma = new PrismaClient();
 const session = require("express-session");
-require('dotenv').config();
-require('dotenv').config({ path: './.env.example' });
+require("dotenv").config();
 
 AdminJS.registerAdapter({ Database, Resource });
 
