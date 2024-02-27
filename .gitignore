@@ -33,6 +33,7 @@ server/package-lock.json
 # protect our users' data
 server/prisma/backup_json_data/user*
 server/prisma/backup_json_data/account.json
+server/.adminjs/.entry.js
 
 # log files
 server/logger/logs
