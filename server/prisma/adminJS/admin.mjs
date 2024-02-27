@@ -10,10 +10,13 @@ import { PrismaClient } from "@prisma/client";
 const winstonLogger = require("../../logger");
 const prisma = new PrismaClient();
 const session = require("express-session");
+require('dotenv').config();
+require('dotenv').config({ path: './.env.example' });
 
 AdminJS.registerAdapter({ Database, Resource });
 
 const ADMIN_PORT = process.env.ADMIN_PORT;
+const ADMINJS_COOKIE = process.env.ADMINJS_COOKIE;
 
 const start = async () => {
   const adminOptions = {
@@ -79,7 +82,7 @@ const start = async () => {
 
   app.use(
     session({
-      secret: "your-secret-key", // thay thế mã này bằng một chuỗi bí mật được sử dụng để ký (sign) và xác minh cookie session. Nó giúp ngăn chặn việc tấn công bằng cách giả mạo cookie.
+      secret: ADMINJS_COOKIE,
       resave: false,
       saveUninitialized: true,
     })
