@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import argon2 from 'argon2';
 
 // Find the required imports here (which has been .gitignored due to privacy):
 // https://discord.com/channels/1085444549125611530/1200665465329033306
@@ -130,7 +131,7 @@ async function main() {
       id, problemId, generatedDate: new Date(generatedDate).toISOString()
     })),
   });
-
+  
   const {default: userDailyObjects} = await import('./backup_json_data/user_dailies.json', {
     assert: {
       type: 'json'
@@ -139,6 +140,7 @@ async function main() {
   const createUserDailyObject = prisma.userDailyObject.createMany({
     data: userDailyObjects,
   });
+
   const {default: userMonthlyObjects} = await import('./backup_json_data/user_monthlies.json', {
     assert: {
       type: 'json'
@@ -150,19 +152,23 @@ async function main() {
       firstDayOfMonth: new Date(firstDayOfMonth).toISOString()
     })),
   });
-  
-  const {default: accountList} = await import('./backup_json_data/account.json', {
+
+  const { default: accountList } = await import('./backup_json_data/account.json', {
     assert: {
       type: 'json'
-    }
-  })
-  const createAccountList = prisma.account.createMany({
-    data: accountList.map(({id, email, password, role}) => ({
+    },
+  });
+  const updatedAccountList = await Promise.all(accountList.map(async account => {
+    account.password = await argon2.hash(account.password);
+    return account;
+  }));
+  const createAccounts = prisma.account.createMany({
+    data: updatedAccountList.map(({id, email, password, role}) => ({
       id, email, password, role
     })),
   });
 
-  await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject, createAccountList]);
+  await prisma.$transaction([createUserSolvedProblem, createDailyObject, createUserDailyObject, createUserMonthlyObject, createAccounts]);
   
   // Configurations
   await prisma.systemConfiguration.upsert({
