@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "name": "BacktracKING",
+        "nameSlug": "backtracking",
+        "description": "Aced the \"Backtracking\" mission",
+        "image": "https://cdn.icon-icons.com/icons2/3271/PNG/512/medal_champion_award_winner_olympic_icon_207790.png"
+    },
+    {
+        "id": 2,
+        "name": "Rising Star",
+        "nameSlug": "rising-star",
+        "description": "Aced 3 missions",
+        "image": "https://cdn.icon-icons.com/icons2/3271/PNG/512/medal_champion_award_winner_olympic_icon_207790.png"
+    },
+    {
+        "id": 3,
+        "name": "Superstar",
+        "nameSlug": "superstar",
+        "description": "Aced 10 missions",
+        "image": "https://cdn.icon-icons.com/icons2/3271/PNG/512/medal_champion_award_winner_olympic_icon_207790.png"
+    },
+    {
+        "id": 4,
+        "name": "Master",
+        "nameSlug": "master",
+        "description": "Aced 20 missions",
+        "image": "https://cdn.icon-icons.com/icons2/3271/PNG/512/medal_champion_award_winner_olympic_icon_207790.png"
+    },
+    {
+        "id": 5,
+        "name": "Legend",
+        "nameSlug": "legend",
+        "description": "Aced 50 missions",
+        "image": "https://cdn.icon-icons.com/icons2/3271/PNG/512/medal_champion_award_winner_olympic_icon_207790.png"
+    },
+    {
+        "id": 6,
+        "name": "Server Leader",
+        "nameSlug": "server-leader",
+        "description": "Get Top 1 in server monthly leaderboard",
+        "image": "https://cdn.icon-icons.com/icons2/3271/PNG/512/medal_champion_award_winner_olympic_icon_207790.png"
+    }
+]
