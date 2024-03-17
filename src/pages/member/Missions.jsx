@@ -10,8 +10,8 @@ import { useTheme } from '@mui/material/styles';
 import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import MilitaryTechIcon from '@mui/icons-material/MilitaryTech';
 import PropTypes from 'prop-types';
-import IconLabelValueTypography from './IconLabelValueTypography';
-import CircularProgressWithLabel from './CircularProgressWithLabel';
+import IconLabelValueTypography from '../../components/IconLabelValueTypography';
+import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
 import axios from '../../config/axios.interceptor';
 import PageTitle from '../../components/PageTitle';
 
