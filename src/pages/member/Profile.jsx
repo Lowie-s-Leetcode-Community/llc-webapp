@@ -12,6 +12,7 @@ import CustomList from '../../components/CustomList';
 import CustomGridItem from '../../components/CustomGridItem';
 import PageTitle from '../../components/PageTitle';
 import NoDataFound from '../../components/NoDataFound';
+import Spinner from '../../components/Spinner';
 
 const sidebarHeight = '23rem';
 
@@ -171,7 +172,7 @@ function RecentACList() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
   const RECENT_AC_API = `${serverUrl}/api/users/${userId}/profile/`;
-  const [recentACData, setRecentACData] = useState([]);
+  const [recentACData, setRecentACData] = useState(null);
 
   useEffect(() => {
     axios.get(RECENT_AC_API)
@@ -186,6 +187,14 @@ function RecentACList() {
         throw new Error(error);
       });
   }, []);
+
+  if (!recentACData) {
+    return <Card sx={{ minHeight: sidebarHeight }}><Spinner /></Card>;
+  }
+
+  if (recentACData.length === 0) {
+    return <Card sx={{ minHeight: sidebarHeight }}><NoDataFound /></Card>;
+  }
 
   return (
     <Card sx={{ minHeight: sidebarHeight }}>

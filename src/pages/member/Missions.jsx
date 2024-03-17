@@ -14,6 +14,7 @@ import IconLabelValueTypography from '../../components/IconLabelValueTypography'
 import CircularProgressWithLabel from '../../components/CircularProgressWithLabel';
 import axios from '../../config/axios.interceptor';
 import PageTitle from '../../components/PageTitle';
+import Spinner from '../../components/Spinner';
 
 function Missions() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
@@ -52,7 +53,7 @@ function Missions() {
 
   const theme = useTheme();
   return (
-    <div>
+    <Box>
       {missions ? (
         <>
           <Box
@@ -122,9 +123,13 @@ function Missions() {
           </Box>
         </>
       ) : (
-        <p>Loading...</p>
+        <>
+          <PageTitle title="missions" includeUsername />
+          <Spinner />
+        </>
+
       )}
-    </div>
+    </Box>
   );
 }
 
