@@ -9,7 +9,8 @@ import VisibilityOffIcon from '@mui/icons-material/VisibilityOff';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import PropTypes from 'prop-types';
 import axios from '../../config/axios.interceptor';
-import LabelValueTypography from './LabelValueTypography';
+import LabelValueTypography from '../../components/LabelValueTypography';
+import Spinner from '../../components/Spinner';
 
 function MissionDetail() {
   const { missionRoute } = useParams();
@@ -35,23 +36,22 @@ function MissionDetail() {
   const theme = useTheme();
 
   return (
-    <div>
+    <>
+      {/* Back button */}
+      <Button
+        color="text"
+        component={Link}
+        to={missionListLink}
+        variant="text"
+        startIcon={<ArrowBackIosNewIcon />}
+        sx={{ alignItems: 'center' }}
+      >
+        <Typography sx={{ marginTop: '0.318rem', textTransform: 'none' }}>
+          Back to mission list
+        </Typography>
+      </Button>
       {missionDetail ? (
         <>
-          {/* Back button */}
-          <Button
-            color="text"
-            component={Link}
-            to={missionListLink}
-            variant="text"
-            startIcon={<ArrowBackIosNewIcon />}
-            sx={{ alignItems: 'center' }}
-          >
-            <Typography sx={{ marginTop: '0.318rem', textTransform: 'none' }}>
-              Back to mission list
-            </Typography>
-          </Button>
-
           {/* Mission name */}
           <Typography
             variant="h3"
@@ -93,9 +93,9 @@ function MissionDetail() {
           />
         </>
       ) : (
-        <p>Loading...</p>
+        <Spinner />
       )}
-    </div>
+    </>
   );
 }
 

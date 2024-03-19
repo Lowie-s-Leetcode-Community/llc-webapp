@@ -12,6 +12,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
+import Spinner from '../../components/Spinner';
 import PageTitle from '../../components/PageTitle';
 
 function Dashboard() {
@@ -28,6 +29,7 @@ function Dashboard() {
     topMissions: [],
   });
   const [dailyChallenge, setDailyChallenge] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +46,7 @@ function Dashboard() {
 
         const dailyChallengeResponse = await axios.get(DAILY_CHALLENGE_API);
         setDailyChallenge(dailyChallengeResponse.data);
+        setIsLoading(false);
       } catch (error) {
         throw new Error(error);
       }
@@ -55,12 +58,18 @@ function Dashboard() {
   return (
     <>
       <PageTitle title="dashboard" includeUsername />
-      <StatsBoard
-        stats={userStats}
-        dailyChallenge={dailyChallenge}
-        totalMembers={leaderboardData.length}
-      />
-      <Leaderboard leaderboardData={leaderboardData} />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <StatsBoard
+            stats={userStats}
+            dailyChallenge={dailyChallenge}
+            totalMembers={leaderboardData.length}
+          />
+          <Leaderboard leaderboardData={leaderboardData} />
+        </>
+      )}
     </>
   );
 }
@@ -283,8 +292,14 @@ function Leaderboard({ leaderboardData }) {
       )}
       {leaderboardData && (
         <CustomCard type="normal" sx={{ display: 'box' }}>
-
-          <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="scoreEarned" secondaryTitle="Score" />
+          <CustomList
+            data={leaderboardData}
+            title="Leaderboard"
+            totalTitle="Total users"
+            primaryData="username"
+            secondaryData="scoreEarned"
+            secondaryTitle="Score"
+          />
         </CustomCard>
       )}
     </>
