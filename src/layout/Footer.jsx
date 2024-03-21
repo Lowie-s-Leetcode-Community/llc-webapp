@@ -5,7 +5,7 @@ function Footer() {
   return (
     <Box mt="5rem">
       <Box sx={{ padding: '3rem', textAlign: 'center' }}>
-        &copy; 2023 Lowie&apos;s LeetCode Community
+        &copy; 2023-2024 Lowie&apos;s LeetCode Community
       </Box>
     </Box>
   );
