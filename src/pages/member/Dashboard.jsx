@@ -14,6 +14,7 @@ import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
 import Spinner from '../../components/Spinner';
 import PageTitle from '../../components/PageTitle';
+// import CustomOrderedList from "../../components/CustomOrderedList";
 
 function Dashboard() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
@@ -283,6 +284,32 @@ StatsBoard.propTypes = {
   totalMembers: PropTypes.number.isRequired,
 };
 
+function CustomItem({ displayData }) {
+  return (
+    <Box sx={{
+      display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%',
+    }}
+    >
+      <Typography variant="p" sx={{ fontWeight: 'bold' }}>{displayData.username}</Typography>
+      <Typography variant="p" sx={{ fontWeight: 'bold' }}>{displayData.scoreEarned + 69}</Typography>
+    </Box>
+  );
+}
+
+CustomItem.propTypes = {
+  displayData: PropTypes.shape({
+    username: PropTypes.string,
+    scoreEarned: PropTypes.number,
+  }),
+};
+
+CustomItem.defaultProps = {
+  displayData: {
+    username: '',
+    scoreEarned: 10,
+  },
+};
+
 function Leaderboard({ leaderboardData }) {
   return (
     <>
@@ -296,9 +323,8 @@ function Leaderboard({ leaderboardData }) {
             data={leaderboardData}
             title="Leaderboard"
             totalTitle="Total users"
-            primaryData="username"
-            secondaryData="scoreEarned"
-            secondaryTitle="Score"
+            ItemDisplay={CustomItem}
+            showRanking
           />
         </CustomCard>
       )}

@@ -1,12 +1,25 @@
 import React from 'react';
 import {
-  List, ListItem, ListItemText, useTheme, Pagination, Grid,
+  List, ListItem, useTheme, Pagination, Grid,
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
+function RankingNumber({ ranking }) {
+  const theme = useTheme();
+  return (
+    <Typography variant="h6" style={{ margin: theme.spacing(2) }}>
+      {ranking}
+    </Typography>
+  );
+}
+
+RankingNumber.propTypes = {
+  ranking: PropTypes.number.isRequired,
+};
+
 function CustomList({
-  data, title = 'List', totalTitle = 'Total', primaryData, secondaryData, secondaryTitle = '', paginationCount = 10,
+  data, title = 'List', totalTitle = 'Total', paginationCount = 10, ItemDisplay, showRanking,
 }) {
   const theme = useTheme();
 
@@ -41,7 +54,8 @@ function CustomList({
               margin: theme.spacing(1),
             }}
           >
-            <ListItemText primary={item[primaryData]} secondary={`${secondaryTitle} ${item[secondaryData]}`} />
+            {showRanking && <RankingNumber ranking={index + 1} />}
+            <ItemDisplay displayData={item} />
           </ListItem>
         ))}
       </List>
@@ -58,17 +72,16 @@ CustomList.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   title: PropTypes.string,
   totalTitle: PropTypes.string,
-  primaryData: PropTypes.string.isRequired,
-  secondaryData: PropTypes.string.isRequired,
-  secondaryTitle: PropTypes.string,
   paginationCount: PropTypes.number,
+  ItemDisplay: PropTypes.elementType.isRequired,
+  showRanking: PropTypes.bool,
 };
 
 CustomList.defaultProps = {
   title: 'List',
   totalTitle: 'Total',
   paginationCount: 10,
-  secondaryTitle: '',
+  showRanking: false,
 };
 
 export default CustomList;
