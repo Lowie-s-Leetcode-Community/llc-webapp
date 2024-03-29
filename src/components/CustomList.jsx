@@ -7,10 +7,21 @@ import PropTypes from 'prop-types';
 
 function RankingNumber({ ranking }) {
   const theme = useTheme();
+  let style = {};
+  if (ranking === 1) {
+    style = { color: 'white', backgroundColor: 'gold' };
+  } else if (ranking === 2) {
+    style = { color: 'white', backgroundColor: 'silver' };
+  } else if (ranking === 3) {
+    style = { color: 'white', backgroundColor: '#CD7F32' };
+  }
+  style.marginRight = theme.spacing(2);
   return (
-    <Typography variant="h6" style={{ margin: theme.spacing(2) }}>
-      {ranking}
-    </Typography>
+    <Grid container alginItems="center" justifyContent="center" sx={{ flexBasis: '50px' }} style={{ borderRadius: '50%', ...style }}>
+      <Typography variant="h6" style={{ margin: theme.spacing(1) }}>
+        {ranking}
+      </Typography>
+    </Grid>
   );
 }
 
@@ -54,7 +65,7 @@ function CustomList({
               margin: theme.spacing(1),
             }}
           >
-            {showRanking && <RankingNumber ranking={index + 1} />}
+            {showRanking && <RankingNumber ranking={index + 1 + (page - 1) * paginationCount} />}
             <ItemDisplay displayData={item} />
           </ListItem>
         ))}

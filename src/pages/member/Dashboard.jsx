@@ -291,7 +291,7 @@ function CustomItem({ displayData }) {
     }}
     >
       <Typography variant="p" sx={{ fontWeight: 'bold' }}>{displayData.username}</Typography>
-      <Typography variant="p" sx={{ fontWeight: 'bold' }}>{displayData.scoreEarned + 69}</Typography>
+      <Typography variant="p" sx={{ fontWeight: 'bold' }}>{displayData.scoreEarned}</Typography>
     </Box>
   );
 }
