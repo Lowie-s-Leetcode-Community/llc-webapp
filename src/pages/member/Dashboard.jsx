@@ -14,7 +14,6 @@ import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
 import Spinner from '../../components/Spinner';
 import PageTitle from '../../components/PageTitle';
-// import CustomOrderedList from "../../components/CustomOrderedList";
 
 function Dashboard() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;

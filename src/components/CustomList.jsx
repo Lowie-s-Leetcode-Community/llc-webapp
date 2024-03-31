@@ -16,8 +16,12 @@ function RankingNumber({ ranking }) {
     style = { color: 'white', backgroundColor: '#CD7F32' };
   }
   style.marginRight = theme.spacing(2);
+  const boxSize = '3rem';
+  style.width = boxSize;
+  style.height = boxSize;
+  style.borderRadius = '50%';
   return (
-    <Grid container alginItems="center" justifyContent="center" sx={{ flexBasis: '50px' }} style={{ borderRadius: '50%', ...style }}>
+    <Grid container alignItems="center" justifyContent="center" sx={{ ...style }}>
       <Typography variant="h6" style={{ margin: theme.spacing(1) }}>
         {ranking}
       </Typography>
