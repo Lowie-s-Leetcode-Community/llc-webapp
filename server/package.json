@@ -32,7 +32,11 @@
     "jade": "~1.11.0",
     "jsonwebtoken": "^9.0.2",
     "morgan": "~1.9.1",
-    "tslib": "^2.6.2"
+    "nodemon": "^3.1.0",
+    "prisma": "^5.11.0",
+    "tslib": "^2.6.2",
+    "winston": "^3.13.0",
+    "winston-daily-rotate-file": "^5.0.0"
   },
   "devDependencies": {
     "cross-env": "^7.0.3"
