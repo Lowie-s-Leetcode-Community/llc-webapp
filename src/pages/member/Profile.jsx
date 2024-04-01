@@ -168,6 +168,16 @@ function AllAwards() {
   );
 }
 
+function CustomItemDisplay({ displayData }) {
+  return (
+    <ListItemText primary={displayData.name} secondary={displayData.date} />
+  );
+}
+
+CustomItemDisplay.propTypes = {
+  displayData: PropTypes.instanceOf(Object).isRequired,
+};
+
 function RecentACList() {
   const serverUrl = process.env.REACT_APP_SERVER_API_URL;
   const userId = localStorage.getItem('userId');
@@ -202,8 +212,7 @@ function RecentACList() {
         data={recentACData}
         title="Recent AC"
         totalTitle="Total AC"
-        primaryData="name"
-        secondaryData="date"
+        ItemDisplay={CustomItemDisplay}
       />
     </Card>
   );

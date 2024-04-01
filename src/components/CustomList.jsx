@@ -1,12 +1,40 @@
 import React from 'react';
 import {
-  List, ListItem, ListItemText, useTheme, Pagination, Grid,
+  List, ListItem, useTheme, Pagination, Grid,
   Typography,
 } from '@mui/material';
 import PropTypes from 'prop-types';
 
+function RankingNumber({ ranking }) {
+  const theme = useTheme();
+  let style = {};
+  if (ranking === 1) {
+    style = { color: 'white', backgroundColor: 'gold' };
+  } else if (ranking === 2) {
+    style = { color: 'white', backgroundColor: 'silver' };
+  } else if (ranking === 3) {
+    style = { color: 'white', backgroundColor: '#CD7F32' };
+  }
+  style.marginRight = theme.spacing(2);
+  const boxSize = '3rem';
+  style.width = boxSize;
+  style.height = boxSize;
+  style.borderRadius = '50%';
+  return (
+    <Grid container alignItems="center" justifyContent="center" sx={{ ...style }}>
+      <Typography variant="h6" style={{ margin: theme.spacing(1) }}>
+        {ranking}
+      </Typography>
+    </Grid>
+  );
+}
+
+RankingNumber.propTypes = {
+  ranking: PropTypes.number.isRequired,
+};
+
 function CustomList({
-  data, title = 'List', totalTitle = 'Total', primaryData, secondaryData, secondaryTitle = '', paginationCount = 10,
+  data, title = 'List', totalTitle = 'Total', paginationCount = 10, ItemDisplay, showRanking,
 }) {
   const theme = useTheme();
 
@@ -41,7 +69,8 @@ function CustomList({
               margin: theme.spacing(1),
             }}
           >
-            <ListItemText primary={item[primaryData]} secondary={`${secondaryTitle} ${item[secondaryData]}`} />
+            {showRanking && <RankingNumber ranking={index + 1 + (page - 1) * paginationCount} />}
+            <ItemDisplay displayData={item} />
           </ListItem>
         ))}
       </List>
@@ -58,17 +87,16 @@ CustomList.propTypes = {
   data: PropTypes.instanceOf(Array).isRequired,
   title: PropTypes.string,
   totalTitle: PropTypes.string,
-  primaryData: PropTypes.string.isRequired,
-  secondaryData: PropTypes.string.isRequired,
-  secondaryTitle: PropTypes.string,
   paginationCount: PropTypes.number,
+  ItemDisplay: PropTypes.elementType.isRequired,
+  showRanking: PropTypes.bool,
 };
 
 CustomList.defaultProps = {
   title: 'List',
   totalTitle: 'Total',
   paginationCount: 10,
-  secondaryTitle: '',
+  showRanking: false,
 };
 
 export default CustomList;
