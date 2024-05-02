@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      =  env("POSTGRES_URL")
+  url      = env("POSTGRES_URL")
 }
 
 model User {
@@ -17,6 +17,7 @@ model User {
   userDailyObjects   UserDailyObject[]
   userMonthlyObjects UserMonthlyObject[]
   userSolvedProblems UserSolvedProblem[]
+  userDiscordQuiz    UserDiscordQuiz[]
 }
 
 model Problem {
@@ -42,6 +43,7 @@ model UserSolvedProblem {
   updatedAt    DateTime @updatedAt
   problem      Problem  @relation(fields: [problemId], references: [id])
   user         User     @relation(fields: [userId], references: [id])
+
   @@unique([userId, problemId], name: "submissionPairing")
 }
 
@@ -58,7 +60,7 @@ model DailyObject {
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
   problemId        Int
-  generatedDate    DateTime          @db.Date @unique
+  generatedDate    DateTime          @unique @db.Date
   problem          Problem           @relation(fields: [problemId], references: [id])
   userDailyObjects UserDailyObject[]
 }
@@ -69,24 +71,15 @@ model UserDailyObject {
   updatedAt     DateTime    @updatedAt
   userId        Int
   dailyObjectId Int
-
-  // - These fields will only be written by bot. Web and other APIs can only read.
-  // - Note for bot: self-practice has cap. To save one field in this obj and avoid
-  // future complication, use this algorithm for each crawl:
-  // old_practice_score = sigma(usr.solvedDifficulty * config.ptsPerDifficulty)
-  // new_practice_score = min(practice_cap, old_practice_score + score_earned_for_newly_crawled)
-  // usr.scoreEarned += new_practice_score - old_practice_score
-  // commit
-  // - Note on scoreGacha: -1 = hasn't rolled, >= 0: score earned by gacha.
   solvedDaily   Int         @default(0)
   solvedEasy    Int         @default(0)
   solvedMedium  Int         @default(0)
   solvedHard    Int         @default(0)
   scoreEarned   Int         @default(0)
   scoreGacha    Int         @default(-1)
-
   dailyObject   DailyObject @relation(fields: [dailyObjectId], references: [id])
   user          User        @relation(fields: [userId], references: [id])
+
   @@unique([userId, dailyObjectId], name: "userDailyObjectPairing")
 }
 
@@ -98,6 +91,7 @@ model UserMonthlyObject {
   scoreEarned     Int
   firstDayOfMonth DateTime @db.Date
   user            User     @relation(fields: [userId], references: [id])
+
   @@unique([userId, firstDayOfMonth], name: "userMonthlyObjectPairing")
 }
 
@@ -113,14 +107,17 @@ model Mission {
 }
 
 model DiscordQuiz {
-  id                Int                 @id @default(autoincrement())
-  createdAt         DateTime            @default(now())
-  updatedAt         DateTime            @updatedAt
-  category          String
-  question          String
-  difficulty        String
-  correctAnswerId   Int
-  discordQuizAnswer DiscordQuizAnswer[]
+  id                  Int                 @id @default(autoincrement())
+  createdAt           DateTime            @default(now())
+  updatedAt           DateTime            @updatedAt
+  category            String
+  question            String
+  difficulty          String
+  correctAnswerId     Int
+  discordQuizAnswer   DiscordQuizAnswer[]
+  userDiscordQuizzes  UserDiscordQuiz[]
+  hint                String              @default("")
+  answerExplanation   String              @default("")
 }
 
 model DiscordQuizAnswer {
@@ -132,34 +129,46 @@ model DiscordQuizAnswer {
   discordQuiz   DiscordQuiz @relation(fields: [discordQuizId], references: [id])
 }
 
+model UserDiscordQuiz {
+  id                 Int         @id @default(autoincrement())
+  createdAt          DateTime    @default(now())
+  updatedAt          DateTime    @updatedAt
+  encountersTimes    Int         @default(0)
+  correctTimes       Int         @default(0)
+  userId             Int
+  user               User        @relation(fields: [userId], references: [id])
+  discordQuizId      Int
+  discordQuiz        DiscordQuiz @relation(fields: [discordQuizId], references: [id])
+}
+
 model SystemConfiguration {
-  id                   Int      @id @default(autoincrement())
-  serverId             String
+  id                        Int    @id @default(autoincrement())
+  serverId                  String
+  verifiedRoleId            String
+  unverifiedRoleId          String
+  contestRoleId             String @default("") // set equal to verified
+  timeBeforeKick            Int    @default(604800)
+  dailySolveScore           Int    @default(2)
+  easySolveScore            Int    @default(1)
+  mediumSolveScore          Int    @default(2)
+  hardSolveScore            Int    @default(3)
+  practiceScoreCap          Int    @default(6)
+  streakBonus               Int    @default(4)
+  submissionChannelId       String
+  scoreLogChannelId         String
+  dailyThreadChannelId      String
+  dailyDiscussionChannelId  String @default("") // set to discussion-channel
+  contestAlertId            String @default("") // set to general
+  devErrorLogId             String
+  databaseLogId             String
+  backupChannelId           String
+  eventLoggingId            String
+}
 
-  // Config on members
-  // - Verification
-  verifiedRoleId       String
-  unverifiedRoleId     String
-  timeBeforeKick       Int      @default(604800) // seconds
-
-  // - Scoring
-  dailySolveScore      Int      @default(2)
-  easySolveScore       Int      @default(1)
-  mediumSolveScore     Int      @default(2)
-  hardSolveScore       Int      @default(3)
-  practiceScoreCap     Int      @default(6)
-  streakBonus          Int      @default(4)
-
-  // - Logging
-  submissionChannelId  String
-  scoreLogChannelId    String
-  dailyThreadChannelId String
-
-  // Dev channels
-  devErrorLogId        String
-  databaseLogId        String
-  backupChannelId      String
-  eventLoggingId       String
+model ContestConfiguration {
+  id                      Int    @id @default(autoincrement())
+  weeklyContestId         Int
+  biweeklyContestId       Int
 }
 
 model Account {

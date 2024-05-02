@@ -51,7 +51,6 @@ CREATE TABLE "DailyObject" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "problemId" INTEGER NOT NULL,
-    "isToday" BOOLEAN NOT NULL,
     "generatedDate" DATE NOT NULL,
 
     CONSTRAINT "DailyObject_pkey" PRIMARY KEY ("id")
@@ -64,6 +63,12 @@ CREATE TABLE "UserDailyObject" (
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "userId" INTEGER NOT NULL,
     "dailyObjectId" INTEGER NOT NULL,
+    "solvedDaily" INTEGER NOT NULL DEFAULT 0,
+    "solvedEasy" INTEGER NOT NULL DEFAULT 0,
+    "solvedMedium" INTEGER NOT NULL DEFAULT 0,
+    "solvedHard" INTEGER NOT NULL DEFAULT 0,
+    "scoreEarned" INTEGER NOT NULL DEFAULT 0,
+    "scoreGacha" INTEGER NOT NULL DEFAULT -1,
 
     CONSTRAINT "UserDailyObject_pkey" PRIMARY KEY ("id")
 );
@@ -83,6 +88,8 @@ CREATE TABLE "UserMonthlyObject" (
 -- CreateTable
 CREATE TABLE "Mission" (
     "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "isHidden" BOOLEAN NOT NULL,
@@ -118,18 +125,23 @@ CREATE TABLE "DiscordQuizAnswer" (
 -- CreateTable
 CREATE TABLE "SystemConfiguration" (
     "id" SERIAL NOT NULL,
-    "serverId" INTEGER NOT NULL,
-    "verifiedRoleId" INTEGER NOT NULL,
-    "trackingChannelId" INTEGER NOT NULL,
-    "scoreLogChannelId" INTEGER NOT NULL,
-    "dailyThreadChannelId" INTEGER NOT NULL,
-    "lastDailyCheck" TIMESTAMP(3) NOT NULL,
-    "feedbackChannelId" INTEGER NOT NULL,
-    "qaChannelId" INTEGER NOT NULL,
-    "eventChannelId" INTEGER NOT NULL,
-    "timeBeforeKick" INTEGER NOT NULL,
-    "unverifiedRoleId" INTEGER NOT NULL,
-    "backupChannelId" INTEGER NOT NULL,
+    "serverId" TEXT NOT NULL,
+    "verifiedRoleId" TEXT NOT NULL,
+    "unverifiedRoleId" TEXT NOT NULL,
+    "timeBeforeKick" INTEGER NOT NULL DEFAULT 604800,
+    "dailySolveScore" INTEGER NOT NULL DEFAULT 2,
+    "easySolveScore" INTEGER NOT NULL DEFAULT 1,
+    "mediumSolveScore" INTEGER NOT NULL DEFAULT 2,
+    "hardSolveScore" INTEGER NOT NULL DEFAULT 3,
+    "practiceScoreCap" INTEGER NOT NULL DEFAULT 6,
+    "streakBonus" INTEGER NOT NULL DEFAULT 4,
+    "submissionChannelId" TEXT NOT NULL,
+    "scoreLogChannelId" TEXT NOT NULL,
+    "dailyThreadChannelId" TEXT NOT NULL,
+    "devErrorLogId" TEXT NOT NULL,
+    "databaseLogId" TEXT NOT NULL,
+    "backupChannelId" TEXT NOT NULL,
+    "eventLoggingId" TEXT NOT NULL,
 
     CONSTRAINT "SystemConfiguration_pkey" PRIMARY KEY ("id")
 );
@@ -153,7 +165,19 @@ CREATE UNIQUE INDEX "User_discordId_key" ON "User"("discordId");
 CREATE UNIQUE INDEX "User_leetcodeUsername_key" ON "User"("leetcodeUsername");
 
 -- CreateIndex
+CREATE UNIQUE INDEX "UserSolvedProblem_userId_problemId_key" ON "UserSolvedProblem"("userId", "problemId");
+
+-- CreateIndex
 CREATE UNIQUE INDEX "Topic_topicName_key" ON "Topic"("topicName");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "DailyObject_generatedDate_key" ON "DailyObject"("generatedDate");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserDailyObject_userId_dailyObjectId_key" ON "UserDailyObject"("userId", "dailyObjectId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "UserMonthlyObject_userId_firstDayOfMonth_key" ON "UserMonthlyObject"("userId", "firstDayOfMonth");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "_ProblemToTopic_AB_unique" ON "_ProblemToTopic"("A", "B");
@@ -177,10 +201,10 @@ ALTER TABLE "UserSolvedProblem" ADD CONSTRAINT "UserSolvedProblem_userId_fkey" F
 ALTER TABLE "DailyObject" ADD CONSTRAINT "DailyObject_problemId_fkey" FOREIGN KEY ("problemId") REFERENCES "Problem"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserDailyObject" ADD CONSTRAINT "UserDailyObject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserDailyObject" ADD CONSTRAINT "UserDailyObject_dailyObjectId_fkey" FOREIGN KEY ("dailyObjectId") REFERENCES "DailyObject"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "UserDailyObject" ADD CONSTRAINT "UserDailyObject_dailyObjectId_fkey" FOREIGN KEY ("dailyObjectId") REFERENCES "DailyObject"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "UserDailyObject" ADD CONSTRAINT "UserDailyObject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "UserMonthlyObject" ADD CONSTRAINT "UserMonthlyObject_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -199,3 +223,4 @@ ALTER TABLE "_MissionToProblem" ADD CONSTRAINT "_MissionToProblem_A_fkey" FOREIG
 
 -- AddForeignKey
 ALTER TABLE "_MissionToProblem" ADD CONSTRAINT "_MissionToProblem_B_fkey" FOREIGN KEY ("B") REFERENCES "Problem"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
