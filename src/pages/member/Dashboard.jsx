@@ -12,6 +12,7 @@ import GradeIcon from '@mui/icons-material/Grade';
 import axios from '../../config/axios.interceptor';
 import CustomList from '../../components/CustomList';
 import { CustomCard } from '../../components/CustomCard';
+import Spinner from '../../components/Spinner';
 import PageTitle from '../../components/PageTitle';
 
 function Dashboard() {
@@ -28,6 +29,7 @@ function Dashboard() {
     topMissions: [],
   });
   const [dailyChallenge, setDailyChallenge] = useState({});
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -44,6 +46,7 @@ function Dashboard() {
 
         const dailyChallengeResponse = await axios.get(DAILY_CHALLENGE_API);
         setDailyChallenge(dailyChallengeResponse.data);
+        setIsLoading(false);
       } catch (error) {
         throw new Error(error);
       }
@@ -55,12 +58,18 @@ function Dashboard() {
   return (
     <>
       <PageTitle title="dashboard" includeUsername />
-      <StatsBoard
-        stats={userStats}
-        dailyChallenge={dailyChallenge}
-        totalMembers={leaderboardData.length}
-      />
-      <Leaderboard leaderboardData={leaderboardData} />
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <>
+          <StatsBoard
+            stats={userStats}
+            dailyChallenge={dailyChallenge}
+            totalMembers={leaderboardData.length}
+          />
+          <Leaderboard leaderboardData={leaderboardData} />
+        </>
+      )}
     </>
   );
 }
@@ -165,26 +174,14 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
                   width="100%"
                 >
                   <Box sx={{ flex: 1, textAlign: 'left' }}>
-                    <Link
-                      to={`/missions/${mission.id}`}
-                      style={{
-                        textDecoration: 'none',
-                        color: 'inherit',
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        display: 'inline-block',
                       }}
                     >
-                      <Typography
-                        variant="body1"
-                        sx={{
-                          '&:hover': {
-                            cursor: 'pointer',
-                            textDecoration: 'underline',
-                          },
-                          display: 'inline-block',
-                        }}
-                      >
-                        {mission.name}
-                      </Typography>
-                    </Link>
+                      {mission.name}
+                    </Typography>
                   </Box>
                   <Box sx={{ flex: 2 }}>
                     <LinearProgress variant="determinate" color="secondary" value={mission.progress} sx={{ height: 12, borderRadius: 5 }} />
@@ -239,7 +236,7 @@ function StatsBoard({ stats, dailyChallenge, totalMembers }) {
                 },
               }}
             >
-              <EmojiEventsIcon fontSize="large" color="secondary" marginBottom="0.5rem" />
+              <EmojiEventsIcon fontSize="large" color="secondary" />
               <Typography variant="h6">Aced</Typography>
               <Typography variant="p" sx={{ fontSize: '1.5rem' }}>{stats.aced}</Typography>
             </CustomCard>
@@ -279,11 +276,37 @@ StatsBoard.propTypes = {
     title: PropTypes.string,
     titleSlug: PropTypes.string,
     difficulty: PropTypes.string,
-    id: PropTypes.string,
+    id: PropTypes.number,
     topics: PropTypes.arrayOf(Object),
     numberOfMembersSolved: PropTypes.number,
   }).isRequired,
   totalMembers: PropTypes.number.isRequired,
+};
+
+function CustomItem({ displayData }) {
+  return (
+    <Box sx={{
+      display: 'flex', flexDirection: 'row', justifyContent: 'space-between', width: '100%',
+    }}
+    >
+      <Typography variant="p" sx={{ fontWeight: 'bold' }}>{displayData.username}</Typography>
+      <Typography variant="p" sx={{ fontWeight: 'bold' }}>{displayData.scoreEarned}</Typography>
+    </Box>
+  );
+}
+
+CustomItem.propTypes = {
+  displayData: PropTypes.shape({
+    username: PropTypes.string,
+    scoreEarned: PropTypes.number,
+  }),
+};
+
+CustomItem.defaultProps = {
+  displayData: {
+    username: '',
+    scoreEarned: 10,
+  },
 };
 
 function Leaderboard({ leaderboardData }) {
@@ -295,8 +318,13 @@ function Leaderboard({ leaderboardData }) {
       )}
       {leaderboardData && (
         <CustomCard type="normal" sx={{ display: 'box' }}>
-
-          <CustomList data={leaderboardData} title="Leaderboard" totalTitle="Total users" primaryData="username" secondaryData="scoreEarned" secondaryTitle="Score" />
+          <CustomList
+            data={leaderboardData}
+            title="Leaderboard"
+            totalTitle="Total users"
+            ItemDisplay={CustomItem}
+            showRanking
+          />
         </CustomCard>
       )}
     </>
